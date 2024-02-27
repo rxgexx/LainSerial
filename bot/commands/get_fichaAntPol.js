@@ -227,7 +227,7 @@ module.exports = (bot) => {
 
       const responsefichaAntPol = await fichaAntPol(dni);
       console.log(responsefichaAntPol);
-      return
+      
       const listaAni = responsefichaAntPol.listaAni[0];
 
       const {
