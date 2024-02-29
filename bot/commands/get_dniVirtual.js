@@ -14,7 +14,7 @@ const antiSpam = {};
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]dnivv (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]dniv (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -169,15 +169,10 @@ module.exports = (bot) => {
       return;
     }
 
+    const y = `*[ ⚙️ ] Construyendo* el \`DNI VIRTUAL\` del *➜ DNI* \`${dni}\``;
+
     //Si todo se cumple, se iniciará con la consulta...
-    const consultandoMessage = await bot.sendMessage(
-      chatId,
-      `*[ ⌛ ] Construyendo* el \`DNI VIRTUAL\` del *➜ DNI* \`${dni}\``,
-      {
-        reply_to_message_id: msg.message_id,
-        parse_mode: "Markdown",
-      }
-    );
+    const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
 
     usuariosEnConsulta[userId] = true;
 

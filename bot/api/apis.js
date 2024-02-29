@@ -27,6 +27,51 @@ async function getReniec(dni) {
   }
 }
 
+//API NOMBRES
+
+async function getNombres(
+  prinombre,
+  apPaterno = " ",
+  apMaterno = " ",
+  minAge = " ",
+  maxAge = " ",
+  depa = " "
+) {
+  {
+    let apiUrl = `http://161.132.41.107:3000/nombres?nombre=${prinombre}`;
+
+    if (apPaterno !== "Ninguno") {
+      apiUrl += `&apellidoPa=${apPaterno}`;
+    }
+
+    if (apMaterno !== "Ninguno") {
+      apiUrl += `&apellidoMa=${apMaterno}`;
+    }
+
+    if (minAge !== "Ninguno") {
+      apiUrl += `&minEdad=${minAge}`;
+    }
+    if (maxAge !== "Ninguno") {
+      apiUrl += `&maxEdad=${maxAge}`;
+    }
+
+    if (depa !== "Ninguno") {
+      apiUrl += `&depa=${depa}`;
+    }
+
+    return axios
+      .get(apiUrl)
+      .then((response) => {
+        const data = response.data;
+        return data;
+      })
+      .catch((error) => {
+        console.log("Error en la api de nombres: ", error);
+        throw error;
+      });
+  }
+}
+
 //API ACTA NACIMIENTO
 async function getActaNacimiento(dni) {
   //END - PONT ACTA - API
@@ -262,6 +307,7 @@ async function argentinaData(cuit) {
 
 module.exports = {
   getReniec,
+  getNombres,
   getActaNacimiento,
   getActaDefuncion,
   getDNIVirtual,

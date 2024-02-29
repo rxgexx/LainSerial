@@ -213,21 +213,17 @@ module.exports = (bot) => {
       return;
     }
 
+    const y = `*[ ⚙️ ] Construyendo* los \`ANTECEDENTES POLICIALES\` del *➜ DNI* \`${dni}\``;
+
     //Si todo se cumple, se iniciará con la consulta...
-    const consultandoMessage = await bot.sendPhoto(chatId, imagenBuscando, {
-      caption: `*[ ⚙️ ] Construyendo* los \`ANTECEDENTES POLICIALES\` del *➜ DNI* \`${dni}\``,
-      reply_to_message_id: msg.message_id,
-      parse_mode: "Markdown",
-    });
+    const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
 
     usuariosEnConsulta[userId] = true;
 
     try {
-      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
-
       const responsefichaAntPol = await fichaAntPol(dni);
       console.log(responsefichaAntPol);
-      
+
       const listaAni = responsefichaAntPol.listaAni[0];
 
       const {

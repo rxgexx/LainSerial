@@ -18,9 +18,6 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-//IMAGEN BUSCANDO
-const imagenBuscando = path.join(__dirname, "../img/buscandoImg.jpg");
-
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]fxantpen (.+)/, async (msg, match) => {
@@ -213,12 +210,10 @@ module.exports = (bot) => {
       return;
     }
 
+    const y = `*[ ⚙️ ] Construyendo* los \`ANTECEDENTES PENALES\` del *➜ DNI* \`${dni}\``;
+
     //Si todo se cumple, se iniciará con la consulta...
-    const consultandoMessage = await bot.sendPhoto(chatId, imagenBuscando, {
-      caption: `*[ ⚙️ ] Construyendo* los \`ANTECEDENTES PENALES\` del *➜ DNI* \`${dni}\``,
-      reply_to_message_id: msg.message_id,
-      parse_mode: "Markdown",
-    });
+    const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
 
     usuariosEnConsulta[userId] = true;
 

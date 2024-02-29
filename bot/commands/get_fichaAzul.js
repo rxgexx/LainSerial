@@ -213,20 +213,18 @@ module.exports = (bot) => {
       return;
     }
 
+    const y = `*[ ⚙️ ] Construyendo* la \`FICHA AZUL\` del *➜ DNI* \`${dni}\``;
+
     //Si todo se cumple, se iniciará con la consulta...
-    const consultandoMessage = await bot.sendPhoto(chatId, imagenBuscando, {
-      caption: `*[ ⚙️ ] Construyendo* el \`DOCUMENTO C4 AZUL\` del *➜ DNI* \`${dni}\``,
-      reply_to_message_id: msg.message_id,
-      parse_mode: "Markdown",
-    });
+    const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
 
     usuariosEnConsulta[userId] = true;
 
     try {
-      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       const responseFichaAzul = await fichaAzul(dni);
       const listaAni = responseFichaAzul.listaAni;
+      
       const {
         apeMaterno, // Apellido materno
         apePaterno, // Apellido paterno
