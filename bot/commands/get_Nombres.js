@@ -65,7 +65,7 @@ module.exports = (bot) => {
     const botIsAdmin = botMember.status === "administrator";
 
     //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev) {
+    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
       let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
       bot
         .sendMessage(chatId, x, messageOptions)
@@ -183,6 +183,9 @@ module.exports = (bot) => {
       }
     );
 
+    //SE LE PONE SPAM
+    usuariosEnConsulta[userId] = true;
+
     try {
       const commandArgs = match[1].split("|").map((arg) => arg.trim());
 
@@ -224,8 +227,9 @@ module.exports = (bot) => {
         return;
       } else {
         const nombresData = responseNombres.listaAni;
+        
         //SI LOS RESULTADOS SON MENOS DE 10
-        if (nombresData.length < 10) {
+        if (nombresData.length <= 10) {
           //CONSTRUCCIÓN DEL MENSAJE
           let replyDni = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
           replyDni += `*[ ☑️ ] BÚSQUEDAS PERSONAS*\n\n`;
@@ -261,11 +265,20 @@ module.exports = (bot) => {
             .sendMessage(chatId, replyDni, messageOptions)
             .then((propiedades) => {
               console.log("Propiedades del mensaje: ", propiedades);
+              //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+              if (!isDev && !isAdmin && !isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+              }
+              //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+              else if (isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+              }
             })
             .catch((error) => {
               console.log("Error al envíar mensaje en nombres: ", error);
             });
         } else {
+          //SI LOS RESULTADOS EXECDEN A 10
           let topTxt = `[#LAIN-V.1-BETA ⚡]\n\n`;
           topTxt += `[ ☑️ ] BÚSQUEDAS PERSONAS\n\n`;
           topTxt += `➤ TOTAL RESULTADOS: ${nombresData.length}\n\n`;
@@ -308,7 +321,7 @@ module.exports = (bot) => {
 
           let replyTxt = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
           replyTxt += `*Queridx ${firstName},* se han encontrado un total de _${nombresData.length} personas_ para los \`NOMBRES\` que solicitaste.\n\n`;
-          replyTxt += `Para una *mejor búsqueda,* los resultados _se han guardado_ en este archivo de texto.`;
+          replyTxt += `Para una *mejor búsqueda,* los resultados _se han guardado_ en este archivo de texto.\n\n`;
           replyTxt += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._`;
 
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -325,12 +338,32 @@ module.exports = (bot) => {
                   return;
                 }
                 console.log("Archivo borrado exitosamente.");
+              }).then(() => {
+                //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+                if (!isDev && !isAdmin && !isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+                }
+                //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+                else if (isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+                }
               });
+            })
+            .catch((err) => {
+              console.log("Error al borrar el archivo de texto: ", err);
             });
         }
       }
-    } catch (error) {}
-
-    usuariosEnConsulta[userId] = true;
+    } catch (error) {
+      console.log("Error en el comando nombres: ", error);
+      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      await bot
+        .deleteMessage(chatId, consultandoMessage.message_id)
+        .then(() => {
+          bot.sendMessage(chatId, xerror, messageOptions);
+        });
+    } finally {
+      delete usuariosEnConsulta[userId];
+    }
   });
 };

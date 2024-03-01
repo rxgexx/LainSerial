@@ -91,7 +91,7 @@ module.exports = (bot) => {
       parse_mode: "Markdown",
     };
 
-    const isDev = rangos.DEVELOPER.includes(userId);
+    const isDev = rangosFilePath.DEVELOPER.includes(userId);
 
     const delUser = match[1];
 

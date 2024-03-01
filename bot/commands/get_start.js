@@ -43,7 +43,7 @@ module.exports = (bot) => {
           [
             {
               text: "𝘾𝙊𝙈𝙋𝙍𝘼 𝙏𝙐 𝘼𝘾𝘾𝙀𝙎𝙊 🛒",
-              callback_data: "https://t.me/SinFlowxr",
+              url: "https://t.me/SinFlowxr",
             },
           ],
         ],

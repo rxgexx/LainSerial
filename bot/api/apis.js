@@ -27,6 +27,24 @@ async function getReniec(dni) {
   }
 }
 
+//API RENIEC RESPALDO
+async function getReniecRes(dni) {
+  //END - POING
+  const apiUrl = `http://161.132.41.107:50/respaldo/${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener los datos reniec respaldo: ${response.status}`);
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener los datos reniec desde la API RESPALDO: " + error);
+    throw error;
+  }
+}
+
 //API NOMBRES
 
 async function getNombres(
@@ -232,6 +250,7 @@ const apiTelEndPoint = "http://161.132.41.107:10";
 async function getApiTel(tel) {
   //END - POINT TITULAR DE CELULAR - API
   const extencionApi = "consultar";
+  A;
   const apiUrl = `${apiTelEndPoint}/${extencionApi}?tel=${tel}`;
 
   try {
@@ -246,6 +265,136 @@ async function getApiTel(tel) {
   } catch (error) {
     console.error("Error al obtener la respuesta desde la API-TEL", error);
     throw error;
+  }
+}
+
+//API VALIDACIÓN
+async function apiValidar(tel) {
+  //END - POINT
+  const apiUrl = `https://val-num.onrender.com/val?num=${tel}`;
+
+  try {
+    const responseApi = await axios.get(apiUrl);
+
+    if (responseApi.status !== 200) {
+      throw new Error(
+        `Error al obtener la información de la api VALIDACION NUMERO: ${responseApi.status}`
+      );
+    }
+
+    const data = responseApi.data;
+    return data;
+  } catch (error) {
+    console.log(`Error en la api Validacion Numero: ` + error);
+  }
+}
+
+//API BITEL
+async function titularBitel(tel) {
+  //END - POINT
+  const apiUrl = `https://bit2-dat.onrender.com/bit?num=${tel}`;
+
+  try {
+    const responseBitel = await axios.get(apiUrl);
+
+    if (responseBitel.status !== 200) {
+      throw new Error(
+        `Error al obtener la información de la api BITEL: ${responseBitel.status}`
+      );
+    }
+
+    const data = responseBitel.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Bitel: ", error);
+  }
+}
+
+//API CLARO
+async function titularClaro(tel) {
+  //END - PINT
+  const apiUrl = `https://clweb-jdx2-q5s5.onrender.com/clanum?num=${tel}`;
+
+  try {
+    const responseClaro = await axios.get(apiUrl);
+
+    if (responseClaro.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api CLARO: ",
+        responseClaro.status
+      );
+    }
+
+    const data = responseClaro.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Claro: ", error);
+  }
+}
+
+//API MOVISTAR
+async function titularMov(tel) {
+  //END - POINT
+  const apiUrl = `https://movistar-6j4y.onrender.com/movistar/numero?num=${tel}`;
+
+  try {
+    const responseMovistar = await axios.get(apiUrl);
+
+    if (responseMovistar.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api MOVISTAR: ",
+        responseMovistar.status
+      );
+    }
+
+    const data = responseMovistar.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Movistar: ", error);
+  }
+}
+
+//API MOVISTAR x DNI
+async function numerosMov(dni) {
+  //END - POINT
+  const apiUrl = `https://movistar-6j4y.onrender.com/movistar/dni?dni=${dni}`;
+
+  const responseMovistar = await axios.get(apiUrl);
+
+  try {
+    if (responseMovistar.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api MOVISTAR x DNI: ",
+        responseMovistar.status
+      );
+    }
+
+    const data = responseMovistar.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Movistar x DNI: ", error);
+  }
+}
+
+//API CELULAR BÁSICO
+async function titularBasic(tel) {
+  //END - POING
+  const apiUrl = `http://161.132.41.107:3000/telefonia?valor=${tel}`;
+
+  const responseTitular = await axios.get(apiUrl);
+
+  try {
+    if (responseTitular.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api TITULAR BASICO: ",
+        responseTitular.status
+      );
+    }
+
+    const data = responseTitular.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api TITULAR BASICO: ", error);
   }
 }
 
@@ -285,6 +434,26 @@ async function titularPlaca(placa) {
   }
 }
 
+//ÁRBOL GENEALÓGICO
+async function arbolGen(dni) {
+  //END - POINT
+  const apiUrl = `http://161.132.41.107:3000/arbol?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener la información del CUIT: ${response.status}`
+      );
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la información desde la API ARBOL");
+    throw error;
+  }
+}
+
 //API CUIT ARGENTINO
 async function argentinaData(cuit) {
   //END - PONIT CUIT - API
@@ -307,6 +476,7 @@ async function argentinaData(cuit) {
 
 module.exports = {
   getReniec,
+  getReniecRes,
   getNombres,
   getActaNacimiento,
   getActaDefuncion,
@@ -317,6 +487,13 @@ module.exports = {
   fichaAntJud,
   fichaAntPen,
   getApiTel,
+  apiValidar,
+  titularBitel,
+  titularClaro,
+  titularMov,
+  numerosMov,
+  titularBasic,
   titularPlaca,
+  arbolGen,
   argentinaData,
 };

@@ -1,8 +1,5 @@
-//APIS
-const { getDNIVirtual } = require("../api/apis");
-
-//SE REQUIERE "path"
-const path = require("path");
+//SE REQUIRE LAS APIS
+const { apiValidar, titularClaro } = require("../api/apis.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -12,9 +9,10 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
+
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]dniv (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]clax (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -30,7 +28,7 @@ module.exports = (bot) => {
     }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
-    const dni = match[1];
+    const tel = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -59,14 +57,14 @@ module.exports = (bot) => {
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
         console.log(
-          "Error al obtener la información del Bot en el comando Acta Nacimiento: ",
+          "Error al obtener la información del Bot en el comando titularClaro: ",
           err
         );
       });
     const botIsAdmin = botMember.status === "administrator";
 
     //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev && !isBuyer) {
+    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
       let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
       bot
         .sendMessage(chatId, x, messageOptions)
@@ -84,7 +82,7 @@ module.exports = (bot) => {
       return;
     }
 
-    if (!botIsAdmin && typeChat === "group" && !isDev && !isBuyer) {
+    if (!botIsAdmin && typeChat === "group" && !isDev) {
       let noAdmin = `*[ 💤 ] Dormiré* hasta que no me hagan *administradora* _zzz 😴_`;
       bot.sendMessage(chatId, noAdmin, messageOptions);
 
@@ -147,20 +145,28 @@ module.exports = (bot) => {
         //Se envía el mensaje indicado cuanto tiempo tiene
         bot.sendMessage(
           chatId,
-          `*[ ⏳ ] ${firstName},* debes esperar \`${tiempoRestante} segundos\` para volver a utilizar este comando.`,
+          `*[ ✖️ ] ${firstName},* debes esperar \`${tiempoRestante} segundos\` para volver a utilizar este comando.`,
           messageOptions
         );
         delete usuariosEnConsulta[userId];
         return;
       }
     }
-
-    if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/dniv\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/dniv 07768359\`*]*\n\n`;
+    if (tel.length !== 9) {
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/clax\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/clax 999999999\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
+    };
+
+    const validarOp = await apiValidar(tel);
+    const datosNum = validarOp.datos.Operador;
+
+    if (datosNum !== "Claro") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
+
+      return bot.sendMessage(chatId, yxx, messageOptions);
     }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
@@ -169,101 +175,90 @@ module.exports = (bot) => {
       return;
     }
 
-    const y = `*[ ⚙️ ] Construyendo* el \`DNI VIRTUAL\` del *➜ DNI* \`${dni}\``;
+    // Si todo se cumple, se iniciará con la consulta...
+    let yx = `*[ 💬 ] Consultando el* \`TITULAR CLARO\` del *➜ NÚMERO* \`${tel}\``;
+    const consultandoMessage = await bot.sendMessage(
+      chatId,
+      yx,
+      messageOptions
+    );
 
-    //Si todo se cumple, se iniciará con la consulta...
-    const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
-
+    //SE LE PONE SPAM
     usuariosEnConsulta[userId] = true;
 
     try {
-      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
+      //RESPONSE CLARO
+      const responseCla = await titularClaro(tel);
 
-      const responseDniVirtual = await getDNIVirtual(dni);
+      if (responseCla.result === "No existe linea") {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Claro.\n\n`;
+        yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
 
-      //SI NO HAY FOTO
-      const isFoto = responseDniVirtual.mensaje;
-
-      if (isFoto === "No existe foto para el DNI consultado") {
-        let xnofoto = `*[ ✖️ ] El DNI consultado* no cuenta con \`DATOS SUFICIENTES\` para *la construcción* del _dni virtual_.`;
-
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(bot.sendMessage(chatId, xnofoto, messageOptions));
-
-        return;
-      }
-
-      const listaAni = responseDniVirtual.datos[0];
-
-      const {
-        apeMaterno, // Apellido materno
-        apePaterno, // Apellido paterno
-        desDireccion, // Descripción de la dirección
-        feEmision, // Fecha de emisión del documento
-        feNacimiento, // Fecha de nacimiento
-        nuDni, // Número de DNI
-        preNombres, // Nombres
-      } = listaAni;
-
-      const caraDni = responseDniVirtual.frontal_base64;
-      const atrasDni = responseDniVirtual.posterior_base64;
-
-      //TEXTO QUE ACOMPAÑARÁ AL DNI VIRTUAL
-      let replyDni = `*[#LAIN-V.1-BETA 🌐]*\n\n`;
-      replyDni += `*[ ☑️ ] DNI VIRTUAL*\n\n`;
-      replyDni += `*➤ INF. PERSONA:*\n`;
-      replyDni += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
-      replyDni += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
-      replyDni += `  \`⌞\` *APELLIDOS:* \`${apePaterno}\` - \`${apeMaterno}\`\n`;
-      replyDni += `  \`⌞\` *FECHA. EMISIÓN:* \`${feEmision}\`\n`;
-      replyDni += `  \`⌞\` *FECHA. NACIMIENTO:* \`${feNacimiento}\`\n`;
-      replyDni += `  \`⌞\` *DIRECCIÓN RENIEC:* \`${desDireccion}\`\n\n`;
-      replyDni += `*➤ CONSULTADO POR:*\n`;
-      replyDni += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      replyDni += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      replyDni += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
-      const mediaGroup = [];
-
-      if (caraDni) {
-        const caraDniFoto = caraDni.replace(/^data:image\/jpeg;base64,/, "");
-        const fotoBuffer = Buffer.from(caraDniFoto, "base64");
-        mediaGroup.push({ type: "photo", media: fotoBuffer });
-      }
-
-      if (atrasDni) {
-        const atrasDniFoto = atrasDni.replace(/^data:image\/jpeg;base64,/, "");
-        const fotoBuffer2 = Buffer.from(atrasDniFoto, "base64");
-        mediaGroup.push({
-          type: "photo",
-          media: fotoBuffer2,
-          caption: replyDni,
-          parse_mode: "Markdown",
-        });
-      }
-
-      await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      bot
-        .sendMediaGroup(chatId, mediaGroup, {
-          reply_to_message_id: msg.message_id,
-        })
-        .then(() => {
-          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
+        bot.sendMessage(chatId, yx, messageOptions).then(() => {
+          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
           if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 15;
           }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
           else if (isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
           }
-        })
-        .catch((err) => {
-          console.log("Error al envíar las imágenes: ", err.message);
         });
-    } catch (error) {
-      let xerror = `*[ 💤 ] Los servidores de RENIEC* andan apagados, no se ha *completado* la _búsqueda._`;
+        return;
+      } else {
+        //RESPONSE CLARO
+        const dataClaro = responseCla.result;
+        //DATOS CLARO
+        const apellidos = dataClaro.apellidos;
+        const correo = dataClaro.correo;
+        const documento = dataClaro.documento;
+        const modo = dataClaro.modo;
+        const nombres = dataClaro.nombres;
+        const plan = dataClaro.plan;
+        const razon_social = dataClaro.razon_social;
 
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
+        telRes += `*➤ CLARO EN TIEMPO REAL*\n`;
+        telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
+        telRes += `  \`⌞\` *TITULAR:* \`${nombres} ${apellidos}\`\n`;
+        if (correo !== "-" || correo.length === 0) {
+          telRes += `  \`⌞\` *CORREO:* \`${correo}\`\n`;
+        }
+        if (razon_social !== "-") {
+          telRes += `  \`⌞\` *RAZÓN SOCIAL:* \`${razon_social}\`\n`;
+        }
+        telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo}\`\n`;
+        telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan}\`\n\n`;
+        telRes += `*➤ CONSULTADO POR:*\n`;
+        telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(() => {
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR CLARO: " + error
+            );
+          });
+      }
+    } catch (error) {
+      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {

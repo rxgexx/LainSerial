@@ -17,7 +17,7 @@ const moment = require("moment");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]celx (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]celg (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -200,7 +200,6 @@ module.exports = (bot) => {
       } else {
         //SI ENCUENTRA Y ES BITEL...
         if (responseApiTel.servicio === "Bitel") {
-          console.log("me detengo en bitel");
           //RESPONSE BITEL
           const dataBitel = await responseApiTel.data.data;
           console.log(dataBitel);
@@ -248,7 +247,6 @@ module.exports = (bot) => {
         } else if (responseApiTel.servicio === "Claro") {
           //RESPONSE CLARO
           const dataClaro = responseApiTel.data.result;
-          console.log(dataClaro);
           //DATOS CLARO
           const apellidos = dataClaro.apellidos;
           const correo = dataClaro.correo;
@@ -295,11 +293,10 @@ module.exports = (bot) => {
               );
             });
         } else if (responseApiTel.servicio === "Movistar") {
-          //RESPONSE BITEL
+          //RESPONSE MOVISTAR
           const dataMovistar = responseApiTel.data;
           //DATOS MOVISTAR
           const tipoProducto = dataMovistar.tipoProducto;
-          console.log(tipoProducto);
           const modo = dataMovistar.modo;
           const plan = dataMovistar.plan;
           const tipoDoc = dataMovistar.tipoDoc;
