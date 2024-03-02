@@ -74,7 +74,7 @@ module.exports = (bot) => {
     const botIsAdmin = botMember.status === "administrator";
 
     //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev) {
+    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
       let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
       bot
         .sendMessage(chatId, x, messageOptions)

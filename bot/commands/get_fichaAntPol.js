@@ -224,7 +224,7 @@ module.exports = (bot) => {
       const responsefichaAntPol = await fichaAntPol(dni);
       console.log(responsefichaAntPol);
 
-      const listaAni = responsefichaAntPol.listaAni[0];
+      const listaAni = responsefichaAntPol.listaAni;
 
       const {
         apeMaterno, // Apellido materno

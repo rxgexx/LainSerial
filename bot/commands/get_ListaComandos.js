@@ -130,8 +130,11 @@ module.exports = (bot) => {
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
       cmds += `*➜ /dnir:* _Búsqueda de Datos Reniec Respaldo - 🟢_\n`;
+      cmds += `*➜ /dnix:* _Búsqueda de Datos Reniec - 🟢_\n`;
+      cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
       cmds += `*➜ /movx:* _Titular Movistar - 🟢_\n`;
       cmds += `*➜ /movxx:* _Titular Movistar + Foto - 🟢_\n`;
+      cmds += `*➜ /bitx:* _Titular Bitel -BASE DE DATOS- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;

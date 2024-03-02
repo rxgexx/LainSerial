@@ -1,5 +1,5 @@
 //SE REQUIRE LAS APIS
-const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
+const { apiValidar, titularBitel } = require("../api/apis.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -8,9 +8,6 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
 const antiSpam = {};
-
-//MOMENTO
-const moment = require("moment");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
@@ -59,7 +56,7 @@ module.exports = (bot) => {
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
         console.log(
-          "Error al obtener la información del Bot en el comando titularMov: ",
+          "Error al obtener la información del Bot en el comando titularBitel: ",
           err
         );
       });
@@ -155,15 +152,15 @@ module.exports = (bot) => {
       }
     }
     if (tel.length !== 9) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/bitxx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/bitx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
       replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/bitx 957908908\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
     }
 
-    const validarOperador = await validarOp(tel);
-    const datosNum = validarOperador.datos.Operador;
+    const validarOp = await apiValidar(tel);
+    const datosNum = validarOp.datos.Operador;
 
     if (datosNum !== "Bitel") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
@@ -189,22 +186,63 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const responseBitel = await apiBitel(tel);
-      const documento = responseBitel.data.documento;
-      const tip_documento = responseBitel.data.tip_documento;
-      const titular = responseBitel.data.titular;
+      //RESPONSE BITEL
+      const responseBitel = await titularBitel(tel);
 
-      let telRes = `*↯ - 𝗟𝗔𝗜𝗡 𝗗𝗢𝗫*\n\n`;
-      telRes += `_𝗧𝗶𝘁𝘂𝗹𝗮𝗿 𝗱𝗲_ ${tel}\n`;
-      telRes += `*➜ DOCUMENTO:* \`${documento}\`\n`;
-      telRes += `*➜ TIPO. DOCUMENTO:* \`${tip_documento}\`\n`;
-      telRes += `*➜ NOMBRES. TITULAR:* \`${titular}\``;
+      if (
+        responseBitel.datos ===
+        "No se encontraron resultados que satisfagan las condiciones"
+      ) {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Bitel.`;
 
-      await bot
-        .deleteMessage(chatId, consultandoMessage.message_id)
-        .then(() => {
-          bot.sendMessage(chatId, telRes, messageOptions);
-        });
+        return bot.sendMessage(chatId, yx, messageOptions);
+      } else {
+        //RESPONSE BITEL
+        const dataBitel = await responseBitel.data;
+        console.log(dataBitel);
+        //DATOS BITEL
+        const hora = dataBitel.hora;
+        const modo = dataBitel.modo;
+        const plan = dataBitel.plan;
+        const titular = dataBitel.titular;
+        const documento = dataBitel.documento;
+        const feActivacion = dataBitel.fecActivacion;
+
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
+        telRes += `*➤ BITEL EN TIEMPO REAL:*\n`;
+        telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
+        telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
+        telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan}\`\n`;
+        telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${feActivacion}\`\n`;
+        telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${hora}\`\n`;
+        telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo}\`\n\n`;
+        telRes += `*➤ CONSULTADO POR:*\n`;
+        telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+        
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(() => {
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 100;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR BITEL: " + error
+            );
+          });
+      }
     } catch (error) {
       let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);

@@ -227,7 +227,7 @@ module.exports = (bot) => {
         return;
       } else {
         const nombresData = responseNombres.listaAni;
-        
+
         //SI LOS RESULTADOS SON MENOS DE 10
         if (nombresData.length <= 10) {
           //CONSTRUCCIÓN DEL MENSAJE
@@ -263,8 +263,7 @@ module.exports = (bot) => {
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
           bot
             .sendMessage(chatId, replyDni, messageOptions)
-            .then((propiedades) => {
-              console.log("Propiedades del mensaje: ", propiedades);
+            .then(() => {
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
               if (!isDev && !isAdmin && !isBuyer) {
                 antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
@@ -337,8 +336,7 @@ module.exports = (bot) => {
                   console.error("Error al borrar el archivo:", err);
                   return;
                 }
-                console.log("Archivo borrado exitosamente.");
-              }).then(() => {
+
                 //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
                 if (!isDev && !isAdmin && !isBuyer) {
                   antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;

@@ -251,7 +251,7 @@ module.exports = (bot) => {
         .then(() => {
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
           if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 200;
           }
           //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
           else if (isBuyer) {

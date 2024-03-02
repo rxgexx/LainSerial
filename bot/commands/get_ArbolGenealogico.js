@@ -270,7 +270,7 @@ module.exports = (bot) => {
           topTxt += `➤ RESULTADOS:\n\n`;
 
           //TXT NOMBRE
-          const arbgFile = `FAMILAIRES_${dni}`;
+          const arbgFile = `FAMILIARES_${dni}`;
 
           fs.writeFileSync(arbgFile, topTxt);
 
@@ -286,13 +286,13 @@ module.exports = (bot) => {
             const tipo = dato.tipo;
             const verificacion = dato.verificacion;
 
-            replyToTxt += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
-            replyToTxt += `  \`⌞\` *SEXO:* \`${sexo}\`\n`;
-            replyToTxt += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
-            replyToTxt += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
-            replyToTxt += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
-            replyToTxt += `  \`⌞\` *VÍNCULO:* \`${tipo}\`\n`;
-            replyToTxt += `  \`⌞\` *VERIFICACIÓN:* \`${verificacion}\`\n\n`;
+            replyToTxt += `  ⌞ DNI: ${nuDni} - ${digitoVerificacion}\n`;
+            replyToTxt += `  ⌞ SEXO: ${sexo}\n`;
+            replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
+            replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;
+            replyToTxt += `  ⌞ EDAD: ${nuEdad}\n`;
+            replyToTxt += `  ⌞ VÍNCULO: ${tipo}\n`;
+            replyToTxt += `  ⌞ VERIFICACIÓN: ${verificacion}\n\n`;
 
             fs.appendFileSync(arbgFile, replyToTxt);
           });
@@ -308,6 +308,8 @@ module.exports = (bot) => {
           replyTxt += `Se han *encontrado* más registros de familaires para el \`${dni}\`. En total, han sido _${resultadosRestantes.length} familiares_ restantes.\n\n`;
           replyTxt += `*Para una mejor búsqueda,* la lista de familiares se ha guardado en este archivo de texto.`;
 
+          await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
           setTimeout(() => {
             bot
               .sendDocument(chatId, arbgFile, {
@@ -321,23 +323,15 @@ module.exports = (bot) => {
                     console.error("Error al borrar el archivo:", err);
                     return;
                   }
-                  console.log("Archivo borrado exitosamente.");
-                })
-                  .then(() => {
-                    //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
-                    if (!isDev && !isAdmin && !isBuyer) {
-                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
-                    }
-                    //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-                    else if (isBuyer) {
-                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-                    }
-                  })
-                  .catch((error) => {
-                    console.log(
-                      "Error al enviar al borrar el archivo: " + error
-                    );
-                  });
+                  //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+                  if (!isDev && !isAdmin && !isBuyer) {
+                    antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+                  }
+                  //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+                  else if (isBuyer) {
+                    antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+                  }
+                });
               })
               .catch((error) => {
                 console.log("Error al envíar el archivo: " + error);
