@@ -4,8 +4,8 @@ const fs = require("fs");
 //SE REQUIERE "pdfkit"
 const PDFDocument = require("pdfkit");
 
-//SE REQUIERE LA FUNCIÓN "getActaDefuncion"
-const { getActaDefuncion } = require("../api/apis.js");
+//SE REQUIERE LA FUNCIÓN "getActaNacimiento"
+const { getActaNacimiento } = require("../api/apis.js");
 
 //SE REQUIERE "path"
 const path = require("path");
@@ -191,11 +191,13 @@ module.exports = (bot) => {
       const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
-      const res = await getActaDefuncion(dni);
+      const res = await getActaNacimiento(dni);
 
       const data1 = res.data1;
+
       const data1cantidad = data1.length
-      console.log(data1cantidad);
+      console.log(data1);
+      return
       const datos = data1.datos[0];
 
       //Construimos el mensaje adicional que irá con el acta
