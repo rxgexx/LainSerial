@@ -220,6 +220,7 @@ module.exports = (bot) => {
       //Declaramos la ruta donde se guardarán las actas en PDF
       const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
       const pdfPath = path.join(pdfsFolder, `${dni}_acta_Nacimiento.pdf`); // Ruta al archivo PDF
+      console.log(pdfPath);
 
       //Si no encuentra esa carpta, la crea
       if (!fs.existsSync(pdfsFolder)) {
