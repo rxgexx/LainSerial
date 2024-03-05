@@ -35,12 +35,16 @@ async function getReniecRes(dni) {
   try {
     const response = await axios.get(apiUrl);
     if (response.status !== 200) {
-      throw new Error(`Error al obtener los datos reniec respaldo: ${response.status}`);
+      throw new Error(
+        `Error al obtener los datos reniec respaldo: ${response.status}`
+      );
     }
     const data = response.data;
     return data;
   } catch (error) {
-    console.error("Error al obtener los datos reniec desde la API RESPALDO: " + error);
+    console.error(
+      "Error al obtener los datos reniec desde la API RESPALDO: " + error
+    );
     throw error;
   }
 }
