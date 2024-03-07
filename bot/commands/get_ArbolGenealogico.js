@@ -275,6 +275,7 @@ module.exports = (bot) => {
           fs.writeFileSync(arbgFile, topTxt);
 
           let replyToTxt;
+          console.log(resultadosRestantes);
           resultadosRestantes.forEach((dato) => {
             const nuDni = dato.nuDni;
             const digitoVerificacion = dato.digitoVerificacion;
@@ -285,8 +286,9 @@ module.exports = (bot) => {
             const nuEdad = dato.nuEdad;
             const tipo = dato.tipo;
             const verificacion = dato.verificacion;
+            console.log(nuDni);
 
-            replyToTxt += `  ⌞ DNI: ${nuDni} - ${digitoVerificacion}\n`;
+            replyToTxt = `  ⌞ DNI: ${nuDni} - ${digitoVerificacion}\n`;
             replyToTxt += `  ⌞ SEXO: ${sexo}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;

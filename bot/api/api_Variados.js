@@ -11,4 +11,15 @@ async function apiPlaca(placa) {
   }
 }
 
-module.exports = { apiPlaca };
+async function apiMPFN(dni){
+  const apiUrl = `http://161.132.41.107:3000/mpfn?dni=${dni}`
+
+  try {
+    const response = await axios.get(apiUrl)
+    const data = response.data
+    return data
+  } catch (error) {
+    console.log("ERROR EN LA API MPFN: " + error);
+  }
+}
+module.exports = { apiPlaca, apiMPFN };

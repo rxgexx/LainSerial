@@ -299,7 +299,7 @@ module.exports = (bot) => {
             const sexo = dato.sexo;
             const nuEdad = dato.nuEdad;
 
-            replyToTxt += `  ⌞ PERSONA: ${nuPersona}\n`;
+            replyToTxt = `  ⌞ PERSONA: ${nuPersona}\n`;
             replyToTxt += `  ⌞ N° DNI: ${nuDni} - ${digitoVerificacion}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;

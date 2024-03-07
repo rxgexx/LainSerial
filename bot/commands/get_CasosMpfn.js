@@ -1,5 +1,5 @@
 //SE REQUIRE LAS APIS
-const { apiHogar } = require("../api/api_Persona.js");
+const { apiMPFN } = require("../api/api_Variados.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -9,12 +9,9 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-//MOMENTO
-const moment = require("moment");
-
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]hogar (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]fxmpfn (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -155,8 +152,8 @@ module.exports = (bot) => {
       }
     }
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/hogar\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/hogar 44443333\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxmpfn\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxmpfn 27427864\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -168,64 +165,31 @@ module.exports = (bot) => {
       return;
     }
 
+    // Si todo se cumple, se iniciará con la consulta...
+    let yx = `*[ 💬 ] Consultando* \`CASOS MPFN\` del *➜ DNI* \`${dni}\``;
+    const consultandoMessage = await bot.sendMessage(
+      chatId,
+      yx,
+      messageOptions
+    );
+
     //SE LE PONE SPAM
     usuariosEnConsulta[userId] = true;
+
     try {
-      const responseHogar = await apiHogar(dni);
-      const datosHogar = responseHogar.datos_hogar;
 
-      if (
-        datosHogar.mensajeRespuesta ===
-        "El DNI consultado no se encuentra registrado en el PGH."
-      ) {
-        bot.sendMessage(
-          chatId,
-          `*[ ✖️ ] El DNI consultado* no se encuentra registrado en el PGH.`,
-          messageOptions
-        );
-      } else {
-        const integrantes = datosHogar.integrantesHogar;
+        const response = await apiMPFN(dni)
+        const casos = response.casos
+        console.log(casos);
 
-        let res = `*[#LAIN-DOX 🌐] ➤ #HOGAR*\n\n`;
-        res += `Se han *encontrado* \`${integrantes.length}\` _integrantes del hogar_ para el *DNI ${dni}.*\n\n`;
-
-        if (integrantes.length <= 10) {
-          integrantes.forEach((dato, index) => {
-            const numero = index + 1;
-            const apeMaterno = dato.apeMaterno;
-            const apePaterno = dato.apeMaterno;
-            const feNacimiento = dato.feNacimiento;
-            const nuDni = dato.nuDni;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
-
-            res += `*➜ NÚMERO:* \`${numero}\`\n`;
-            res += `*➜ N° DNI:* \`${nuDni}\`\n`;
-            res += `*➜ APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
-            res += `*➜ NOMBRES:* \`${preNombres}\`\n`;
-            res += `*➜ FE. NACIMIENTO:* \`${feNacimiento}\`\n`;
-            res += `*➜ GÉNERO:* \`${sexo}\`\n\n`;
-          });
-
-          res += `*➤ CONSULTADO POR:*\n`;
-          res += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-          res += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-          res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
-          bot.sendMessage(chatId, res, messageOptions);
-        } else {
-          // //TXT
-          // const maxResultsToShow = 6;
-          // //RESULTADOS QUE SE VAN A MOSTRAR CON EL TXT
-          // const resultadosParaMostrar = dataNumeros.slice(0, maxResultsToShow);
-          // const resultadosRestantes = dataNumeros.slice(maxResultsToShow);
-        }
-      }
     } catch (error) {
       let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);
-
-      bot.sendMessage(chatId, xerror, messageOptions);
+      await bot
+        .deleteMessage(chatId, consultandoMessage.message_id)
+        .then(() => {
+          bot.sendMessage(chatId, xerror, messageOptions);
+        });
     } finally {
       delete usuariosEnConsulta[userId];
     }

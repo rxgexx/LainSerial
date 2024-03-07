@@ -224,6 +224,7 @@ module.exports = (bot) => {
 
       const responseFichaAzul = await fichaAzul(dni);
       const listaAni = responseFichaAzul.listaAni;
+      console.log("LISTA ANI FX AZUL: " + listaAni);
       
       const {
         apeMaterno, // Apellido materno
