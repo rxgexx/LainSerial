@@ -226,7 +226,8 @@ module.exports = (bot) => {
         bot.sendMessage(chatId, x, messageOptions);
         return;
       } else {
-        const nombresData = responseNombres.listaAni;
+        const nombresData = responseNombres.listaAni; 
+        console.log(nombresData);
 
         //SI LOS RESULTADOS SON MENOS DE 10
         if (nombresData.length <= 10) {
