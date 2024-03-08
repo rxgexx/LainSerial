@@ -9,6 +9,9 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
+//FS
+const fs = require("fs");
+
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]fxmpfn (.+)/, async (msg, match) => {
@@ -177,11 +180,220 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
+      const response = await apiMPFN(dni);
 
-        const response = await apiMPFN(dni)
-        const casos = response.casos
-        console.log(casos);
+      if (
+        response.mensaje === "No se encontraron datos para los valores dados."
+      ) {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        bot.sendMessage(
+          chatId,
+          `*[ ✖️ ] No se encontraron* casos para el *DNI* \`${dni}\`.`,
+          messageOptions
+        );
+      } else {
+        const casos = response.casos;
+        const audiencias = response.libre;
 
+        let res = `*[#LAIN-DOX 🌐] ➤ #CASOSMPFN*\n\n`;
+        res += `*[ ☑️ ] CASOS:*\n\n`;
+
+        casos.forEach((dato, index) => {
+          const numero = index + 1;
+          const caso = dato.caso;
+          const distrito = dato.distrito;
+          const sede = dato.sede;
+          const nroExp = dato.nroExp;
+          const año = dato.año;
+          const defensor = dato.defensor;
+
+          res += `*➜ CASO ${numero}*\n`;
+          res += `  \`⌞\` *EXPEDIENTE:* \`${caso}\`\n`;
+          res += `  \`⌞\` *DISTRITO:* \`${distrito}\`\n`;
+          res += `  \`⌞\` *SEDE:* \`${sede}\`\n`;
+          res += `  \`⌞\` *N° EXP.:* \`${nroExp}\`\n`;
+          res += `  \`⌞\` *AÑO:* \`${año}\`\n`;
+          res += `  \`⌞\` *ABOGADO:* \`${defensor}\`\n\n`;
+        });
+
+        if (audiencias.length === 0) {
+          res += `_No se encontraron audiencias_\n\n`;
+
+          res += `*➤ CONSULTADO POR:*\n`;
+          res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+          res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+          res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+          await bot
+            .deleteMessage(chatId, consultandoMessage.message_id)
+            .then(() => {
+              bot.sendMessage(chatId, res, messageOptions);
+
+              //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+              if (!isDev && !isAdmin && !isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+              }
+              //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+              else if (isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+              }
+            });
+        } else {
+          res += `*[ ☑️ ] AUDIENCIAS:*\n\n`;
+
+          if (audiencias.length <= 5) {
+            audiencias.forEach((dato, index) => {
+              const numero = index + 1;
+              const distrito = dato.distrito;
+              const sede = dato.sede;
+              const fecha = dato.fecha;
+              const tipo = dato.tipo;
+              const diligencia = dato.diligencia;
+              const defensor = dato.defensor;
+
+              res += `*➜ AUDIENCIA ${numero}*\n`;
+              res += `  \`⌞\` *DISTRITO:* \`${distrito}\`\n`;
+              res += `  \`⌞\` *SEDE:* \`${sede}\`\n`;
+              res += `  \`⌞\` *FECHA:* \`${fecha}\`\n`;
+              res += `  \`⌞\` *TIPO:* \`${tipo}\`\n`;
+              res += `  \`⌞\` *DILIGENCIA:* \`${diligencia}\`\n`;
+              res += `  \`⌞\` *ABOGADO:* \`${defensor}\`\n\n`;
+            });
+
+            res += `*➤ CONSULTADO POR:*\n`;
+            res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+            res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+            res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+            await bot
+              .deleteMessage(chatId, consultandoMessage.message_id)
+              .then(() => {
+                bot.sendMessage(chatId, res, messageOptions);
+
+                //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+                if (!isDev && !isAdmin && !isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+                }
+                //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+                else if (isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+                }
+              });
+          } else {
+            //TXT
+            const maxResultsToShow = 5;
+            //RESULTADOS QUE SE VAN A MOSTRAR CON EL TXT
+            const resultadosParaMostrar = audiencias.slice(0, maxResultsToShow);
+            const resultadosRestantes = audiencias.slice(maxResultsToShow);
+
+            resultadosParaMostrar.forEach((dato, index) => {
+              const numero = index + 1;
+              const distrito = dato.distrito;
+              const sede = dato.sede;
+              const fecha = dato.fecha;
+              const tipo = dato.tipo;
+              const diligencia = dato.diligencia;
+              const defensor = dato.defensor;
+
+              res += `*➜ AUDIENCIA ${numero}*\n`;
+              res += `  \`⌞\` *DISTRITO:* \`${distrito}\`\n`;
+              res += `  \`⌞\` *SEDE:* \`${sede}\`\n`;
+              res += `  \`⌞\` *FECHA:* \`${fecha}\`\n`;
+              res += `  \`⌞\` *TIPO:* \`${tipo}\`\n`;
+              res += `  \`⌞\` *DILIGENCIA:* \`${diligencia}\`\n`;
+              res += `  \`⌞\` *ABOGADO:* \`${defensor}\`\n\n`;
+            });
+
+            res += `*➤ CONSULTADO POR:*\n`;
+            res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+            res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+            res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+            await bot
+              .deleteMessage(chatId, consultandoMessage.message_id)
+              .then(() => {
+                bot.sendMessage(chatId, res, messageOptions);
+              });
+
+            //SE INICIA CON EL TXT
+            const telxFile = `AUDIENCIAS_MPFN_${dni}.txt`;
+
+            //TOP TXT
+            let topTxt = `[#LAIN-DOX 🌐]\n\n`;
+            topTxt += `[ ☑️ ] CASOS DE - ${dni} -\n\n`;
+            topTxt += `➤ AUDIENCIAS:\n\n`;
+
+            fs.writeFileSync(telxFile, topTxt);
+
+            let replyToTxt;
+            resultadosRestantes.forEach((dato, index) => {
+              const numero = index + 1;
+              const distrito = dato.distrito;
+              const sede = dato.sede;
+              const fecha = dato.fecha;
+              const tipo = dato.tipo;
+              const diligencia = dato.diligencia;
+              const defensor = dato.defensor;
+
+              replyToTxt = `➜ AUDIENCIA ${numero}\n`;
+              replyToTxt += `  ⌞ DISTRITO: ${distrito}\n`;
+              replyToTxt += `  ⌞ SEDE: ${sede}\n`;
+              replyToTxt += `  ⌞ FECHA: ${fecha}\n`;
+              replyToTxt += `  ⌞ TIPO: ${tipo}\n`;
+              replyToTxt += `  ⌞ DILIGENCIA: ${diligencia}\n`;
+              replyToTxt += `  ⌞ ABOGADO: ${defensor}\n\n`;
+
+              fs.appendFileSync(telxFile, replyToTxt);
+            });
+
+            replyToTxt += `➤ CONSULTADO POR:\n`;
+            replyToTxt += `  ⌞ *USUARIO:* ${userId}\n`;
+            replyToTxt += `  ⌞ *NOMBRE:* ${firstName}\n\n`;
+            replyToTxt += `MENSAJE: La consulta se hizo de manera exitosa ♻.\n\n`;
+
+            fs.appendFileSync(telxFile, replyToTxt);
+
+            let replyTxt = `*[#LAIN-DOX 🌐]*\n\n`;
+            replyTxt += `Se han *encontrado* más registros de audiencias para el \`${dni}\`. En total, han sido _${resultadosRestantes.length} audiencias_ restantes.\n\n`;
+            replyTxt += `*Para una mejor búsqueda,* la lista se ha guardado en este archivo de texto.`;
+
+            setTimeout(() => {
+              bot
+                .sendDocument(chatId, telxFile, {
+                  caption: replyTxt,
+                  reply_to_message_id: msg.message_id,
+                  parse_mode: "Markdown",
+                })
+                .then(() => {
+                  fs.unlink(telxFile, (err) => {
+                    if (err) {
+                      console.error("Error al borrar el archivo:", err);
+                      return;
+                    }
+                    console.log("Archivo borrado exitosamente.");
+                  })
+                    .then(() => {
+                      //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+                      if (!isDev && !isAdmin && !isBuyer) {
+                        antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+                      }
+                      //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+                      else if (isBuyer) {
+                        antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+                      }
+                    })
+                    .catch((error) => {
+                      console.log(
+                        "Error al enviar al borrar el archivo: " + error
+                      );
+                    });
+                })
+                .catch((error) => {
+                  console.log("Error al envíar el archivo: " + error);
+                });
+            }, 1000);
+          }
+        }
+      }
     } catch (error) {
       let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);

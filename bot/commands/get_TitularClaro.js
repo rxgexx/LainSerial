@@ -9,7 +9,6 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]clax (.+)/, async (msg, match) => {
@@ -158,9 +157,15 @@ module.exports = (bot) => {
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
-    };
+    }
 
     const validarOp = await apiValidar(tel);
+
+    if (validarOp.data === "Error en la conexion con la fuente.") {
+      let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
+
     const datosNum = validarOp.datos.Operador;
 
     if (datosNum !== "Claro") {

@@ -129,6 +129,7 @@ module.exports = (bot) => {
       cmds += `*➤ LISTA DE COMANDOS DISPONIBLES*\n\n`;
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
+      cmds += `*➜ /fxmpfn:* _Búsqueda de casos MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
       cmds += `*➜ /hogar:* _Búsqueda de integrantes del hogar - 🟢_\n`;
       cmds += `*➜ /dnir:* _Búsqueda de Datos Reniec Respaldo - 🟢_\n`;

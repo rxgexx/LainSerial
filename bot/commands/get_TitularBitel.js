@@ -163,6 +163,12 @@ module.exports = (bot) => {
     }
 
     const validarOperador = await validarOp(tel);
+    
+    if (validarOp.data === "Error en la conexion con la fuente.") {
+      let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
+
     const datosNum = validarOperador.datos.Operador;
 
     if (datosNum !== "Bitel") {
