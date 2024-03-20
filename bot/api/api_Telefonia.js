@@ -4,7 +4,7 @@ const axios = require("axios");
 //API "VALIDAR OPERADOR"
 async function validarOp(tel) {
   //URL API
-  const apiUrl = `https://val-num.onrender.com/val?num=${tel}`;
+  const apiUrl = `https://valid-num1.onrender.com/val?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
@@ -19,7 +19,7 @@ async function validarOp(tel) {
 //API BITEL
 async function apiBitel(tel) {
   //URL API
-  const apiUrl = `https://bit-ressandy.onrender.com/bitresp?num=${tel}`;
+  const apiUrl = `https://bitel-respaldo1.onrender.com/bitresp?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
