@@ -227,7 +227,6 @@ module.exports = (bot) => {
         return;
       } else {
         const nombresData = responseNombres.listaAni; 
-        console.log(nombresData);
 
         //SI LOS RESULTADOS SON MENOS DE 10
         if (nombresData.length <= 10) {
