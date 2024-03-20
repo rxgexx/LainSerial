@@ -275,7 +275,7 @@ async function getApiTel(tel) {
 //API VALIDACIÓN
 async function apiValidar(tel) {
   //END - POINT
-  const apiUrl = `https://val-num.onrender.com/val?num=${tel}`;
+  const apiUrl = `https://valid-num1.onrender.com/val?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
@@ -339,7 +339,7 @@ async function titularClaro(tel) {
 //API MOVISTAR
 async function titularMov(tel) {
   //END - POINT
-  const apiUrl = `https://movistar-6j4y.onrender.com/movistar/numero?num=${tel}`;
+  const apiUrl = `http://161.132.48.223:2000/movistar/numero?num=${tel}`;
 
   try {
     const responseMovistar = await axios.get(apiUrl);
