@@ -317,7 +317,7 @@ async function titularBitel(tel) {
 //API CLARO
 async function titularClaro(tel) {
   //END - PINT
-  const apiUrl = `https://clweb-jdx2-q5s5.onrender.com/clanum?num=${tel}`;
+  const apiUrl = `https://clweb-jdx2-q.onrender.com/clanum?num=${tel}`;
 
   try {
     const responseClaro = await axios.get(apiUrl);
