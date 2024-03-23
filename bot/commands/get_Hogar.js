@@ -193,7 +193,7 @@ module.exports = (bot) => {
           integrantes.forEach((dato, index) => {
             const numero = index + 1;
             const apeMaterno = dato.apeMaterno;
-            const apePaterno = dato.apeMaterno;
+            const apePaterno = dato.apePaterno;
             const feNacimiento = dato.feNacimiento;
             const nuDni = dato.nuDni;
             const preNombres = dato.preNombres;
@@ -213,6 +213,15 @@ module.exports = (bot) => {
           res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
           bot.sendMessage(chatId, res, messageOptions);
+
+          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+          if (!isDev && !isAdmin && !isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+          }
+          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+          else if (isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+          }
         } else {
           // //TXT
           // const maxResultsToShow = 6;
