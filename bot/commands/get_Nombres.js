@@ -192,10 +192,6 @@ module.exports = (bot) => {
       const nombre = commandArgs[0];
       const apellidoPaterno = commandArgs[1];
       const apellidoMaterno = commandArgs[2];
-      const edades = commandArgs[3] ? commandArgs[3].split("-") : [];
-      const edadMinima = edades[0] || "";
-      const edadMaxima = edades[1] || "";
-      const departamento = commandArgs[4] || "";
 
       // Verificar que al menos haya un apellido (paterno o materno)
       if (!apellidoPaterno && !apellidoMaterno) {
@@ -211,22 +207,17 @@ module.exports = (bot) => {
       const responseNombres = await getNombres(
         nombre,
         apellidoPaterno,
-        apellidoMaterno,
-        edadMinima,
-        edadMaxima,
-        departamento
+        apellidoMaterno
       );
 
-      if (
-        responseNombres.mensaje ===
-        "No se encontraron datos para los valores dados."
-      ) {
+      if (responseNombres["Documentos encontrados"] === "0") {
+
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let x = `*[ ✖️ ] No se han* encontrado personas para los _nombres dados._`;
         bot.sendMessage(chatId, x, messageOptions);
         return;
       } else {
-        const nombresData = responseNombres.listaAni; 
+        const nombresData = responseNombres.Resultados;
 
         //SI LOS RESULTADOS SON MENOS DE 10
         if (nombresData.length <= 10) {
@@ -242,15 +233,13 @@ module.exports = (bot) => {
             const apePaterno = dato.apePaterno;
             const apeMaterno = dato.apeMaterno;
             const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
             const nuEdad = dato.nuEdad;
 
             replyDni += `  \`⌞\` *PERSONA:* \`${nuPersona}\`\n`;
             replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
             replyDni += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
             replyDni += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
-            replyDni += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
-            replyDni += `  \`⌞\` *GÉNERO:* \`${sexo}\`\n\n`;
+            replyDni += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n\n`;
           });
 
           replyDni += `\n`;
@@ -296,15 +285,13 @@ module.exports = (bot) => {
             const apePaterno = dato.apePaterno;
             const apeMaterno = dato.apeMaterno;
             const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
             const nuEdad = dato.nuEdad;
 
             replyToTxt = `  ⌞ PERSONA: ${nuPersona}\n`;
             replyToTxt += `  ⌞ N° DNI: ${nuDni} - ${digitoVerificacion}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;
-            replyToTxt += `  ⌞ EDAD: ${nuEdad}\n`;
-            replyToTxt += `  ⌞ GÉNERO: ${sexo}\n\n`;
+            replyToTxt += `  ⌞ EDAD: ${nuEdad}\n\n`;
 
             fs.appendFileSync(fileName, replyToTxt);
           });

@@ -60,25 +60,14 @@ async function getNombres(
   depa = " "
 ) {
   {
-    let apiUrl = `http://161.132.41.107:3000/nombres?nombre=${prinombre}`;
+    let apiUrl = `https://api.ddosis.fun/buscar?token=NjWzldwgBYlbShDPwIEGkZZkvfn&nombre=${prinombre}`;
 
     if (apPaterno !== "Ninguno") {
-      apiUrl += `&apellidoPa=${apPaterno}`;
+      apiUrl += `&apellidop=${apPaterno}`;
     }
 
     if (apMaterno !== "Ninguno") {
-      apiUrl += `&apellidoMa=${apMaterno}`;
-    }
-
-    if (minAge !== "Ninguno") {
-      apiUrl += `&minEdad=${minAge}`;
-    }
-    if (maxAge !== "Ninguno") {
-      apiUrl += `&maxEdad=${maxAge}`;
-    }
-
-    if (depa !== "Ninguno") {
-      apiUrl += `&depa=${depa}`;
+      apiUrl += `&apellidom=${apMaterno}`;
     }
 
     return axios
