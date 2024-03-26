@@ -86,8 +86,27 @@ async function getNombres(
 //API ACTA NACIMIENTO
 async function getActaNacimiento(dni) {
   //END - PONT ACTA - API
-  const API_ENDPOINT = `${link_api}/actanac`;
-  const apiUrl = `${API_ENDPOINT}?token=${token_api}&dni=${dni}`;
+  const apiUrl = `http://161.132.41.107:4040/acta/naci?doc=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener el acta de nacimiento: ${response.status}`
+      );
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener el acta de nacimiento desde la API");
+    throw error;
+  }
+}
+
+//API ACTA NACIMIENTO
+async function getActaMatrimonio(dni) {
+  //END - PONT ACTA - API
+  const apiUrl = `http://161.132.41.107:4040/acta/matri?doc=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -107,8 +126,7 @@ async function getActaNacimiento(dni) {
 //API ACTA DEFUNCIÓN
 async function getActaDefuncion(dni) {
   //END - PONT ACTA - API
-  const API_ENDPOINT = `${link_api}/actadef`;
-  const apiUrl = `${API_ENDPOINT}?token=${token_api}&dni=${dni}`;
+  const apiUrl = `http://161.132.41.107:4040/acta/defu?doc=`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -472,6 +490,7 @@ module.exports = {
   getReniecRes,
   getNombres,
   getActaNacimiento,
+  getActaMatrimonio,
   getActaDefuncion,
   getDNIVirtual,
   fichaAzul,

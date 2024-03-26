@@ -4,8 +4,8 @@ const fs = require("fs");
 //SE REQUIERE "pdfkit"
 const PDFDocument = require("pdfkit");
 
-//SE REQUIERE LA FUNCIÓN "getActaNacimiento"
-const { getActaNacimiento } = require("../api/apis.js");
+//SE REQUIERE LA FUNCIÓN "getActaMatrimonio"
+const { getActaMatrimonio } = require("../api/apis.js");
 
 //SE REQUIERE "path"
 const path = require("path");
@@ -65,7 +65,7 @@ module.exports = (bot) => {
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
         console.log(
-          "Error al obtener la información del Bot en el comando Acta Matrimonio: ",
+          "Error al obtener la información del Bot en el comando Acta Defunción: ",
           err
         );
       });
@@ -74,7 +74,7 @@ module.exports = (bot) => {
     const botIsAdmin = botMember.status === "administrator";
 
     //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
+    if (typeChat === "private" && !isDev && !isAdmin && !isBuyer) {
       let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
       bot
         .sendMessage(chatId, x, messageOptions)
@@ -188,132 +188,134 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
-      const res = await getActaNacimiento(dni);
+      const res = await getActaMatrimonio(dni);
+      console.log(res.datos1)
 
-      const data1 = res.data1;
+      if ((res.mensaje === "No se encontró acta de matrimonio.")) {
+        const y = `*[ ✖️ ] No se encontró* el acta de matrimonio del *DNI* \`${dni}\`.`;
 
-      const data1cantidad = data1.length
-      console.log(data1);
-      return
-      const datos = data1.datos[0];
+        await bot
+          .deleteMessage(chatId, consultandoMessage.message_id)
+          .then(() => {
+            bot.sendMessage(chatId, y, messageOptions);
+          });
+      } else {
+        const data1 = res.datos1;
+        const datos = data1.datos[0];
 
-      //Construimos el mensaje adicional que irá con el acta
-      let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-      reply += `*[ ☑️ ] ACTA ENCONTRADA*\n\n`;
-      reply += `*- 🗂 - INF. PERSONA:*\n\n`;
-      reply += `*[+] N° DE ACTA:* \`${datos["Acta"]}\`\n`;
-      reply += `*[+] NOMBRES:* \`${datos["Ap Materno"]}\`\n`;
-      reply += `*[+] APELLIDOS:* \`${datos["Actor"]} ${datos["Ap Paterno"]}\`\n`;
+        //Construimos el mensaje adicional que irá con el acta
+        let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
+        reply += `*[ ☑️ ] ACTA ENCONTRADA*\n\n`;
+        reply += `*- 🗂 - INF. PERSONA:*\n\n`;
+        reply += `*[+] N° DE ACTA:* \`${datos["numActa"]}\`\n`;
+        reply += `*[+] NOMBRES:* \`${datos["nombre"]}\`\n`;
+        reply += `*[+] APELLIDOS:* \`${datos["apPaterno"]} ${datos["apMaterno"]}\`\n`;
+        reply += `*[+] FECHA. MATRIMONIO:* \`${datos["fecEvento"]}\`\n\n`;
 
-      reply += `*- 🗂 - INF. CÓNYUGE:*\n\n`;
-      reply += `*[+] NOMBRES:* \`${datos["Proceso"]}\`\n`;
-      reply += `*[+] APELLIDOS:* \`${datos["Nombres"]} ${datos["Local"]}\`\n\n`;
+        reply += `*- 💬 - TEST CONSULTA:*\n\n`;
+        reply += `*[+]* \`${firstName}\`\n`;
+        reply += `*[+]* \`${userId}\`\n`;
 
-      reply += `*- 💬 - TEST CONSULTA:*\n\n`;
-      reply += `*[+]* \`${firstName}\`\n`;
-      reply += `*[+]* \`${userId}\`\n`;
-      const consultaEndTime = Date.now(); // Guardamos el tiempo de finalización de la consulta
-      const consultaDuration = (consultaEndTime - consultaStartTime) / 1000; // Calculamos la duración en segundos
-      reply += `*[+]* \`${consultaDuration.toFixed(2)} segundos\`\n\n`; // Añadimos la duración al mensaje de respuesta
-      reply += `*- 👩‍💻 - DEVELOPER:* [Bennet](https://t.me/Bennxxt) \`\`\n\n`; // Añadimos la duración al mensaje de respuesta
+        //Se inicia transformando la imagen en b64 a una imagen...
+        const caraActa = datos.Foto;
+        const selloActa = datos.Foto_reverso;
 
-      //Se inicia transformando la imagen en b64 a una imagen...
-      const caraActa = datos.Foto;
-      const selloActa = datos.Foto_reverso;
+        //Declaramos la ruta donde se guardarán las actas en PDF
+        const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
+        const pdfPath = path.join(pdfsFolder, `${dni}_acta_Matrimonio.pdf`); // Ruta al archivo PDF
 
-      //Declaramos la ruta donde se guardarán las actas en PDF
-      const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
-      const pdfPath = path.join(pdfsFolder, `${dni}_acta_Matrimonio.pdf`); // Ruta al archivo PDF
+        //Si no encuentra esa carpta, la crea
+        if (!fs.existsSync(pdfsFolder)) {
+          fs.mkdirSync(pdfsFolder);
 
-      //Si no encuentra esa carpta, la crea
-      if (!fs.existsSync(pdfsFolder)) {
-        fs.mkdirSync(pdfsFolder);
+          console.log("carpeta actas creada: ", pdfsFolder);
+        }
 
-        console.log("carpeta actas creada: ", pdfsFolder);
+        const pdfDoc = new PDFDocument({
+          autoFirstPage: false,
+        });
+
+        // Array para almacenar dimensiones de imágenes
+        const imageDimensions = [];
+
+        // Función para agregar una imagen al documento PDF
+        // Cambia el nombre de la función para evitar conflictos
+        const agregarImagenAPDF = (imageBuffer, dimensions) => {
+          const image = pdfDoc.openImage(imageBuffer);
+
+          // Almacena dimensiones de la imagen
+          dimensions.push({
+            width: image.width,
+            height: image.height,
+          });
+
+          pdfDoc.addPage({
+            size: [image.width, image.height], // Establece el tamaño de la página según la imagen
+          });
+
+          pdfDoc.image(image, 0, 0, {
+            width: image.width,
+            height: image.height,
+          });
+        };
+
+        new Promise((resolve, reject) => {
+          // Agrega las dos imágenes al documento PDF
+          if (caraActa) {
+            const fotoData = caraActa.replace(/^data:image\/jpeg;base64,/, "");
+            const fotoBuffer = Buffer.from(fotoData, "base64");
+            agregarImagenAPDF(fotoBuffer, imageDimensions);
+          }
+
+          if (selloActa) {
+            const foto2Data = selloActa.replace(
+              /^data:image\/jpeg;base64,/,
+              ""
+            );
+            const foto2Buffer = Buffer.from(foto2Data, "base64");
+            agregarImagenAPDF(foto2Buffer, imageDimensions);
+          }
+
+          // Guarda el PDF en el sistema de archivos
+          const writeStream = fs.createWriteStream(pdfPath);
+          pdfDoc.pipe(writeStream);
+          pdfDoc.end();
+
+          writeStream.on("finish", async function () {
+            //Se manda el documento
+            await bot.deleteMessage(chatId, consultandoMessage.message_id);
+            bot
+              .sendDocument(chatId, pdfPath, {
+                caption: reply,
+                parse_mode: "Markdown",
+                reply_to_message_id: msg.message_id,
+                thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
+              })
+              .then(() => {
+                //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
+                if (!isDev && !isAdmin && !isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
+                }
+                //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+                else if (isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+                }
+
+                // Elimina el archivo después de enviarlo
+                fs.unlinkSync(pdfPath);
+                resolve();
+              })
+              .catch((error) => {
+                console.log(error);
+                reject(error);
+              });
+          });
+        }).catch((error) => {
+          console.error(error);
+        });
       }
-
-      const pdfDoc = new PDFDocument({
-        autoFirstPage: false,
-      });
-
-      // Array para almacenar dimensiones de imágenes
-      const imageDimensions = [];
-
-      // Función para agregar una imagen al documento PDF
-      // Cambia el nombre de la función para evitar conflictos
-      const agregarImagenAPDF = (imageBuffer, dimensions) => {
-        const image = pdfDoc.openImage(imageBuffer);
-
-        // Almacena dimensiones de la imagen
-        dimensions.push({
-          width: image.width,
-          height: image.height,
-        });
-
-        pdfDoc.addPage({
-          size: [image.width, image.height], // Establece el tamaño de la página según la imagen
-        });
-
-        pdfDoc.image(image, 0, 0, {
-          width: image.width,
-          height: image.height,
-        });
-      };
-
-      new Promise((resolve, reject) => {
-        // Agrega las dos imágenes al documento PDF
-        if (caraActa) {
-          const fotoData = caraActa.replace(/^data:image\/jpeg;base64,/, "");
-          const fotoBuffer = Buffer.from(fotoData, "base64");
-          agregarImagenAPDF(fotoBuffer, imageDimensions);
-        }
-
-        if (selloActa) {
-          const foto2Data = selloActa.replace(/^data:image\/jpeg;base64,/, "");
-          const foto2Buffer = Buffer.from(foto2Data, "base64");
-          agregarImagenAPDF(foto2Buffer, imageDimensions);
-        }
-
-        // Guarda el PDF en el sistema de archivos
-        const writeStream = fs.createWriteStream(pdfPath);
-        pdfDoc.pipe(writeStream);
-        pdfDoc.end();
-
-        writeStream.on("finish", async function () {
-          //Se manda el documento
-          await bot.deleteMessage(chatId, consultandoMessage.message_id);
-          bot
-            .sendDocument(chatId, pdfPath, {
-              caption: reply,
-              parse_mode: "Markdown",
-              reply_to_message_id: msg.message_id,
-              thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
-            })
-            .then(() => {
-              //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
-              if (!isDev && !isAdmin && !isBuyer) {
-                antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
-              }
-              //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
-              else if (isBuyer) {
-                antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-              }
-
-              // Elimina el archivo después de enviarlo
-              fs.unlinkSync(pdfPath);
-              resolve();
-            })
-            .catch((error) => {
-              console.log(error);
-              reject(error);
-            });
-        });
-      }).catch((error) => {
-        console.error(error);
-      });
     } catch (error) {
       if (error.response && error.response.status === 500) {
         let xerror = `*[ 💤 ] Los servidores de actas* andan apagados, no se ha *completado* la _búsqueda._`;
@@ -324,7 +326,7 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, xerror, messageOptions);
           });
       } else {
-        let yerror = `*[ 🚨 ] Error del servidor:* No se pudo obtener el *acta de Matrimonio* debido a un problema ,\`- no reconocido -\`, *interno del servidor.*`;
+        let yerror = `*[ 🚨 ] Error del servidor:* No se pudo obtener el *acta de Defunción* debido a un problema ,\`- no reconocido -\`, *interno del servidor.*`;
 
         await bot
           .deleteMessage(chatId, consultandoMessage.message_id)
@@ -332,7 +334,7 @@ module.exports = (bot) => {
             bot.sendDocument(chatId, yerror, messageOptions);
             bot.sendMessage(
               5478452007,
-              `*Error DESCONOCIDO* al intentar obtener el acta de Matrimonio para el DNI ${dni}: ${error.message} | *Usuario que consultó:* ${userId}`,
+              `*Error DESCONOCIDO* al intentar obtener el acta de Defunción para el DNI ${dni}: ${error.message} | *Usuario que consultó:* ${userId}`,
               messageOptions
             );
           });

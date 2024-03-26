@@ -31,4 +31,19 @@ async function apiBitel(tel) {
   }
 }
 
-module.exports = { validarOp, apiBitel };
+//API MOVISTAR x DNI
+async function apiMovDni(dni) {
+  //URL API
+  const apiUrl = `http://161.132.48.223:2000/movistar/dni?dni=${dni}`;
+
+  try {
+    const responseApi = await axios.get(apiUrl);
+    const data = responseApi.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la Api Movistar x DNI: " + error);
+    throw error;
+  }
+}
+
+module.exports = { validarOp, apiBitel, apiMovDni };

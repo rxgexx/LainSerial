@@ -193,121 +193,130 @@ module.exports = (bot) => {
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
       const res = await getActaNacimiento(dni);
 
-      const data1 = res.data1;
-      const datos = data1.datos[0];
+      if ((res.mensaje === "No se encontró acta de nacimiento.")) {
+        const y = `*[ ✖️ ] No se encontró* el acta de nacimiento del *DNI* \`${dni}\`.`;
 
-      //Construimos el mensaje adicional que irá con el acta
-      let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-      reply += `*[ ☑️ ] ACTA ENCONTRADA*\n\n`;
-      reply += `*- 🗂 - INF. PERSONA:*\n\n`;
-      reply += `*[+] N° DE ACTA:* \`${datos["Acta"]}\`\n`;
-      reply += `*[+] NOMBRES:* \`${datos["Ap Materno"]}\`\n`;
-      reply += `*[+] APELLIDOS:* \`${datos["Actor"]} ${datos["Ap Paterno"]}\`\n`;
-      reply += `*[+] FECHA. NACIMIENTO:* \`${datos["Estado"]}\`\n\n`;
+        await bot
+          .deleteMessage(chatId, consultandoMessage.message_id)
+          .then(() => {
+            bot.sendMessage(chatId, y, messageOptions);
+          });
+      } else {
+        const data1 = res.data1;
+        const datos = data1.datos[0];
 
-      reply += `*- 💬 - TEST CONSULTA:*\n\n`;
-      reply += `*[+]* \`${firstName}\`\n`;
-      reply += `*[+]* \`${userId}\`\n`;
-      const consultaEndTime = Date.now(); // Guardamos el tiempo de finalización de la consulta
-      const consultaDuration = (consultaEndTime - consultaStartTime) / 1000; // Calculamos la duración en segundos
-      reply += `*[+]* \`${consultaDuration.toFixed(2)} segundos\`\n\n`; // Añadimos la duración al mensaje de respuesta
-      reply += `*- 👩‍💻 - DEVELOPER:* [Bennet](https://t.me/Bennxxt) \`\`\n\n`; // Añadimos la duración al mensaje de respuesta
+        //Construimos el mensaje adicional que irá con el acta
+        let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
+        reply += `*[ ☑️ ] ACTA ENCONTRADA*\n\n`;
+        reply += `*- 🗂 - INF. PERSONA:*\n\n`;
+        reply += `*[+] N° DE ACTA:* \`${datos["numActa"]}\`\n`;
+        reply += `*[+] NOMBRES:* \`${datos["nombre"]}\`\n`;
+        reply += `*[+] APELLIDOS:* \`${datos["apPaterno"]} ${datos["apMaterno "]}\`\n`;
+        reply += `*[+] FECHA. NACIMIENTO:* \`${datos["fecEvento"]}\`\n\n`;
 
-      //Se inicia transformando la imagen en b64 a una imagen...
-      const caraActa = datos.Foto;
-      const selloActa = datos.Foto_reverso;
+        reply += `*- 💬 - TEST CONSULTA:*\n\n`;
+        reply += `*[+]* \`${firstName}\`\n`;
+        reply += `*[+]* \`${userId}\`\n`;
 
-      //Declaramos la ruta donde se guardarán las actas en PDF
-      const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
-      const pdfPath = path.join(pdfsFolder, `${dni}_acta_Nacimiento.pdf`); // Ruta al archivo PDF
-      console.log(pdfPath);
+        //Se inicia transformando la imagen en b64 a una imagen...
+        const caraActa = datos.imgbs64_anverso;
+        const selloActa = datos.imgbs64_reverso;
 
-      //Si no encuentra esa carpta, la crea
-      if (!fs.existsSync(pdfsFolder)) {
-        fs.mkdirSync(pdfsFolder);
+        //Declaramos la ruta donde se guardarán las actas en PDF
+        const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
+        const pdfPath = path.join(pdfsFolder, `${dni}_acta_Nacimiento.pdf`); // Ruta al archivo PDF
+        console.log(pdfPath);
 
-        console.log("carpeta actas creada: ", pdfsFolder);
+        //Si no encuentra esa carpta, la crea
+        if (!fs.existsSync(pdfsFolder)) {
+          fs.mkdirSync(pdfsFolder);
+
+          console.log("carpeta actas creada: ", pdfsFolder);
+        }
+
+        const pdfDoc = new PDFDocument({
+          autoFirstPage: false,
+        });
+
+        // Array para almacenar dimensiones de imágenes
+        const imageDimensions = [];
+
+        // Función para agregar una imagen al documento PDF
+        // Cambia el nombre de la función para evitar conflictos
+        const agregarImagenAPDF = (imageBuffer, dimensions) => {
+          const image = pdfDoc.openImage(imageBuffer);
+
+          // Almacena dimensiones de la imagen
+          dimensions.push({
+            width: image.width,
+            height: image.height,
+          });
+
+          pdfDoc.addPage({
+            size: [image.width, image.height], // Establece el tamaño de la página según la imagen
+          });
+
+          pdfDoc.image(image, 0, 0, {
+            width: image.width,
+            height: image.height,
+          });
+        };
+
+        new Promise((resolve, reject) => {
+          // Agrega las dos imágenes al documento PDF
+          if (caraActa) {
+            const fotoData = caraActa.replace(/^data:image\/jpeg;base64,/, "");
+            const fotoBuffer = Buffer.from(fotoData, "base64");
+            agregarImagenAPDF(fotoBuffer, imageDimensions);
+          }
+
+          if (selloActa) {
+            const foto2Data = selloActa.replace(
+              /^data:image\/jpeg;base64,/,
+              ""
+            );
+            const foto2Buffer = Buffer.from(foto2Data, "base64");
+            agregarImagenAPDF(foto2Buffer, imageDimensions);
+          }
+
+          // Guarda el PDF en el sistema de archivos
+          const writeStream = fs.createWriteStream(pdfPath);
+          pdfDoc.pipe(writeStream);
+          pdfDoc.end();
+
+          writeStream.on("finish", async function () {
+            //Se manda el documento
+            await bot.deleteMessage(chatId, consultandoMessage.message_id);
+            bot
+              .sendDocument(chatId, pdfPath, {
+                caption: reply,
+                parse_mode: "Markdown",
+                reply_to_message_id: msg.message_id,
+                thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
+              })
+              .then(() => {
+                //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
+                if (!isDev && !isAdmin && !isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
+                }
+                //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+                else if (isBuyer) {
+                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+                }
+
+                // Elimina el archivo después de enviarlo
+                fs.unlinkSync(pdfPath);
+                resolve();
+              })
+              .catch((error) => {
+                console.log(error);
+                reject(error);
+              });
+          });
+        }).catch((error) => {
+          console.error(error);
+        });
       }
-
-      const pdfDoc = new PDFDocument({
-        autoFirstPage: false,
-      });
-
-      // Array para almacenar dimensiones de imágenes
-      const imageDimensions = [];
-
-      // Función para agregar una imagen al documento PDF
-      // Cambia el nombre de la función para evitar conflictos
-      const agregarImagenAPDF = (imageBuffer, dimensions) => {
-        const image = pdfDoc.openImage(imageBuffer);
-
-        // Almacena dimensiones de la imagen
-        dimensions.push({
-          width: image.width,
-          height: image.height,
-        });
-
-        pdfDoc.addPage({
-          size: [image.width, image.height], // Establece el tamaño de la página según la imagen
-        });
-
-        pdfDoc.image(image, 0, 0, {
-          width: image.width,
-          height: image.height,
-        });
-      };
-
-      new Promise((resolve, reject) => {
-        // Agrega las dos imágenes al documento PDF
-        if (caraActa) {
-          const fotoData = caraActa.replace(/^data:image\/jpeg;base64,/, "");
-          const fotoBuffer = Buffer.from(fotoData, "base64");
-          agregarImagenAPDF(fotoBuffer, imageDimensions);
-        }
-
-        if (selloActa) {
-          const foto2Data = selloActa.replace(/^data:image\/jpeg;base64,/, "");
-          const foto2Buffer = Buffer.from(foto2Data, "base64");
-          agregarImagenAPDF(foto2Buffer, imageDimensions);
-        }
-
-        // Guarda el PDF en el sistema de archivos
-        const writeStream = fs.createWriteStream(pdfPath);
-        pdfDoc.pipe(writeStream);
-        pdfDoc.end();
-
-        writeStream.on("finish", async function () {
-          //Se manda el documento
-          await bot.deleteMessage(chatId, consultandoMessage.message_id);
-          bot
-            .sendDocument(chatId, pdfPath, {
-              caption: reply,
-              parse_mode: "Markdown",
-              reply_to_message_id: msg.message_id,
-              thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
-            })
-            .then(() => {
-              //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
-              if (!isDev && !isAdmin && !isBuyer) {
-                antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
-              }
-              //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
-              else if (isBuyer) {
-                antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-              }
-
-              // Elimina el archivo después de enviarlo
-              fs.unlinkSync(pdfPath);
-              resolve();
-            })
-            .catch((error) => {
-              console.log(error);
-              reject(error);
-            });
-        });
-      }).catch((error) => {
-        console.error(error);
-      });
     } catch (error) {
       if (error.response && error.response.status === 500) {
         let xerror = `*[ 💤 ] Los servidores de actas* andan apagados, no se ha *completado* la _búsqueda._`;
