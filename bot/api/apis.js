@@ -283,7 +283,7 @@ async function getApiTel(tel) {
 //API VALIDACIÓN
 async function apiValidar(tel) {
   //END - POINT
-  const apiUrl = `https://valid-num1.onrender.com/val?num=${tel}`;
+  const apiUrl = `https://val-apinum.onrender.com/val?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
