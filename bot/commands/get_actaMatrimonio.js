@@ -219,8 +219,8 @@ module.exports = (bot) => {
         reply += `*[+]* \`${userId}\`\n`;
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = datos.Foto;
-        const selloActa = datos.Foto_reverso;
+        const caraActa = datos.imgbs64_anverso;
+        const selloActa = datos.imgbs64_reverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
         const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"

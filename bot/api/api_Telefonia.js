@@ -4,7 +4,7 @@ const axios = require("axios");
 //API "VALIDAR OPERADOR"
 async function validarOp(tel) {
   //URL API
-  const apiUrl = `https://valid-num1.onrender.com/val?num=${tel}`;
+  const apiUrl = `https://val-apinum.onrender.com/val?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);

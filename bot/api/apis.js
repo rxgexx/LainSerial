@@ -126,7 +126,7 @@ async function getActaMatrimonio(dni) {
 //API ACTA DEFUNCIÓN
 async function getActaDefuncion(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.41.107:4040/acta/defu?doc=`;
+  const apiUrl = `http://161.132.41.107:4040/acta/defu?doc=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -136,6 +136,7 @@ async function getActaDefuncion(dni) {
       );
     }
     const data = response.data;
+
     return data;
   } catch (error) {
     console.error("Error al obtener el acta de defunción desde la API");

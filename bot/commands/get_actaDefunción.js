@@ -201,7 +201,7 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const data1 = res.data1;
+        const data1 = res.datos1;
         const datos = data1.datos[0];
 
         //Construimos el mensaje adicional que irá con el acta
@@ -218,8 +218,8 @@ module.exports = (bot) => {
         reply += `*[+]* \`${userId}\`\n`;
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = datos.Foto;
-        const selloActa = datos.Foto_reverso;
+        const caraActa = datos.imgbs64_anverso;
+        const selloActa = datos.imgbs64_reverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
         const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
@@ -316,6 +316,7 @@ module.exports = (bot) => {
         });
       }
     } catch (error) {
+      console.log(error);
       if (error.response && error.response.status === 500) {
         let xerror = `*[ 💤 ] Los servidores de actas* andan apagados, no se ha *completado* la _búsqueda._`;
 
