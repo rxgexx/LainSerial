@@ -1,1 +1,0 @@
-Error en el comando fxnotas: TypeError: Cannot read properties of undefined (reading 'length')Error en el comando fxnotas: TypeError: Cannot read properties of undefined (reading 'length')
