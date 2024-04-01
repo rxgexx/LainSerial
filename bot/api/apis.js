@@ -60,7 +60,7 @@ async function getNombres(
   depa = " "
 ) {
   {
-    let apiUrl = `https://api.ddosis.fun/buscar?token=NjWzldwgBYlbShDPwIEGkZZkvfn&nombre=${prinombre}`;
+    let apiUrl = `https://api.ddosis.fun/buscar?token=gD75X1MxvcbuOxe11d6dJUiQlpv&nombre=${prinombre}`;
 
     if (apPaterno !== "Ninguno") {
       apiUrl += `&apellidop=${apPaterno}`;
