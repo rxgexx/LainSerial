@@ -60,7 +60,7 @@ async function getNombres(
   depa = " "
 ) {
   {
-    let apiUrl = `https://api.ddosis.fun/buscar?token=gD75X1MxvcbuOxe11d6dJUiQlpv&nombre=${prinombre}`;
+    let apiUrl = `https://api.ddosis.fun/buscar?token=${token_api}&nombre=${prinombre}`;
 
     if (apPaterno !== "Ninguno") {
       apiUrl += `&apellidop=${apPaterno}`;
@@ -86,7 +86,7 @@ async function getNombres(
 //API ACTA NACIMIENTO
 async function getActaNacimiento(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.41.107:4040/acta/naci?doc=${dni}`;
+  const apiUrl = `https://api.ddosis.fun/actav2nac?token=${token_api}&dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -106,7 +106,7 @@ async function getActaNacimiento(dni) {
 //API ACTA NACIMIENTO
 async function getActaMatrimonio(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.41.107:4040/acta/matri?doc=${dni}`;
+  const apiUrl = `https://api.ddosis.fun/actav2mat?token=${token_api}&dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -126,7 +126,7 @@ async function getActaMatrimonio(dni) {
 //API ACTA DEFUNCIÓN
 async function getActaDefuncion(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.41.107:4040/acta/defu?doc=${dni}`;
+  const apiUrl = `https://api.ddosis.fun/actav2def?token=${token_api}&dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -347,7 +347,7 @@ async function titularClaro(tel) {
 //API MOVISTAR
 async function titularMov(tel) {
   //END - POINT
-  const apiUrl = `http://161.132.48.223:2000/movistar/numero?num=${tel}`;
+  const apiUrl = `http://161.132.48.223:2000/numero?num=${tel}`;
 
   try {
     const responseMovistar = await axios.get(apiUrl);

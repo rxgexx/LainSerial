@@ -195,7 +195,7 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      //RESPONSE BITEL
+      //RESPONSE CLARO
       const responseCla = await titularClaro(tel);
 
       if (responseCla.result === "No existe linea") {

@@ -12,10 +12,10 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*¡NUEVO COMANDO DISPONIBLE! 📢*\n\n`;
-      anuncio += `*Ahora puedes utilizar el comando* \`/fxnotas\` para acceder a los registros de notas *- escolares -* de una persona. 💥✨\n\n`;
-      anuncio += `*Prueba ya el comando y descubre sus usos :)*\n\n`;
-      anuncio += `*Atentamente, @SinFlowxr - Developer del Bot.*\n\n`;
+      let anuncio = `*¡NUEVOS COMANDO DISPONIBLE! 📢*\n\n`;
+      anuncio += `*Se han agregado comando ACTAS OFICIALES* 💥✨\n\n`;
+      anuncio += `*Utiliza: /actnaci para ACTA DE NACIMIENTO, /actdefu para ACTA DE DEFUNCIÓN, /actmatri para ACTA DE MATRIMONIO.*\n\n`;
+      anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {

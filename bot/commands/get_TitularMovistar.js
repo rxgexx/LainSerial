@@ -162,20 +162,20 @@ module.exports = (bot) => {
       return;
     }
 
-    const validarOp = await apiValidar(tel);
+    // const validarOp = await apiValidar(tel);
 
-    if (validarOp.data === "Error en la conexion con la fuente.") {
-      let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    // if (validarOp.data === "Error en la conexion con la fuente.") {
+    //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
-    const datosNum = validarOp.datos.Operador;
+    // const datosNum = validarOp.datos.Operador;
 
-    if (datosNum !== "Movistar") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
+    // if (datosNum !== "Movistar") {
+    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
 
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -197,7 +197,6 @@ module.exports = (bot) => {
     try {
       //RESPONSE BITEL
       const responseMov = await titularMov(tel);
-      console.log(responseMov);
       if (responseMov.error === "No se encontro datos.") {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Movistar.\n\n`;

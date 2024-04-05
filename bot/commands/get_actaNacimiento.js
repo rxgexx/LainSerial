@@ -192,8 +192,9 @@ module.exports = (bot) => {
 
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
       const res = await getActaNacimiento(dni);
+      const validarRes = res.Respuesta.listResActa;
 
-      if ((res.mensaje === "No se encontró acta de nacimiento.")) {
+      if (validarRes.length === 0) {
         const y = `*[ ✖️ ] No se encontró* el acta de nacimiento del *DNI* \`${dni}\`.`;
 
         await bot
@@ -202,25 +203,25 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const data1 = res.data1;
-        const datos = data1.datos[0];
+        const datos = validarRes[0];
 
         //Construimos el mensaje adicional que irá con el acta
-        let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
+        let reply = `*[#LAIN-DOX 🌐]*\n\n`;
         reply += `*[ ☑️ ] ACTA ENCONTRADA*\n\n`;
         reply += `*- 🗂 - INF. PERSONA:*\n\n`;
-        reply += `*[+] N° DE ACTA:* \`${datos["numActa"]}\`\n`;
-        reply += `*[+] NOMBRES:* \`${datos["nombre"]}\`\n`;
-        reply += `*[+] APELLIDOS:* \`${datos["apPaterno"]} ${datos["apMaterno "]}\`\n`;
-        reply += `*[+] FECHA. NACIMIENTO:* \`${datos["fecEvento"]}\`\n\n`;
+        reply += `*[+] N° DE ACTA:* \`${datos["nu_ACTA"]}\`\n`;
+        reply += `*[+] ESTADO DE ACTA:* \`${datos["de_ESTADO_ACTA"]}\`\n`;
+        reply += `*[+] NOMBRES:* \`${datos["de_PRE_NOMBRES"]}\`\n`;
+        reply += `*[+] APELLIDOS:* \`${datos["de_PRIMER_APELLIDO"]} ${datos["de_SEGUNDO_APELLIDO"]}\`\n`;
+        reply += `*[+] FECHA. NACIMIENTO:* \`${datos["fe_EVENTO"]}\`\n\n`;
 
         reply += `*- 💬 - TEST CONSULTA:*\n\n`;
         reply += `*[+]* \`${firstName}\`\n`;
         reply += `*[+]* \`${userId}\`\n`;
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = datos.imgbs64_anverso;
-        const selloActa = datos.imgbs64_reverso;
+        const caraActa = datos.imagenActaAnverso;
+        const selloActa = datos.imagenActaReverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
         const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
@@ -318,6 +319,9 @@ module.exports = (bot) => {
         });
       }
     } catch (error) {
+      
+      console.log(error);
+
       if (error.response && error.response.status === 500) {
         let xerror = `*[ 💤 ] Los servidores de actas* andan apagados, no se ha *completado* la _búsqueda._`;
 

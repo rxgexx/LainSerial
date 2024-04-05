@@ -34,7 +34,7 @@ async function apiBitel(tel) {
 //API MOVISTAR x DNI
 async function apiMovDni(dni) {
   //URL API
-  const apiUrl = `http://161.132.48.223:2000/movistar/dni?dni=${dni}`;
+  const apiUrl = `http://161.132.48.223:2000/dni?dni=${dni}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
