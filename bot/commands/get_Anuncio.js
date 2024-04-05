@@ -12,10 +12,12 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*¡NUEVOS COMANDO DISPONIBLE! 📢*\n\n`;
-      anuncio += `*Se han agregado comando ACTAS OFICIALES* 💥✨\n\n`;
-      anuncio += `*Utiliza: /actnaci para ACTA DE NACIMIENTO, /actdefu para ACTA DE DEFUNCIÓN, /actmatri para ACTA DE MATRIMONIO.*\n\n`;
-      anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
+      // let anuncio = `*¡NUEVOS COMANDO DISPONIBLE! 📢*\n\n`;
+      // anuncio += `*Se han agregado comando ACTAS OFICIALES* 💥✨\n\n`;
+      // anuncio += `*Utiliza: /actnaci para ACTA DE NACIMIENTO, /actdefu para ACTA DE DEFUNCIÓN, /actmatri para ACTA DE MATRIMONIO.*\n\n`;
+      // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
+
+      let msg = `*RENIEC OFF, ESPERAR PORFAVOR.*`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
@@ -23,12 +25,19 @@ module.exports = (bot) => {
           // Verificar si el usuario es accesible para el bot
           const chatInfo = await bot.getChat(usuarioId);
           // Si el usuario es accesible, enviar el mensaje con la foto
-          await bot.sendPhoto(usuarioId, img, {
-            caption: anuncio,
-            parse_mode: "Markdown",
-          });
+
+          // await bot.sendPhoto(usuarioId, img, {
+          //   caption: anuncio,
+          //   parse_mode: "Markdown",
+          // });
+
+          bot.sendMessage(usuarioId, msg, { parse_mode: "Markdown" });
+
         } catch (error) {
-          console.error(`No se pudo enviar mensaje a usuario ${usuarioId}:`, error);
+          console.error(
+            `No se pudo enviar mensaje a usuario ${usuarioId}:`,
+            error
+          );
         }
       }
 
@@ -38,10 +47,14 @@ module.exports = (bot) => {
           // Verificar si el grupo es accesible para el bot
           const chatInfo = await bot.getChat(grupoId);
           // Si el grupo es accesible, enviar el mensaje con la foto
-          await bot.sendPhoto(grupoId, img, {
-            caption: anuncio,
-            parse_mode: "Markdown",
-          });
+
+          // await bot.sendPhoto(grupoId, img, {
+          //   caption: anuncio,
+          //   parse_mode: "Markdown",
+          // });
+
+          bot.sendMessage(grupoId, msg, { parse_mode: "Markdown" });
+
         } catch (error) {
           console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
         }
