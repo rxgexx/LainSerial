@@ -215,7 +215,7 @@ module.exports = (bot) => {
     try {
       const responseNotas = await apiNotas(dni);
       const valorNotas = responseNotas.data1;
-
+   
       if (
         valorNotas.deRespuesta[0] ===
           "No se encontró información con los filtros ingresados." ||
