@@ -182,19 +182,17 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await titularBasic(dni);
+      console.log(responseTitular);
 
-      if (
-        responseTitular.mensaje ===
-        "No se encontraron datos para el valor dado."
-      ) {
+      if (responseTitular.estado === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No pude hallar registros de números* del DNI \`${dni}\`.`;
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
         //RESPONSE TITULAR
-        const dataNumeros = responseTitular.numbers;
-        const titular = responseTitular.surname + responseTitular.name;
+        const dataNumeros = responseTitular.datos.numbers;
+        const titular = responseTitular.datos.surname + responseTitular.datos.name;
 
         //CONSTRUCCIÓN DEL MENSAJE
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;

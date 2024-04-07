@@ -390,11 +390,15 @@ async function numerosMov(dni) {
 
 //API CELULAR BÁSICO
 async function titularBasic(tel) {
-  //END - POING
-  const apiUrl = `http://161.132.41.107:3000/telefonia?valor=${tel}`;
+  
+  const apiUrl = `http://161.132.39.14/v1/tel?n=${tel}`;
+  const headers = {
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
+  };
 
-  const responseTitular = await axios.get(apiUrl);
-
+  const responseTitular = await axios.post(apiUrl, {}, { headers });
+  
   try {
     if (responseTitular.status !== 200) {
       throw new Error(
@@ -510,3 +514,4 @@ module.exports = {
   arbolGen,
   argentinaData,
 };
+

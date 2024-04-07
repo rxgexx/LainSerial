@@ -180,9 +180,8 @@ module.exports = (bot) => {
       //RESPONSE TITULAR
       const responseTitular = await titularBasic(tel);
 
-      if (
-        responseTitular.mensaje === "No se encontraron datos para el valor dado."
-      ) {
+      if (responseTitular.estado === false) {
+
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
 
@@ -192,8 +191,8 @@ module.exports = (bot) => {
         const dataTitular = responseTitular;
 
         //DATOS TITULAR
-        const dni = dataTitular.dni;
-        const titular = dataTitular.name + dataTitular.surname;
+        const dni = dataTitular.datos.dni;
+        const titular = dataTitular.datos.name + dataTitular.datos.surname;
 
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
