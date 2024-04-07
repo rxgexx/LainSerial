@@ -162,20 +162,20 @@ module.exports = (bot) => {
       return;
     }
 
-    const validarOperador = await validarOp(tel);
-    
-    if (validarOp.data === "Error en la conexion con la fuente.") {
-      let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    // const validarOperador = await validarOp(tel);
 
-    const datosNum = validarOperador.datos.Operador;
+    // if (validarOp.data === "Error en la conexion con la fuente.") {
+    //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
-    if (datosNum !== "Bitel") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+    // const datosNum = validarOperador.datos.Operador;
 
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    // if (datosNum !== "Bitel") {
+    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -196,6 +196,14 @@ module.exports = (bot) => {
 
     try {
       const responseBitel = await apiBitel(tel);
+
+      if (responseBitel.status === "False") {
+        let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+        return bot.sendMessage(chatId, yxx, messageOptions);
+      }
+
       const documento = responseBitel.data.documento;
       const tip_documento = responseBitel.data.tip_documento;
       const titular = responseBitel.data.titular;

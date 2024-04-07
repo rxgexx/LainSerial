@@ -17,7 +17,7 @@ module.exports = (bot) => {
       // anuncio += `*Utiliza: /actnaci para ACTA DE NACIMIENTO, /actdefu para ACTA DE DEFUNCIÓN, /actmatri para ACTA DE MATRIMONIO.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
-      let msg = `*RENIEC OFF, ESPERAR PORFAVOR.*`;
+      let msg = `Se han *actualizado* los comandos /claxx, /clax, /bitx, /movxx, /movx y /hogar. Ahora podrás consultar sin necesidad de validar el operador del _número._`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
@@ -32,7 +32,6 @@ module.exports = (bot) => {
           // });
 
           bot.sendMessage(usuarioId, msg, { parse_mode: "Markdown" });
-
         } catch (error) {
           console.error(
             `No se pudo enviar mensaje a usuario ${usuarioId}:`,
@@ -54,7 +53,6 @@ module.exports = (bot) => {
           // });
 
           bot.sendMessage(grupoId, msg, { parse_mode: "Markdown" });
-
         } catch (error) {
           console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
         }

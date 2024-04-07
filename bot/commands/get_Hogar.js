@@ -172,7 +172,7 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
     try {
       const responseHogar = await apiHogar(dni);
-      const datosHogar = responseHogar.datos_hogar;
+      const datosHogar = responseHogar.response.base;
 
       if (
         datosHogar.mensajeRespuesta ===
@@ -184,7 +184,7 @@ module.exports = (bot) => {
           messageOptions
         );
       } else {
-        const integrantes = datosHogar.integrantesHogar;
+        const integrantes = datosHogar.integrantes_hogar;
 
         let res = `*[#LAIN-DOX 🌐] ➤ #HOGAR*\n\n`;
         res += `Se han *encontrado* \`${integrantes.length}\` _integrantes del hogar_ para el *DNI ${dni}.*\n\n`;
@@ -192,12 +192,12 @@ module.exports = (bot) => {
         if (integrantes.length <= 10) {
           integrantes.forEach((dato, index) => {
             const numero = index + 1;
-            const apeMaterno = dato.apeMaterno;
-            const apePaterno = dato.apePaterno;
-            const feNacimiento = dato.feNacimiento;
-            const nuDni = dato.nuDni;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
+            const apeMaterno = dato.apellido_materno;
+            const apePaterno = dato.apellido_paterno;
+            const feNacimiento = dato.fecha_nacimiento;
+            const nuDni = dato.numero_documento;
+            const preNombres = dato.nombres;
+            const sexo = dato.genero;
 
             res += `*➜ NÚMERO:* \`${numero}\`\n`;
             res += `*➜ N° DNI:* \`${nuDni}\`\n`;

@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function apiHogar(dni) {
-  const apiUrl = `http://161.132.39.19:5050/apiv1/hogar/${dni}`;
+  const apiUrl = `https://app-hogar-api1.onrender.com/hogar?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
