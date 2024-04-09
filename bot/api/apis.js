@@ -347,7 +347,7 @@ async function titularClaro(tel) {
 //API MOVISTAR
 async function titularMov(tel) {
   //END - POINT
-  const apiUrl = `http://161.132.48.223:2000/numero?num=${tel}`;
+  const apiUrl = `http://161.132.48.228:2000/numero?num=${tel}`;
 
   try {
     const responseMovistar = await axios.get(apiUrl);
