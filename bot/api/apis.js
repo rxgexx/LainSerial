@@ -30,7 +30,7 @@ async function getReniec(dni) {
 //API RENIEC RESPALDO
 async function getReniecRes(dni) {
   //END - POING
-  const apiUrl = `http://161.132.41.107:50/respaldo/${dni}`;
+  const apiUrl = `http://161.132.48.228:50/respaldo/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -147,7 +147,7 @@ async function getActaDefuncion(dni) {
 //API DNI VIRTUAL
 async function getDNIVirtual(dni) {
   //END - POINT DNIVirtual - API
-  const apiUrl = `http://161.132.41.107:4000/procesar_dni?dni=${dni}`;
+  const apiUrl = `http://161.132.48.228:4000/procesar_dni?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -163,7 +163,7 @@ async function getDNIVirtual(dni) {
 }
 
 //C4's
-const fichaEndPoint = "http://161.132.41.107:4045";
+const fichaEndPoint = "http://161.132.48.228:4045";
 
 //C4 azul
 async function fichaAzul(dni) {
@@ -257,7 +257,7 @@ async function fichaAntPen(dni) {
 }
 
 //API CEL
-const apiTelEndPoint = "http://161.132.41.107:10";
+const apiTelEndPoint = "http://161.132.48.228:10";
 
 async function getApiTel(tel) {
   //END - POINT TITULAR DE CELULAR - API
@@ -418,7 +418,7 @@ async function titularBasic(tel) {
 async function titularPlaca(placa) {
   //END - PONTS TITULAR PLACAS
   const apiUrl_1 = `https://pla-img.onrender.com/api/imgsun?pla=${placa}`; //<-- API IMAGEN
-  const apiUrl_2 = `http://161.132.41.107:7130/api/${placa}`;
+  const apiUrl_2 = `http://161.132.48.228:7130/api/${placa}`;
 
   try {
     const response_1 = await axios.get(apiUrl_1);
@@ -453,7 +453,7 @@ async function titularPlaca(placa) {
 //ÁRBOL GENEALÓGICO
 async function arbolGen(dni) {
   //END - POINT
-  const apiUrl = `http://161.132.41.107:3000/arbol?dni=${dni}`;
+  const apiUrl = `http://161.132.48.228:3000/arbol?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
