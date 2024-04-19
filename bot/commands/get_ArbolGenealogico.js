@@ -20,14 +20,14 @@ module.exports = (bot) => {
       console.error("Error en el bot de Telegram:", error);
     });
 
-    //BOT ANTI - BUG
-    const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
-    const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
+    // //BOT ANTI - BUG
+    // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
+    // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
 
-    // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
-    if (messageTime < botStartTime) {
-      return;
-    }
+    // // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
+    // if (messageTime < botStartTime) {
+    //   return;
+    // }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
     const dni = match[1];
@@ -181,13 +181,12 @@ module.exports = (bot) => {
 
     try {
       //ARBOL RESPONSE
-      const responseArbol = await arbolGen(dni);
+      const resApi = await arbolGen(dni);
+      const responseArbol = resApi.resultado;
+      console.log(responseArbol.error);
 
       //SI NO ENCUENTRA RESULTADOS...
-      if (
-        responseArbol.mensaje ===
-        "No se encontraron datos para los valores dados."
-      ) {
+      if (responseArbol.error === "NO SE ENCONTRO INFORMACION") {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
         const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
@@ -300,8 +299,8 @@ module.exports = (bot) => {
           });
 
           replyToTxt += `➤ CONSULTADO POR:\n`;
-          replyToTxt += `  ⌞ *USUARIO:* ${userId}\n`;
-          replyToTxt += `  ⌞ *NOMBRE:* ${firstName}\n\n`;
+          replyToTxt += `  ⌞ USUARIO: ${userId}\n`;
+          replyToTxt += `  ⌞ NOMBRE: ${firstName}\n\n`;
           replyToTxt += `MENSAJE: La consulta se hizo de manera exitosa ♻.\n\n`;
 
           fs.appendFileSync(arbgFile, replyToTxt);

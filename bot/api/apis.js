@@ -453,7 +453,7 @@ async function titularPlaca(placa) {
 //ÁRBOL GENEALÓGICO
 async function arbolGen(dni) {
   //END - POINT
-  const apiUrl = `http://161.132.48.228:3000/arbol?dni=${dni}`;
+  const apiUrl = `https://servicioapis.zyra-dark.online/familia.php?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);

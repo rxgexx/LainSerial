@@ -10,14 +10,14 @@ module.exports = (bot) => {
       console.error("Error en el bot de Telegram:", error);
     });
 
-    //BOT ANTI - BUG
-    const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
-    const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
+    // //BOT ANTI - BUG
+    // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
+    // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
 
-    // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
-    if (messageTime < botStartTime) {
-      return;
-    }
+    // // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
+    // if (messageTime < botStartTime) {
+    //   return;
+    // }
 
     const chatId = msg.chat.id;
     const userId = msg.from.id;
