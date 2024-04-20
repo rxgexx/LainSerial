@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const img = path.join(__dirname, "../img/anuncio2.jpg");
+const img = path.join(__dirname, "../img/anuncio3.jpg");
 
 module.exports = (bot) => {
   bot.onText(/\/anuncio/, async (msg) => {
@@ -12,9 +12,10 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*ACTUALIZACIONES 📢*\n\n`;
-      anuncio += `*Se han CORREGIDO los comandos* \`/arbg\`*,* \`/celx\` *y* \`/telx\`*.*💥✨\n\n`;
-      anuncio += `*Además se ha mejorado el tiempo de respuesta del Bot Lain, ahora los comandos serán mandados de inmediato y no tendrá que hacer alguna consulta doble. Próximas funciones que se vienen: Búsqueda de antecedentes, historial laboral, ENTEL en tiempo real.*\n\n`;
+      let anuncio = `*NUEVOS COMANDOS!!! 📢📢*\n\n`;
+      anuncio += `*Se han AGREGADO LOS SIGUIENTES COMANDOS:* \`fxmpfn\` *y* \`/fxcaso\`\n\n`;
+      anuncio += `*Úsalo para buscar* los antecedentes de una persona en TIEMPO REAL!!\n\n`;
+      anuncio += `*Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
       // let msg = `*SE HAN CORREGIDO* los comandos /telx y /celx, disculpen las molestias.`;
