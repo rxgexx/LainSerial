@@ -1,6 +1,6 @@
 //SE REQUIRE LAS APIS
 const iconv = require("iconv-lite");
-const { mpfnDni } = require("../api/api_Legales.js");
+const { mpfnCaso } = require("../api/api_Legales.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -15,7 +15,7 @@ const fs = require("fs");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]fxmpfn (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]fxcaso (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -31,7 +31,7 @@ module.exports = (bot) => {
     // }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
-    const dni = match[1];
+    const caso = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -155,13 +155,13 @@ module.exports = (bot) => {
         return;
       }
     }
-    if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxmpfn\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxmpfn 27427864\`*]*\n\n`;
+    // if (dni.length !== 8) {
+    //   let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxmpfn\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+    //   replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxmpfn 27427864\`*]*\n\n`;
 
-      bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
-      return;
-    }
+    //   bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
+    //   return;
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -170,7 +170,7 @@ module.exports = (bot) => {
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando* \`CASOS MPFN\` del *➜ DNI* \`${dni}\``;
+    let yx = `*[ 💬 ] Consultando* \`DETALLES\` del *➜ CASO* \`${caso}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -184,47 +184,113 @@ module.exports = (bot) => {
       //CORREGIR RESPONSE
       // Función para normalizar la cadena JSON
 
-      const response = await mpfnDni(dni);
-      
+      const response = await mpfnCaso(caso);
+
       if (
-        response.respuesta === "No se encontraro registros para su busqueda"
+        response.respuesta.infPersona === "No hay datos" &&
+        response.respuesta.inpeDatos === "No hay datos." &&
+        response.respuesta.mpDatos === "No hay datos" &&
+        response.respuesta.pjDatos === "No hay datos." &&
+        response.respuesta.pnpDatos === "No hay datos."
       ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         bot.sendMessage(
           chatId,
-          `*[ ✖️ ] No se encontraron* casos para el *DNI* \`${dni}\`.`,
+          `*[ ✖️ ] No se encontraron* detalles para el *CASO* \`${caso}\`.`,
           messageOptions
         );
       } else {
-        const casos = response.respuesta;
+        const correctRes = decodeURIComponent(JSON.stringify(response));
+        const jsonResponse = JSON.parse(correctRes);
+        // const casos = correctRes;
+
+        // console.log(casos);
 
         let res = `*[#LAIN-DOX 🌐] ➤ #CASOSMPFN*\n\n`;
-        res += `*[ ☑️ ] REGISTROS:*\n\n`;
+        res += `*[ ☑️ ] DETALLES DEL CASO ${caso}:*\n\n`;
 
-        casos.forEach((dato, index) => {
-          const numero = index + 1;
-          const caso = dato.caso;
-          const codigoDet = dato.codigoDet;
-          const delito = dato.delito;
-          const fechDetencion = dato.fechDetencion;
-          const genero = dato.genero;
-          const nombres = dato.nombres;
-          const oficinaRegistro = dato.oficinaRegistro;
+        const detalles = jsonResponse.respuesta;
+        //infPersona
+        const infPersona = detalles.infPersona;
 
-          res += `*➜ REGISTRO ${numero}*\n`;
-          res += `  \`⌞\` *CASO:* \`${caso}\`\n`;
-          res += `  \`⌞\` *DELITO:* \`${delito}\`\n`;
-          res += `  \`⌞\` *GÉNERO:* \`${genero}\`\n`;
-          res += `  \`⌞\` *NOMBRES:* \`${nombres}\`\n`;
-          res += `  \`⌞\` *CÓDIGO. DETENCIÓN:* \`${codigoDet}\`\n`;
-          res += `  \`⌞\` *FECHA. DETENCIÓN:* \`${fechDetencion}\`\n`;
-          res += `  \`⌞\` *OFICINA. REGISTRO:* \`${oficinaRegistro}\`\n\n`;
+        const nombres =
+          infPersona.apPaterno + " " + infPersona.apMaterno + " " + " " + infPersona.preNombres;
+        const pais = infPersona.pais;
+        const departamento = infPersona.departamento;
+        const provincia = infPersona.provincia;
+        const distrito = infPersona.distrito;
+        const observacion = infPersona.observacion;
 
-          res += `*NOTA:* Para saber más detalles sobre su *consulta*, puede utilizar el *comando* \`/fxcaso ${caso}\`*.*\n\n`;
-        });
+        //inpeDatos
+        const inpeDatos = detalles.inpeDatos;
+        const autoridadJudicial = inpeDatos.autoridadJudicial;
+        const delito_inpe = inpeDatos.delito;
+        const establePeninteciario = inpeDatos.establePeninteciario;
+        const fecIngresoPeninteciario = inpeDatos.fecIngresoPeninteciario;
+        const numExpediente_inpe = inpeDatos.numExpediente;
 
-        res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-        await bot
+        //mpDatos
+        const mpDatos = detalles.mpDatos;
+        const accionTomado = mpDatos.accionTomado;
+        const distritoJudicial = mpDatos.distritoJudicial;
+        const fiscalResponsable = mpDatos.fiscalResponsable;
+        const nomFiscalia = mpDatos.nomFiscalia;
+
+        //pjDatos
+        const pjDatos = detalles.pjDatos;
+        const accionTomada = pjDatos.accionTomada;
+        const fecAccion = pjDatos.fecAccion;
+        const nomJuzgado = pjDatos.nomJuzgado;
+        const numExpediente_pj = pjDatos.numExpediente;
+        const situacionJuridica = pjDatos.situacionJuridica;
+
+        //pnpDatos
+        const pnpDatos = detalles.pnpDatos;
+        const delito_pnp = pnpDatos.delito;
+        const dependencia = pnpDatos.dependencia;
+        const modalidad = pnpDatos.modalidad;
+        const motivoDetencion = pnpDatos.motivoDetencion;
+        const situacion = pnpDatos.situacion;
+
+        res += `*➜ INF. PERSONA:*\n`;
+        res += `  \`⌞\` *NOMBRES:* \`${nombres}\`\n`;
+        res += `  \`⌞\` *PAÍS:* \`${pais}\`\n`;
+        res += `  \`⌞\` *DEPARTAMENTO:* \`${departamento}\`\n`;
+        res += `  \`⌞\` *PROVINCIA:* \`${provincia}\`\n`;
+        res += `  \`⌞\` *DISTRITO:* \`${distrito}\`\n`;
+        res += `  \`⌞\` *OBSERVACIÓN:* \`${observacion}\`\n\n`;
+
+        res += `*➜ INPE:*\n`;
+        res += `  \`⌞\` *DELITO:* \`${delito_inpe}\`\n`;
+        res += `  \`⌞\` *AUT. JUDICIAL:* \`${autoridadJudicial}\`\n`;
+        res += `  \`⌞\` *EST. PENITENCIARIO:* \`${establePeninteciario}\`\n`;
+        res += `  \`⌞\` *FE. INGRESO:* \`${fecIngresoPeninteciario}\`\n`;
+        res += `  \`⌞\` *N° EXPEDIENTE:* \`${numExpediente_inpe}\`\n\n`;
+
+        res += `*➜ MIN. PÚBLICO:*\n`;
+        res += `  \`⌞\` *ACCIÓN TOMADA:* \`${accionTomado}\`\n`;
+        res += `  \`⌞\` *DIST. JUDICIAL:* \`${distritoJudicial}\`\n`;
+        res += `  \`⌞\` *FISCAL RESPONSABLE:* \`${fiscalResponsable}\`\n`;
+        res += `  \`⌞\` *NOM. FISCALÍA:* \`${nomFiscalia}\`\n\n`;
+
+        res += `*➜ PODER JUDICIAL:*\n`;
+        res += `  \`⌞\` *ACCIÓN TOMADA:* \`${accionTomada}\`\n`;
+        res += `  \`⌞\` *FE. ACCIÓN:* \`${fecAccion}\`\n`;
+        res += `  \`⌞\` *NOMBRE. JUZGADO:* \`${nomJuzgado}\`\n`;
+        res += `  \`⌞\` *SIT. JURÍDICA:* \`${situacionJuridica}\`\n`;
+        res += `  \`⌞\` *N° EXPEDIENTE:* \`${numExpediente_pj}\`\n\n`;
+
+        res += `*➜ PNP:*\n`;
+        res += `  \`⌞\` *DELITO:* \`${delito_pnp}\`\n`;
+        res += `  \`⌞\` *DEPENDENCIA:* \`${dependencia}\`\n`;
+        res += `  \`⌞\` *MODALIDAD:* \`${modalidad}\`\n`;
+        res += `  \`⌞\` *MOTIVO. DETENCIÓN:* \`${motivoDetencion}\`\n`;
+        res += `  \`⌞\` *SITUACIÓN:* \`${situacion}\`\n\n`;
+
+        res += `*➤ CONSULTADO POR:*\n`;
+        res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;        await bot
           .deleteMessage(chatId, consultandoMessage.message_id)
           .then(() => {
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
