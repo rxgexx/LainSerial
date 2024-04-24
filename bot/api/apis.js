@@ -325,7 +325,7 @@ async function titularBitel(tel) {
 //API CLARO
 async function titularClaro(tel) {
   //END - PINT
-  const apiUrl = `https://cl-api4.onrender.com/clanum?num=${tel}`;
+  const apiUrl = `https://claroapi.onrender.com/clanum?num=${tel}`;
 
   try {
     const responseClaro = await axios.get(apiUrl);
@@ -453,7 +453,7 @@ async function titularPlaca(placa) {
 //ÁRBOL GENEALÓGICO
 async function arbolGen(dni) {
   //END - POINT
-  const apiUrl = `https://servicioapis.zyra-dark.online/familia.php?dni=${dni}`;
+  const apiUrl = `https://apiarbol2.pythonanywhere.com/docragex/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);

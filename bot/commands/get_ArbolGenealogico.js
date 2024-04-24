@@ -181,12 +181,20 @@ module.exports = (bot) => {
 
     try {
       //ARBOL RESPONSE
-      const resApi = await arbolGen(dni);
-      const responseArbol = resApi.resultado;
-      console.log(responseArbol.error);
+      const responseArbol = await arbolGen(dni);
+
+      // const responseArbol = resApi;
+      // console.log(responseArbol);
+
+      // responseArbol.forEach((dato)=>{
+      //   const nuDni = dato.VERIFICACION.replace(/\n<b>Dev:<\/b> @g4t1ll3r0/g, '');
+      //   console.log(nuDni);
+      // })
+      // return
+      // console.log(responseArbol.error);
 
       //SI NO ENCUENTRA RESULTADOS...
-      if (responseArbol.error === "NO SE ENCONTRO INFORMACION") {
+      if (responseArbol.length === 0) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
         const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
@@ -201,20 +209,21 @@ module.exports = (bot) => {
         //SI LOS RESULTADOS SON MENOS O IGUAL A 8
         if (responseArbol.length <= 5) {
           responseArbol.forEach((dato) => {
-            const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
-            const apePaterno = dato.apePaterno;
-            const apeMaterno = dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
-            const nuEdad = dato.nuEdad;
-            const tipo = dato.tipo;
-            const verificacion = dato.verificacion;
+            const nuDni = dato.DNI;
+            const apellidos = dato.APELLIDOS;
+            const preNombres = dato.NOMBRES;
+            const sexo = dato.GENERO;
+            const nuEdad = dato.EDAD;
+            const tipo = dato.TIPO;
+            const verificacion = dato.VERIFICACION.replace(
+              /\n<b>Dev:<\/b> @g4t1ll3r0/g,
+              ""
+            );
 
-            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
+            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
             dniRes += `  \`⌞\` *SEXO:* \`${sexo}\`\n`;
             dniRes += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
-            dniRes += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
+            dniRes += `  \`⌞\` *APELLIDOS:* \`${apellidos}\`\n`;
             dniRes += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
             dniRes += `  \`⌞\` *VÍNCULO:* \`${tipo}\`\n`;
             dniRes += `  \`⌞\` *VERIFICACIÓN:* \`${verificacion}\`\n\n`;
@@ -238,20 +247,21 @@ module.exports = (bot) => {
           const resultadosRestantes = responseArbol.slice(maxResultsToShow);
 
           resultadosParaMostrar.forEach((dato) => {
-            const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
-            const apePaterno = dato.apePaterno;
-            const apeMaterno = dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
-            const nuEdad = dato.nuEdad;
-            const tipo = dato.tipo;
-            const verificacion = dato.verificacion;
+            const nuDni = dato.DNI;
+            const apellidos = dato.APELLIDOS;
+            const preNombres = dato.NOMBRES;
+            const sexo = dato.GENERO;
+            const nuEdad = dato.EDAD;
+            const tipo = dato.TIPO;
+            const verificacion = dato.VERIFICACION.replace(
+              /\n<b>Dev:<\/b> @g4t1ll3r0/g,
+              ""
+            );
 
-            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
+            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
             dniRes += `  \`⌞\` *SEXO:* \`${sexo}\`\n`;
             dniRes += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
-            dniRes += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
+            dniRes += `  \`⌞\` *APELLIDOS:* \`${apellidos}\`\n`;
             dniRes += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
             dniRes += `  \`⌞\` *VÍNCULO:* \`${tipo}\`\n`;
             dniRes += `  \`⌞\` *VERIFICACIÓN:* \`${verificacion}\`\n\n`;
@@ -274,23 +284,22 @@ module.exports = (bot) => {
           fs.writeFileSync(arbgFile, topTxt);
 
           let replyToTxt;
-          console.log(resultadosRestantes);
           resultadosRestantes.forEach((dato) => {
-            const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
-            const apePaterno = dato.apePaterno;
-            const apeMaterno = dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
-            const nuEdad = dato.nuEdad;
-            const tipo = dato.tipo;
-            const verificacion = dato.verificacion;
-            console.log(nuDni);
+            const nuDni = dato.DNI;
+            const apellidos = dato.APELLIDOS;
+            const preNombres = dato.NOMBRES;
+            const sexo = dato.GENERO;
+            const nuEdad = dato.EDAD;
+            const tipo = dato.TIPO;
+            const verificacion = dato.VERIFICACION.replace(
+              /\n<b>Dev:<\/b> @g4t1ll3r0/g,
+              ""
+            );
 
-            replyToTxt = `  ⌞ DNI: ${nuDni} - ${digitoVerificacion}\n`;
+            replyToTxt = `  ⌞ DNI: ${nuDni}\n`;
             replyToTxt += `  ⌞ SEXO: ${sexo}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
-            replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;
+            replyToTxt += `  ⌞ APELLIDOS: ${apellidos}\n`;
             replyToTxt += `  ⌞ EDAD: ${nuEdad}\n`;
             replyToTxt += `  ⌞ VÍNCULO: ${tipo}\n`;
             replyToTxt += `  ⌞ VERIFICACIÓN: ${verificacion}\n\n`;
