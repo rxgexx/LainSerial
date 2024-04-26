@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const img = path.join(__dirname, "../img/anuncio3.jpg");
+const img = path.join(__dirname, "../img/anuncio__4.jpg");
 
 module.exports = (bot) => {
   bot.onText(/\/anuncio/, async (msg) => {
@@ -12,10 +12,15 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*NUEVOS COMANDOS!!! 📢📢*\n\n`;
-      anuncio += `*Se han AGREGADO LOS SIGUIENTES COMANDOS:* \`fxmpfn\` *y* \`/fxcaso\`\n\n`;
-      anuncio += `*Úsalo para buscar* los antecedentes de una persona en TIEMPO REAL!!\n\n`;
-      anuncio += `*Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
+      let anuncio = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
+      anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
+      anuncio += `✅ COMANDO *BÚSQUEDA LABORAL* - \`/fxtrabajos\` - *:*\n`;
+      anuncio += `   \`⌞\` Obtén \`REGISTRO LABORALES\` de una *persona* solamente con su *DNI*.\n\n`;
+
+      anuncio += `✅ COMANDO *TITULAR BITEL* - \`/bitx\` - *:*\n`;
+      anuncio += `   \`⌞\` Obtén el \`TITULAR BITEL\` en *tiempo real* de un *nùmero* bitel.\n\n\n`;
+
+      anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
       // let msg = `*SE HAN CORREGIDO* los comandos /telx y /celx, disculpen las molestias.`;

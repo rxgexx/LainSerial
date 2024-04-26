@@ -1,5 +1,5 @@
 //SE REQUIRE LAS APIS
-const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
+const { api_infoburo } = require("../api/api_Variados.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -14,7 +14,7 @@ const moment = require("moment");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]bitx (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]fxtrabajos (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -30,7 +30,7 @@ module.exports = (bot) => {
     // }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
-    const tel = match[1];
+    const dni = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -154,37 +154,21 @@ module.exports = (bot) => {
         return;
       }
     }
-    if (tel.length !== 9) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/bitxx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/bitx 957908908\`*]*\n\n`;
+    if (dni.length !== 8) {
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxtrabajos\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxtrabajos 44443333\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
     }
 
-    // const validarOperador = await validarOp(tel);
-
-    // if (validarOp.data === "Error en la conexion con la fuente.") {
-    //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
-
-    // const datosNum = validarOperador.datos.Operador;
-
-    // if (datosNum !== "Bitel") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
-
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
-
-    //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
       console.log(`El usuario ${msg.from.first_name} anda haciendo spam`);
       return;
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando el* \`TITULAR BITEL\` del *➜ NÚMERO* \`${tel}\``;
+    let yx = `*[ 💬 ] Consultando* \`TRABAJOS\` del *➜ DNI* \`${dni}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -195,43 +179,107 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const responseBitel = await apiBitel(tel);
+      const responseTrabajos = await api_infoburo(dni);
 
-      if (
-        responseBitel.status === "False" &&
-        responseBitel.response ===
-          "No se encontraron resultados que satisfagan las condiciones."
-      ) {
-        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es BITEL.\n\n`;
-        yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      const trabajos_Key = responseTrabajos.infoburo[0].trabajos;
 
-        return bot.sendMessage(chatId, yx, messageOptions);
+      function trabajos_vacios(trabajos) {
+        for (const key in trabajos) {
+          if (trabajos[key].length > 0) {
+            return { estado: "false" };
+          }
+        }
+        return { estado: "true" };
       }
 
-      const data = responseBitel.bitelData;
-      const documento = data.Documento;
-      const nombre = data.Titular;
-      const nacionalidad = data.Info_Titular.Nacionalidad;
-      const Fecha_Activacion = data.Fecha_Activacion;
-      const Hora_Activacion = data.Hora_Activacion;
-      const Tipo_Plan = data.Tipo_Plan;
+      const validar = trabajos_vacios(trabajos_Key);
 
-      let telRes = `*[#LAIN-DOX 🌐] ➤ #BITELONLINE*\n\n`;
-      telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
-      telRes += `*➤ BITEL EN TIEMPO REAL*\n`;
-      telRes += `  \`⌞\` *TITULAR:* \`${nombre}\`\n`;
-      telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
-      telRes += `  \`⌞\` *NACIONALIDAD:* \`${nacionalidad}\`\n`;
-      telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${Hora_Activacion}\`\n`;
-      telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${Fecha_Activacion}\`\n`;
-      telRes += `  \`⌞\` *TIPO. PLAN:* \`${Tipo_Plan}\`\n\n`;
-      telRes += `*➤ CONSULTADO POR:*\n`;
-      telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-      await bot
-        .deleteMessage(chatId, consultandoMessage.message_id)
+      if (validar.estado === "true") {
+        let yxx = `*[ ✖️ ] NO se encontró* ningún \`registro laboral\` para el *DNI* \`${dni}\`*.*`;
+        await bot
+          .deleteMessage(chatId, consultandoMessage.message_id)
+          .then(() => {
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 20;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+            }
+
+            bot.sendMessage(chatId, yxx, messageOptions);
+          });
+        return;
+      }
+
+      //MENSAJE
+      let res = `*[#LAIN-DOX 🌐] ➤ #TRABAJOS*\n\n`;
+      res += `*[ ☑️ ] TRABAJOS DE* - \`${dni}\` -\n\n`;
+      res += `*➤ REGISTROS ACTUALIZADOS*\n\n`;
+
+      function get_trabajos(trabajos) {
+        let registros = [];
+        // Obtener claves de meses, ordenar numéricamente basándonos en el número del mes
+        const clavesOrdenadas = Object.keys(trabajos).sort((a, b) => {
+          return (
+            parseInt(a.replace("mes", "")) - parseInt(b.replace("mes", ""))
+          );
+        });
+
+        // Iterar sobre cada mes en orden
+        clavesOrdenadas.forEach((mes) => {
+          trabajos[mes].forEach((trabajo) => {
+            let registro = {
+              mes: parseInt(mes.replace("mes", "")),
+              ...trabajo,
+            };
+            registros.push(registro);
+          });
+        });
+
+        return registros;
+      }
+      function formatearFecha(fecha) {
+        // Asegura que la entrada es una cadena
+        let fechaStr = String(fecha);
+        // Extrae el año (primeros cuatro caracteres) y el mes (últimos dos caracteres)
+        let ano = fechaStr.substring(0, 4);
+        let mes = fechaStr.substring(4, 6);
+        // Combina el año y el mes con el formato deseado
+        return `${ano} - ${mes}`;
+      }
+      const registros = get_trabajos(trabajos_Key);
+
+      registros.forEach((registros, index) => {
+        const registro = index + 1;
+        const mes = registros.mes;
+        const ruc = registros.ruc;
+        const fecha = formatearFecha(registros.fecha);
+        const distrito = registros.distrito;
+        const provincia = registros.provincia;
+        const departamento = registros.departamento;
+        const direccion = registros.direccion;
+        const nombre_empresa = registros.nombre_empresa;
+
+        res += `*➜ N°. REGISTRO:* \`${registro}\`\n`;
+        res += `*➜ N°. RUC:* \`${ruc}\`\n`;
+        res += `*➜ FECHA. REGISTRO:* \`${fecha}\`\n`;
+        res += `*➜ NOMBRE. EMPRESA:* \`${nombre_empresa}\`\n`;
+        res += `*➜ DISTRITO:* \`${distrito}\`\n`;
+        res += `*➜ PROVINCIA:* \`${provincia}\`\n`;
+        res += `*➜ DEPARTAMENTO:* \`${departamento}\`\n`;
+        res += `*➜ DIRECCIÓN:* \`${direccion}\`\n\n`;
+      });
+
+      res += `*➤ CONSULTADO POR:*\n`;
+      res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+      res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      bot
+        .sendMessage(chatId, res, messageOptions)
         .then(() => {
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
           if (!isDev && !isAdmin && !isBuyer) {
@@ -241,16 +289,11 @@ module.exports = (bot) => {
           else if (isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
           }
-
-          bot.sendMessage(chatId, telRes, messageOptions);
-        });
-    } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
-      console.log(error);
-      await bot
-        .deleteMessage(chatId, consultandoMessage.message_id)
-        .then(() => {
-          bot.sendMessage(chatId, xerror, messageOptions);
+        })
+        .catch((error) => {
+          console.log(
+            "Error al enviar el mensaje en la API TITULAR CLARO: " + error
+          );
         });
     } finally {
       delete usuariosEnConsulta[userId];

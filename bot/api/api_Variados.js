@@ -11,28 +11,40 @@ async function apiPlaca(placa) {
   }
 }
 
-async function apiMPFN(dni){
-  const apiUrl = `http://161.132.41.107:3000/mpfn?dni=${dni}`
+async function apiMPFN(dni) {
+  const apiUrl = `http://161.132.41.107:3000/mpfn?dni=${dni}`;
 
   try {
-    const response = await axios.get(apiUrl)
-    const data = response.data
-    return data
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
   } catch (error) {
     console.log("ERROR EN LA API MPFN: " + error);
   }
 }
 
-async function apiNotas(dni){
-  const apiUrl = `https://api.ddosis.fun/minedu?token=gD75X1MxvcbuOxe11d6dJUiQlpv&dni=${dni}`
+async function apiNotas(dni) {
+  const apiUrl = `https://api.ddosis.fun/minedu?token=gD75X1MxvcbuOxe11d6dJUiQlpv&dni=${dni}`;
 
   try {
-    const response = await axios.get(apiUrl)
-    const data = response.data
-    return data
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
   } catch (error) {
-    console.log("ERROR API NOTAS")
+    console.log("ERROR API NOTAS");
   }
 }
 
-module.exports = { apiPlaca, apiMPFN, apiNotas };
+async function api_infoburo(dni) {
+  const apiUrl = `http://161.132.48.228:3505/infoburo?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API INFOBURO");
+  }
+}
+
+module.exports = { apiPlaca, apiMPFN, apiNotas, api_infoburo };

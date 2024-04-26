@@ -19,7 +19,7 @@ async function validarOp(tel) {
 //API BITEL
 async function apiBitel(tel) {
   //URL API
-  const apiUrl = `https://api-bit-ore2.onrender.com/bitresp?num=${tel}`;
+  const apiUrl = `http://161.132.48.228:8080/bitlive?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
