@@ -13,7 +13,7 @@ async function getReniec(dni) {
   //END - PONT ACTA - API
   const API_ENDPOINT = `${link_api}/reniec`;
   const apiUrl = `http://161.132.41.103:3998/API/ALQUILER/GENIOSMASH/9d39c08t642f3677ac1f7a90d9f6785b/reniec_original/${dni}`;
-
+  print(apiUrl)
   try {
     const response = await axios.get(apiUrl);
     if (response.status !== 200) {
