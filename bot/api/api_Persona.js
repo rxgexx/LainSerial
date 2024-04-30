@@ -12,4 +12,21 @@ async function apiHogar(dni) {
   }
 }
 
-module.exports = {apiHogar};
+async function apiname_2(prinombre, apPaterno = " ", apMaterno = " ") {
+  {
+    let apiUrl = `https://servicioapis.zyra-dark.online/nm.php?apeP=${apPaterno}&apeM=${apMaterno}&nom=${prinombre}`;
+
+    return axios
+      .get(apiUrl)
+      .then((response) => {
+        const data = response.data;
+        return data;
+      })
+      .catch((error) => {
+        console.log("Error en la api de nombres: ", error);
+        throw error;
+      });
+  }
+}
+
+module.exports = { apiHogar, apiname_2 };

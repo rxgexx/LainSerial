@@ -54,9 +54,6 @@ async function getNombres(
   prinombre,
   apPaterno = " ",
   apMaterno = " ",
-  minAge = " ",
-  maxAge = " ",
-  depa = " "
 ) {
   {
     let apiUrl = `https://api.ddosis.fun/buscar?token=${token_api}&nombre=${prinombre}`;

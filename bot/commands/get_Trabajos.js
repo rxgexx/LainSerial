@@ -179,122 +179,130 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const responseTrabajos = await api_infoburo(dni);
-
-      const trabajos_Key = responseTrabajos.infoburo[0].trabajos;
-
-      function trabajos_vacios(trabajos) {
-        for (const key in trabajos) {
-          if (trabajos[key].length > 0) {
-            return { estado: "false" };
-          }
-        }
-        return { estado: "true" };
-      }
-
-      const validar = trabajos_vacios(trabajos_Key);
-
-      if (validar.estado === "true") {
-        let yxx = `*[ ✖️ ] NO se encontró* ningún \`registro laboral\` para el *DNI* \`${dni}\`*.*`;
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(() => {
-            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-            if (!isDev && !isAdmin && !isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 20;
-            }
-            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-            else if (isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
-            }
-
-            bot.sendMessage(chatId, yxx, messageOptions);
-          });
-        return;
-      }
-
-      //MENSAJE
-      let res = `*[#LAIN-DOX 🌐] ➤ #TRABAJOS*\n\n`;
-      res += `*[ ☑️ ] TRABAJOS DE* - \`${dni}\` -\n\n`;
-      res += `*➤ REGISTROS ACTUALIZADOS*\n\n`;
-
-      function get_trabajos(trabajos) {
-        let registros = [];
-        // Obtener claves de meses, ordenar numéricamente basándonos en el número del mes
-        const clavesOrdenadas = Object.keys(trabajos).sort((a, b) => {
-          return (
-            parseInt(a.replace("mes", "")) - parseInt(b.replace("mes", ""))
-          );
-        });
-
-        // Iterar sobre cada mes en orden
-        clavesOrdenadas.forEach((mes) => {
-          trabajos[mes].forEach((trabajo) => {
-            let registro = {
-              mes: parseInt(mes.replace("mes", "")),
-              ...trabajo,
-            };
-            registros.push(registro);
-          });
-        });
-
-        return registros;
-      }
-      function formatearFecha(fecha) {
-        // Asegura que la entrada es una cadena
-        let fechaStr = String(fecha);
-        // Extrae el año (primeros cuatro caracteres) y el mes (últimos dos caracteres)
-        let ano = fechaStr.substring(0, 4);
-        let mes = fechaStr.substring(4, 6);
-        // Combina el año y el mes con el formato deseado
-        return `${ano} - ${mes}`;
-      }
-      const registros = get_trabajos(trabajos_Key);
-
-      registros.forEach((registros, index) => {
-        const registro = index + 1;
-        const mes = registros.mes;
-        const ruc = registros.ruc;
-        const fecha = formatearFecha(registros.fecha);
-        const distrito = registros.distrito;
-        const provincia = registros.provincia;
-        const departamento = registros.departamento;
-        const direccion = registros.direccion;
-        const nombre_empresa = registros.nombre_empresa;
-
-        res += `*➜ N°. REGISTRO:* \`${registro}\`\n`;
-        res += `*➜ N°. RUC:* \`${ruc}\`\n`;
-        res += `*➜ FECHA. REGISTRO:* \`${fecha}\`\n`;
-        res += `*➜ NOMBRE. EMPRESA:* \`${nombre_empresa}\`\n`;
-        res += `*➜ DISTRITO:* \`${distrito}\`\n`;
-        res += `*➜ PROVINCIA:* \`${provincia}\`\n`;
-        res += `*➜ DEPARTAMENTO:* \`${departamento}\`\n`;
-        res += `*➜ DIRECCIÓN:* \`${direccion}\`\n\n`;
-      });
-
-      res += `*➤ CONSULTADO POR:*\n`;
-      res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      bot
-        .sendMessage(chatId, res, messageOptions)
-        .then(() => {
-          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-          if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
-          }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-          else if (isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-          }
-        })
-        .catch((error) => {
-          console.log(
-            "Error al enviar el mensaje en la API TITULAR CLARO: " + error
-          );
-        });
+
+      bot.sendMessage(
+        chatId,
+        `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
+        messageOptions
+      );
+
+      // const responseTrabajos = await api_infoburo(dni);
+
+      // const trabajos_Key = responseTrabajos.infoburo[0].trabajos;
+
+      // function trabajos_vacios(trabajos) {
+      //   for (const key in trabajos) {
+      //     if (trabajos[key].length > 0) {
+      //       return { estado: "false" };
+      //     }
+      //   }
+      //   return { estado: "true" };
+      // }
+
+      // const validar = trabajos_vacios(trabajos_Key);
+
+      // if (validar.estado === "true") {
+      //   let yxx = `*[ ✖️ ] NO se encontró* ningún \`registro laboral\` para el *DNI* \`${dni}\`*.*`;
+      //   await bot
+      //     .deleteMessage(chatId, consultandoMessage.message_id)
+      //     .then(() => {
+      //       //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+      //       if (!isDev && !isAdmin && !isBuyer) {
+      //         antiSpam[userId] = Math.floor(Date.now() / 1000) + 20;
+      //       }
+      //       //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+      //       else if (isBuyer) {
+      //         antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+      //       }
+
+      //       bot.sendMessage(chatId, yxx, messageOptions);
+      //     });
+      //   return;
+      // }
+
+      // //MENSAJE
+      // let res = `*[#LAIN-DOX 🌐] ➤ #TRABAJOS*\n\n`;
+      // res += `*[ ☑️ ] TRABAJOS DE* - \`${dni}\` -\n\n`;
+      // res += `*➤ REGISTROS ACTUALIZADOS*\n\n`;
+
+      // function get_trabajos(trabajos) {
+      //   let registros = [];
+      //   // Obtener claves de meses, ordenar numéricamente basándonos en el número del mes
+      //   const clavesOrdenadas = Object.keys(trabajos).sort((a, b) => {
+      //     return (
+      //       parseInt(a.replace("mes", "")) - parseInt(b.replace("mes", ""))
+      //     );
+      //   });
+
+      //   // Iterar sobre cada mes en orden
+      //   clavesOrdenadas.forEach((mes) => {
+      //     trabajos[mes].forEach((trabajo) => {
+      //       let registro = {
+      //         mes: parseInt(mes.replace("mes", "")),
+      //         ...trabajo,
+      //       };
+      //       registros.push(registro);
+      //     });
+      //   });
+
+      //   return registros;
+      // }
+      // function formatearFecha(fecha) {
+      //   // Asegura que la entrada es una cadena
+      //   let fechaStr = String(fecha);
+      //   // Extrae el año (primeros cuatro caracteres) y el mes (últimos dos caracteres)
+      //   let ano = fechaStr.substring(0, 4);
+      //   let mes = fechaStr.substring(4, 6);
+      //   // Combina el año y el mes con el formato deseado
+      //   return `${ano} - ${mes}`;
+      // }
+      // const registros = get_trabajos(trabajos_Key);
+
+      // registros.forEach((registros, index) => {
+      //   const registro = index + 1;
+      //   const mes = registros.mes;
+      //   const ruc = registros.ruc;
+      //   const fecha = formatearFecha(registros.fecha);
+      //   const distrito = registros.distrito;
+      //   const provincia = registros.provincia;
+      //   const departamento = registros.departamento;
+      //   const direccion = registros.direccion;
+      //   const nombre_empresa = registros.nombre_empresa;
+
+      //   res += `*➜ N°. REGISTRO:* \`${registro}\`\n`;
+      //   res += `*➜ N°. RUC:* \`${ruc}\`\n`;
+      //   res += `*➜ FECHA. REGISTRO:* \`${fecha}\`\n`;
+      //   res += `*➜ NOMBRE. EMPRESA:* \`${nombre_empresa}\`\n`;
+      //   res += `*➜ DISTRITO:* \`${distrito}\`\n`;
+      //   res += `*➜ PROVINCIA:* \`${provincia}\`\n`;
+      //   res += `*➜ DEPARTAMENTO:* \`${departamento}\`\n`;
+      //   res += `*➜ DIRECCIÓN:* \`${direccion}\`\n\n`;
+      // });
+
+      // res += `*➤ CONSULTADO POR:*\n`;
+      // res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+      // res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      // res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      // bot
+      //   .sendMessage(chatId, res, messageOptions)
+      //   .then(() => {
+      //     //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+      //     if (!isDev && !isAdmin && !isBuyer) {
+      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
+      //     }
+      //     //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+      //     else if (isBuyer) {
+      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(
+      //       "Error al enviar el mensaje en la API TITULAR CLARO: " + error
+      //     );
+      //   });
     } finally {
       delete usuariosEnConsulta[userId];
     }
