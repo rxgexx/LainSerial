@@ -220,7 +220,7 @@ module.exports = (bot) => {
         apellidoMaterno
       );
 
-      if (responseNombres.resultados.length === 0) {
+      if (responseNombres.resultado.length === 0) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let x = `*[ ✖️ ] No se han* encontrado personas para los _nombres dados._`;
         bot.sendMessage(chatId, x, messageOptions);
