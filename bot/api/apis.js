@@ -12,7 +12,7 @@ const link_api = `https://api.ddosis.fun`;
 async function getReniec(dni) {
   //END - PONT ACTA - API
   const API_ENDPOINT = `${link_api}/reniec`;
-  const apiUrl = `${API_ENDPOINT}?token=${token_api}&dni=${dni}`;
+  const apiUrl = `http://161.132.41.103:3998/API/ALQUILER/GENIOSMASH/9d39c08t642f3677ac1f7a90d9f6785b/reniec_original/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
