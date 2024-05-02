@@ -157,7 +157,7 @@ module.exports = (bot) => {
 
     if (dni.length !== 8) {
       let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/dniv\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/dniv 07768359\`*]*\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/dnie 07768359\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -169,7 +169,7 @@ module.exports = (bot) => {
       return;
     }
 
-    const y = `*[ ⚙️ ] Construyendo* el \`DNI VIRTUAL\` del *➜ DNI* \`${dni}\``;
+    const y = `*[ ⚙️ ] Construyendo* el \`DNI ELECTRÓNICO\` del *➜ DNI* \`${dni}\``;
 
     //Si todo se cumple, se iniciará con la consulta...
     const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
