@@ -29,7 +29,7 @@ async function getReniec(dni) {
 //API RENIEC RESPALDO
 async function getReniecRes(dni) {
   //END - POING
-  const apiUrl = `http://161.132.48.228:50/respaldo/${dni}`;
+  const apiUrl = `http://161.132.49.138:50/respaldo/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
