@@ -211,7 +211,7 @@ module.exports = (bot) => {
 
       //TEXTO QUE ACOMPAÑARÁ AL DNI VIRTUAL
       let replyDni = `*[#LAIN-DOX 🌐] ➤ #DNIELECTRONICO*\n\n`;
-      replyDni += `*[ ☑️ ] DNI VIRTUAL*\n\n`;
+      replyDni += `*[ ☑️ ] DNI ELECTRÓNICO*\n\n`;
       replyDni += `*➤ INF. PERSONA:*\n`;
       replyDni += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
       replyDni += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;

@@ -14,7 +14,7 @@ module.exports = (bot) => {
 
       let anuncio = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
       anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
-      anuncio += `✅ COMANDO *DNI ELECTRÓNICO* - \`/fxtrabajos\` - *:*\n`;
+      anuncio += `✅ COMANDO *DNI ELECTRÓNICO* - \`/dnie\` - *:*\n`;
       anuncio += `   \`⌞\` Obtén el \`DNI ELECTRÓNICO\` de una *persona* solamente con su *DNI*.\n\n`;
 
       anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
