@@ -14,11 +14,8 @@ module.exports = (bot) => {
 
       let anuncio = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
       anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
-      anuncio += `✅ COMANDO *BÚSQUEDA LABORAL* - \`/fxtrabajos\` - *:*\n`;
-      anuncio += `   \`⌞\` Obtén \`REGISTRO LABORALES\` de una *persona* solamente con su *DNI*.\n\n`;
-
-      anuncio += `✅ COMANDO *TITULAR BITEL* - \`/bitx\` - *:*\n`;
-      anuncio += `   \`⌞\` Obtén el \`TITULAR BITEL\` en *tiempo real* de un *nùmero* bitel.\n\n\n`;
+      anuncio += `✅ COMANDO *DNI ELECTRÓNICO* - \`/fxtrabajos\` - *:*\n`;
+      anuncio += `   \`⌞\` Obtén el \`DNI ELECTRÓNICO\` de una *persona* solamente con su *DNI*.\n\n`;
 
       anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
