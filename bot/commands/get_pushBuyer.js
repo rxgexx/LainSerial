@@ -13,17 +13,13 @@ module.exports = (bot) => {
     });
 
     //BOT ANTI - BUG
-    const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
-    const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
+    // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
+    // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
 
     // // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
     // if (messageTime < botStartTime) {
     //   return;
     // }
-    // //POLLING ERROR
-    // bot.on("polling_error", (error) => {
-    //   console.error("Error en el bot de Telegram:", error);
-    // });
 
     const chatId = msg.chat.id;
     const userId = msg.from.id;

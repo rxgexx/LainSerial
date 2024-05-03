@@ -16,7 +16,7 @@ module.exports = (bot) => {
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
     });
-
+    
     //BOT ANTI - BUG
     // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
     // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
