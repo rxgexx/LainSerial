@@ -1,8 +1,7 @@
 const axios = require("axios");
 
 async function mpfnDni(dni) {
-  const apiUrl = `http://161.132.48.228:7000/mpfn?dni=${dni}`;
-
+  const apiUrl = `http://161.132.49.138:7000/mpfn?dni=${dni}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -13,7 +12,7 @@ async function mpfnDni(dni) {
 }
 
 async function mpfnCaso(caso) {
-  const apiUrl = `http://161.132.48.228:7000/mpfn/caso?caso=${caso}`;
+  const apiUrl = `http://161.132.49.138:7000/mpfn/caso?caso=${caso}`;
 
   try {
     const response = await axios.get(apiUrl);
