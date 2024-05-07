@@ -12,15 +12,15 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
-      anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
-      anuncio += `✅ COMANDO *DNI ELECTRÓNICO* - \`/dnie\` - *:*\n`;
-      anuncio += `   \`⌞\` Obtén el \`DNI ELECTRÓNICO\` de una *persona* solamente con su *DNI*.\n\n`;
+      // let anuncio = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
+      // anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
+      // anuncio += `✅ COMANDO *DNI ELECTRÓNICO* - \`/dnie\` - *:*\n`;
+      // anuncio += `   \`⌞\` Obtén el \`DNI ELECTRÓNICO\` de una *persona* solamente con su *DNI*.\n\n`;
 
-      anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
+      // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
-      // let msg = `*SE HAN CORREGIDO* los comandos /telx y /celx, disculpen las molestias.`;
+      let msg = `*COMANDOS /nm, /celx, /telx, /actnaci, /actdefu y /actmatri en mantenimiento,* disculpen las molestias.`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
@@ -29,12 +29,12 @@ module.exports = (bot) => {
           const chatInfo = await bot.getChat(usuarioId);
           // Si el usuario es accesible, enviar el mensaje con la foto
 
-          await bot.sendPhoto(usuarioId, img, {
-            caption: anuncio,
-            parse_mode: "Markdown",
-          });
+          // await bot.sendPhoto(usuarioId, img, {
+          //   caption: anuncio,
+          //   parse_mode: "Markdown",
+          // });
 
-          // bot.sendMessage(usuarioId, msg, { parse_mode: "Markdown" });
+          bot.sendMessage(usuarioId, msg, { parse_mode: "Markdown" });
         } catch (error) {
           console.error(
             `No se pudo enviar mensaje a usuario ${usuarioId}:`,
@@ -50,12 +50,12 @@ module.exports = (bot) => {
           const chatInfo = await bot.getChat(grupoId);
           // Si el grupo es accesible, enviar el mensaje con la foto
 
-          await bot.sendPhoto(grupoId, img, {
-            caption: anuncio,
-            parse_mode: "Markdown",
-          });
+          // await bot.sendPhoto(grupoId, img, {
+          //   caption: anuncio,
+          //   parse_mode: "Markdown",
+          // });
 
-          // bot.sendMessage(grupoId, msg, { parse_mode: "Markdown" });
+          bot.sendMessage(grupoId, msg, { parse_mode: "Markdown" });
         } catch (error) {
           console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
         }
