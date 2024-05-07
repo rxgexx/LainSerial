@@ -279,7 +279,7 @@ module.exports = (bot) => {
           topTxt += `➤ RESULTADOS:\n\n`;
 
           //TXT NOMBRE
-          const arbgFile = `FAMILIARES_${dni}`;
+          const arbgFile = `FAMILIARES_${dni}.txt`;
 
           fs.writeFileSync(arbgFile, topTxt);
 
