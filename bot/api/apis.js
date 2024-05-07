@@ -449,7 +449,7 @@ async function titularPlaca(placa) {
 //ÁRBOL GENEALÓGICO
 async function arbolGen(dni) {
   //END - POINT
-  const apiUrl = `https://apiarbol2.pythonanywhere.com/docragex/${dni}`;
+  const apiUrl = `https://apiarbol3.pythonanywhere.com/docragex/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
