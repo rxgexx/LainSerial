@@ -20,7 +20,7 @@ module.exports = (bot) => {
       // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
-      let msg = `*COMANDOS /nm, /celx, /telx, /actnaci, /actdefu y /actmatri en mantenimiento,* disculpen las molestias.`;
+      let msg = `*BOT EN MANTENIMIENTO GENERAL, PORFAVOR ESPERAR.*`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
