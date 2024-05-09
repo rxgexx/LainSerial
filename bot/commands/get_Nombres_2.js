@@ -1,5 +1,5 @@
 //APIS
-const { apiname_2 } = require("../api/api_Persona");
+const { apiName_1 } = require("../api/api_Nombres.js");
 
 //FS
 const fs = require("fs");
@@ -193,40 +193,47 @@ module.exports = (bot) => {
       const apellidoPaterno = commandArgs[1];
       const apellidoMaterno = commandArgs[2];
 
-      if (!apellidoPaterno || !apellidoMaterno) {
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        bot.sendMessage(
-          chatId,
-          `*[ ✖️ ] Debes proporcionar los* dos apellido (paterno o materno).`,
-          messageOptions
-        );
-        return;
-      }
+      // if (!apellidoPaterno || !apellidoMaterno) {
+      //   await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      //   bot.sendMessage(
+      //     chatId,
+      //     `*[ ✖️ ] Debes proporcionar los* dos apellido (paterno o materno).`,
+      //     messageOptions
+      //   );
+      //   return;
+      // }
 
       // Verificar que al menos haya un apellido (paterno o materno)
-      //   if (!apellidoPaterno && !apellidoMaterno) {
-      //     await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      //     bot.sendMessage(
-      //       chatId,
-      //       `*[ ✖️ ] Debes proporcionar al menos un* apellido (paterno o materno).`,
-      //       messageOptions
-      //     );
-      //     return;
-      //   }
+        if (!apellidoPaterno && !apellidoMaterno) {
+          await bot.deleteMessage(chatId, consultandoMessage.message_id);
+          bot.sendMessage(
+            chatId,
+            `*[ ✖️ ] Debes proporcionar al menos un* apellido (paterno o materno).`,
+            messageOptions
+          );
+          return;
+        }
+
       // Realizar la consulta a la API con los parámetros obtenidos
-      const responseNombres = await apiname_2(
+      const responseNombres = await apiName_1(
         nombre,
         apellidoPaterno,
         apellidoMaterno
       );
 
-      if (responseNombres.resultado.length === 0) {
+      //SIN DATOS
+      const noDatos =
+        responseNombres.message ===
+        "No se encontró ningún resultado con los datos ingresados.";
+
+      if (noDatos) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let x = `*[ ✖️ ] No se han* encontrado personas para los _nombres dados._`;
         bot.sendMessage(chatId, x, messageOptions);
         return;
       } else {
-        const nombresData = responseNombres.resultado;
+        const nombresData = responseNombres;
+        // const length = nombresData.length
 
         //SI LOS RESULTADOS SON MENOS DE 10
         if (nombresData.length <= 10) {
@@ -237,18 +244,20 @@ module.exports = (bot) => {
 
           nombresData.forEach((dato, index) => {
             const nuPersona = index + 1;
-            const nuDni = dato.DNI;
+            const nuDni = dato.dni;
             // const digitoVerificacion = dato.digitoVerificacion;
-            const apePaterno = dato.ApellidoPaterno;
-            const apeMaterno = dato.ApellidoMaterno;
-            const preNombres = dato.Nombres;
-            // const nuEdad = dato.nuEdad;
+            const apePaterno = dato.ap_paterno;
+            const apeMaterno = dato.ap_materno;
+            const preNombres = dato.nombres;
+            const nuEdad = dato.edad;
+            const fechaNacimiento = dato.fec_nacimiento;
 
             replyDni += `  \`⌞\` *PERSONA:* \`${nuPersona}\`\n`;
             replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\`\n`;
             replyDni += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
-            replyDni += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n\n`;
-            // replyDni += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n\n`;
+            replyDni += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
+            replyDni += `  \`⌞\` *FECHA. NACIMIENTO:* \`${fechaNacimiento}\`\n`;
+            replyDni += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n\n`;
           });
 
           replyDni += `\n`;
@@ -289,18 +298,20 @@ module.exports = (bot) => {
 
           nombresData.forEach((dato, index) => {
             const nuPersona = index + 1;
-            const nuDni = dato.DNI;
+            const nuDni = dato.dni;
             // const digitoVerificacion = dato.digitoVerificacion;
-            const apePaterno = dato.ApellidoPaterno;
-            const apeMaterno = dato.ApellidoMaterno;
-            const preNombres = dato.Nombres;
-            // const nuEdad = dato.nuEdad;
+            const apePaterno = dato.ap_paterno;
+            const apeMaterno = dato.ap_materno;
+            const preNombres = dato.nombres;
+            const nuEdad = dato.edad;
+            const fechaNacimiento = dato.fec_nacimiento;
 
             replyToTxt = `  ⌞ PERSONA: ${nuPersona}\n`;
             replyToTxt += `  ⌞ N° DNI: ${nuDni}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;
-            // replyToTxt += `  ⌞ EDAD: ${nuEdad}\n\n`;
+            replyToTxt += `  ⌞ FECHA. NACIMIENTO: ${fechaNacimiento}\n`;
+            replyToTxt += `  ⌞ EDAD: ${nuEdad}\n\n`;
 
             fs.appendFileSync(fileName, replyToTxt);
           });

@@ -20,7 +20,8 @@ module.exports = (bot) => {
       // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
-      let msg = `*BOT EN MANTENIMIENTO GENERAL, PORFAVOR ESPERAR.*`;
+      let msg = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
+      msg += `*Se comunica* a todos nuestros usuarios que el comando \`nombres\` ha sido arreglado, *gracias por la paciencia.*\n\n*➜* *@SinFlowxr*`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
