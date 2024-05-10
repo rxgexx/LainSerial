@@ -166,7 +166,7 @@ module.exports = (bot) => {
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.base.operador;
+    const datosNum = validarOp.base.operador;
 
     if (datosNum !== "Claro") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
