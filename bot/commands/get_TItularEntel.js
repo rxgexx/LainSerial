@@ -155,7 +155,7 @@ module.exports = (bot) => {
       }
     }
     if (tel.length !== 9) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/bitxx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/entel\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
       replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/entel 957908908\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
@@ -172,7 +172,7 @@ module.exports = (bot) => {
     const datosNum = validarOperador.base.message;
 
     if (datosNum !== "no encontrado. puede que sea entel") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Entel*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);
     }
