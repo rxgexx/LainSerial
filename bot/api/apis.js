@@ -17,19 +17,25 @@ async function getReniec(dni) {
   const apiUrl = `http://161.132.48.60:5050/reniec/${dni}`;
   const apiUrl_2 = `http://161.132.41.103:3998/API/ALQUILER/GENIOSMASH/9d39c08t642f3677ac1f7a90d9f6785b/reniec_original/${dni}`;
 
+  let data;
+
   try {
     await retrasar(3);
-    let response = await axios.get(apiUrl);
-
+    const response = await axios.get(apiUrl);
+    console.log("API 1");
     // Verificación de la respuesta
     if (response.data.message === "intente nuevamente") {
+
+      console.log("API 2 ESTOY ACA");
       await retrasar(3);
       response = await axios.get(apiUrl_2);
+      data = response.data;
+      return data;
     }
     console.log(response.data);
 
-    return response.data;
-
+    data = response.data;
+    return data;
   } catch (error) {
     console.error("Error al obtener los datos de RENIEC desde la API:", error);
     throw error;
