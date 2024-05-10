@@ -9,26 +9,27 @@ const token_api = process.env.TOKEN_API;
 const link_api = `https://api.ddosis.fun`;
 
 function retrasar(seconds) {
-  return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
 
 //API RENIEC
 async function getReniec(dni) {
-  //END - PONT ACTA - API
-  const API_ENDPOINT = `${link_api}/reniec`;
   const apiUrl = `http://161.132.48.60:5050/reniec/${dni}`;
+  const apiUrl_2 = `http://161.132.41.103:3998/API/ALQUILER/GENIOSMASH/9d39c08t642f3677ac1f7a90d9f6785b/reniec_original/${dni}`;
+
   try {
+    await retrasar(3);
+    let response = await axios.get(apiUrl);
 
-    retrasar(3000)
-
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(`Error al obtener los datos reniec: ${response.status}`);
+    // Verificación de la respuesta
+    if (response.data.message === "intente nuevamente") {
+      await retrasar(3);
+      response = await axios.get(apiUrl_2);
     }
-    const data = response.data;
-    return data;
+
+    return response.data;
   } catch (error) {
-    console.error("Error al obtener los datos reniec desde la API");
+    console.error("Error al obtener los datos de RENIEC desde la API:", error);
     throw error;
   }
 }
@@ -57,11 +58,7 @@ async function getReniecRes(dni) {
 
 //API NOMBRES
 
-async function getNombres(
-  prinombre,
-  apPaterno = " ",
-  apMaterno = " ",
-) {
+async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
   {
     let apiUrl = `https://api.ddosis.fun/buscar?token=${token_api}&nombre=${prinombre}`;
 
@@ -393,7 +390,6 @@ async function numerosMov(dni) {
 
 //API CELULAR BÁSICO
 async function titularBasic(tel) {
-  
   const apiUrl = `http://161.132.39.14/v1/tel?n=${tel}`;
   const headers = {
     Authorization:
@@ -401,7 +397,7 @@ async function titularBasic(tel) {
   };
 
   const responseTitular = await axios.post(apiUrl, {}, { headers });
-  
+
   try {
     if (responseTitular.status !== 200) {
       throw new Error(
@@ -517,4 +513,3 @@ module.exports = {
   arbolGen,
   argentinaData,
 };
-
