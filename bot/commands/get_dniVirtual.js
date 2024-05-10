@@ -194,7 +194,7 @@ module.exports = (bot) => {
         return;
       }
 
-      const listaAni = responseDniVirtual.datos;
+      const listaAni = responseDniVirtual.datos[0];
 
       const {
         apeMaterno, // Apellido materno
