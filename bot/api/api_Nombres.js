@@ -35,7 +35,7 @@ async function apiName_1(nombre, apPaterno = " ", apMaterno = " ") {
   }
 }
 
-async function apiName_2(nombre, apPaterno = " ", apMaterno = " ", edadMin = " ", edadMax = " ") {
+async function apiName_2(nombre, apPaterno = " ", apMaterno = " ", edadMin = "", edadMax = "") {
   // Convertir a mayúsculas
   nombre = nombre.toUpperCase();
   apPaterno = apPaterno.toUpperCase();
@@ -43,6 +43,7 @@ async function apiName_2(nombre, apPaterno = " ", apMaterno = " ", edadMin = " "
 
   const url = `https://dashboard.knowlers.xyz/apires?tipo=reniecxnombresonline&token=e5b466caed670f122086d9f3be08e4424189a687`;
   const api_url = `${url}&nombre=${nombre}&apPaterno=${apPaterno}&apMaterno=${apMaterno}&edadMin=${edadMin}&edadMax=${edadMax}`;
+  // console.log(api_url);
   let data;
 
   try {
