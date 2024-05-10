@@ -209,7 +209,7 @@ module.exports = (bot) => {
         return bot.sendMessage(chatId, yx, messageOptions);
       }
 
-      const data = responseBitel.bitelData;
+      const data = responseBitel.response;
       const documento = data.Documento;
       const nombre = data.Titular;
       const nacionalidad = data.Info_Titular.Nacionalidad;
