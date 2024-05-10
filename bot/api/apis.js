@@ -159,7 +159,7 @@ async function getDNIVirtual(dni) {
 }
 
 //C4's
-const fichaEndPoint = "http://161.132.48.60:4045";
+const fichaEndPoint = "http://161.132.48.228:4045";
 
 //C4 azul
 async function fichaAzul(dni) {
