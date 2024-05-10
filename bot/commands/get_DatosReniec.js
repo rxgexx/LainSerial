@@ -1,362 +1,520 @@
-//SE REQUIRE LAS APIS
-const { getReniec } = require("../api/apis.js");
+//SE IMPORTA AXIOS
+const axios = require("axios");
 
-//RANGOS
-delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../config/rangos/rangos.json");
+//SE REQUIERE dotenv
+require("dotenv").config({ path: "../../env/.env" });
+const token_api = process.env.TOKEN_API;
 
-//MANEJO ANTI - SPAM
-const usuariosEnConsulta = {};
-const antiSpam = {};
+//LINK API
+const link_api = `https://api.ddosis.fun`;
 
-//SE REQUIERE "path"
-const path = require("path");
+function retrasar(seconds) {
+  return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+}
 
-//IMAGEN NO FOTO
-const noFoto = path.join(__dirname, "../img/noFoto.jpg");
+//API RENIEC
+async function getReniec(dni) {
+  //END - PONT ACTA - API
+  const API_ENDPOINT = `${link_api}/reniec`;
+  const apiUrl = `http://161.132.48.60:5050/reniec/${dni}`;
+  try {
 
-//SE INICIA CON EL BOT
-module.exports = (bot) => {
-  bot.onText(/[\/.$?!]dnix (.+)/, async (msg, match) => {
-    //POLLING ERROR
-    bot.on("polling_error", (error) => {
-      console.error("Error en el bot de Telegram:", error);
-    });
+    retrasar(3000)
 
-    //BOT ANTI - BUG
-    // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
-    // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
-
-    // // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
-    // if (messageTime < botStartTime) {
-    //   return;
-    // }
-
-    //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
-    const dni = match[1];
-    const chatId = msg.chat.id;
-    const userId = msg.from.id;
-    const typeChat = msg.chat.type;
-    const groupName = msg.chat.title;
-    const firstName = msg.from.first_name;
-    const messageOptions = {
-      reply_to_message_id: msg.message_id,
-      parse_mode: "Markdown",
-    };
-
-    //Se declaran los rangos
-
-    //Rango Developer
-    const isDev = rangosFilePath.DEVELOPER.includes(userId);
-
-    //Rango Administrador
-    const isAdmin = rangosFilePath.ADMIN.includes(userId);
-
-    //Rango Comprador
-    const isBuyer =
-      rangosFilePath.BUYER && rangosFilePath.BUYER.includes(userId);
-
-    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
-    const botInfo = await bot.getMe();
-    const botMember = await bot
-      .getChatMember(chatId, botInfo.id)
-      .catch((err) => {
-        console.log(
-          "Error al obtener la información del Bot en el comando Datos Reniec: ",
-          err
-        );
-      });
-    const botIsAdmin = botMember.status === "administrator";
-
-    //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
-      let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
-      bot
-        .sendMessage(chatId, x, messageOptions)
-        .then(() => {
-          console.log(
-            `El usuario ${userId} con nombre ${firstName} ha intentado usarme de forma privada.`
-          );
-        })
-        .catch((err) => {
-          console.log(
-            `Error al mandar el mensaje "no uso-privado: `,
-            err.message
-          );
-        });
-      return;
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener los datos reniec: ${response.status}`);
     }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener los datos reniec desde la API");
+    throw error;
+  }
+}
 
-    if (!botIsAdmin && typeChat === "group" && !isDev) {
-      let noAdmin = `*[ 💤 ] Dormiré* hasta que no me hagan *administradora* _zzz 😴_`;
-      bot.sendMessage(chatId, noAdmin, messageOptions);
+//API RENIEC RESPALDO
+async function getReniecRes(dni) {
+  //END - POING
+  const apiUrl = `http://161.132.49.138:50/respaldo/${dni}`;
 
-      return;
-    }
-
-    //Si lo usan en un grupo no permitido
-    if (!gruposPermitidos.includes(chatId) && !isAdmin && !isDev && !isBuyer) {
-      bot
-        .sendMessage(
-          chatId,
-          `*[ ✖️ ] Este grupo* no ha sido *autorizado* para mi uso.`,
-          messageOptions
-        )
-        .then(() => {
-          console.log(
-            `Se ha añadido e intentado usar el bot en el grupo con ID ${chatId} y NOMBRE ${groupName}`
-          );
-          let noGrupo = `*[ 🔌 ] Se me han querido usar* en este grupo:\n\n`;
-          noGrupo += `*-👥:* \`${groupName}\`\n`;
-          noGrupo += `*-🆔:* \`${chatId}\`\n`;
-
-          // Obtener el enlace de invitación del grupo
-          bot
-            .exportChatInviteLink(chatId)
-            .then((inviteLink) => {
-              if (inviteLink) {
-                noGrupo += `*-🔗:* ${inviteLink}\n`;
-              }
-
-              return bot.sendMessage(6484858971, noGrupo, {
-                parse_mode: "Markdown",
-                disable_web_page_preview: true,
-              });
-            })
-            .catch((error) => {
-              console.log(
-                "Error al obtener el enlace de invitación del grupo: ",
-                error.message
-              );
-            });
-        })
-        .catch((error) => {
-          console.log(
-            "Error al enviar el mensaje de grupo no autorizado: ",
-            error.message
-          );
-        });
-      return;
-    }
-
-    //Se verifica si el usuario tiene un anti - spam agregado
-    if (!isDev && !isAdmin) {
-      const tiempoEspera = antiSpam[userId] || 0;
-      const tiempoRestante = Math.max(
-        0,
-        tiempoEspera - Math.floor(Date.now() / 1000)
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener los datos reniec respaldo: ${response.status}`
       );
-      if (tiempoRestante > 0) {
-        //Se envía el mensaje indicado cuanto tiempo tiene
-        bot.sendMessage(
-          chatId,
-          `*[ ✖️ ] ${firstName},* debes esperar \`${tiempoRestante} segundos\` para volver a utilizar este comando.`,
-          messageOptions
-        );
-        delete usuariosEnConsulta[userId];
-        return;
-      }
     }
-    if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/dnix\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/dnix 48159191\`*]*\n\n`;
-
-      bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
-      return;
-    }
-
-    //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
-    if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
-      console.log(`El usuario ${msg.from.first_name} anda haciendo spam`);
-      return;
-    }
-
-    // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando los* \`DATOS RENIEC\` del *➜ DNI* \`${dni}\``;
-    const consultandoMessage = await bot.sendMessage(
-      chatId,
-      yx,
-      messageOptions
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(
+      "Error al obtener los datos reniec desde la API RESPALDO: " + error
     );
+    throw error;
+  }
+}
 
-    //SE LE PONE SPAM
-    usuariosEnConsulta[userId] = true;
+//API NOMBRES
 
-    try {
-      const datosReniec = await getReniec(dni);
-      const listaAni = datosReniec.listaAni[0];
+async function getNombres(
+  prinombre,
+  apPaterno = " ",
+  apMaterno = " ",
+) {
+  {
+    let apiUrl = `https://api.ddosis.fun/buscar?token=${token_api}&nombre=${prinombre}`;
 
-      const {
-        apeMaterno, // Apellido materno
-        apePaterno, // Apellido paterno
-        coDocEmi, // Código del documento de emisión
-        deRestriccion, // Descripción de restricción
-        depaDireccion, // Departamento de la dirección
-        departamento, // Departamento
-        desDireccion, // Descripción de la dirección
-        digitoVerificacion, // Dígito de verificación
-        distDireccion, // Distrito de la dirección
-        distrito, // Distrito
-        donaOrganos, // Donación de órganos
-        estadoCivil, // Estado civil
-        estatura, // Estatura
-        feCaducidad, // Fecha de caducidad del documento
-        feEmision, // Fecha de emisión del documento
-        feFallecimiento, // Fecha de fallecimiento
-        feInscripcion, // Fecha de inscripción
-        feNacimiento, // Fecha de nacimiento
-        gradoInstruccion, // Grado de instrucción
-        inCel, // Indicador de celular
-        inGrupoRestri, // Indicador de grupo de restricción
-        nomDeclarante, // Nombre del declarante
-        nomMadre, // Nombre de la madre
-        nomPadre, // Nombre del padre
-        nuDni, // Número de DNI
-        nuDocDeclarante, // Número de documento del declarante
-        nuDocMadre, // Número de documento de la madre
-        nuDocPadre, // Número de documento del padre
-        nuEdad, // Edad
-        nuImagen, // Número de imagen
-        preNombres, // Nombres
-        provDireccion, // Provincia de la dirección
-        provincia, // Provincia
-        sexo, // Sexo
-        tipoFicha, // Tipo de ficha
-        tipoFichaImag, // Tipo de ficha de imagen
-        vinculoDeclarante, // Vínculo del declarante
-        cancelacion,
-      } = listaAni;
-
-      let resDni = `*[#LAIN-DOX 🌐] ➤ #RENIECONLINE*\n\n`;
-
-      if (sexo === "FEMENINO") {
-        resDni += `*➜ 👩 PERSONA*\n\n`;
-      } else {
-        resDni += `*➜ 👨 PERSONA*\n\n`;
-      }
-      resDni += `\`⌞\` *DNI:* \`${dni}\` - \`${digitoVerificacion}\`\n`;
-      resDni += `\`⌞\` *EDAD:* \`${nuEdad}\`\n`;
-      resDni += `\`⌞\` *SEXO:* \`${sexo}\`\n`;
-      resDni += `\`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
-      resDni += `\`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n\n`;
-
-      resDni += `*➜ 📝 INFORMACIÓN*\n\n`;
-
-      resDni += `\`⌞\` *ESTATURA:* \`${estatura}\`\n`;
-      resDni += `\`⌞\` *RESTRICCIÓN:* \`${deRestriccion}\`\n`;
-      resDni += `\`⌞\` *ESTADO CIVIL:* \`${estadoCivil}\`\n`;
-      resDni += `\`⌞\` *FECHA DE EMISIÓN:* \`${feEmision}\`\n`;
-      resDni += `\`⌞\` *FECHA DE CADUCIDAD:* \`${feCaducidad}\`\n`;
-      resDni += `\`⌞\` *FECHA DE NACIMIENTO:* \`${feNacimiento}\`\n`;
-      resDni += `\`⌞\` *FECHA DE INSCRIPCIÓN:* \`${feInscripcion}\`\n`;
-      resDni += `\`⌞\` *GRADO DE INSTRUCCIÓN:* \`${gradoInstruccion}\`\n\n`;
-
-      resDni += `*➜ 🏘️ DIRECCIONES*\n\n`;
-
-      resDni += `\`⌞\` *DEPARTAMENTO:* \`${departamento}\`\n`;
-      resDni += `\`⌞\` *PROVINCIA:* \`${provincia}\`\n`;
-      resDni += `\`⌞\` *DISTRITO:* \`${distrito}\`\n`;
-      resDni += `\`⌞\` *DIRECCIÓN:* \`${desDireccion}\`\n\n`;
-
-      resDni += `*➜ 📧 EXTRAS*\n\n`;
-
-      resDni += `\`⌞\` *PADRE:*  \`${nomPadre}\` - \`${nuDocPadre}\`\n`;
-      resDni += `\`⌞\` *MADRE:* \`${nomMadre}\` - \`${nuDocMadre}\`\n`;
-      if (nomDeclarante === undefined) {
-        resDni += `\n`;
-      } else {
-        resDni += `\`⌞\` *DECLARANTE:* \`${nomDeclarante}\`\n`;
-        resDni += `\`⌞\` *DATOS DECLARANTE:* \`${nuDocDeclarante}\` - \`${vinculoDeclarante}\`\n\n`;
-      }
-
-      resDni += `*➜ ⛔ RESTRICCIONES*\n\n`;
-
-      resDni += `\`⌞\` *RESTRINCCIÓN:* \`${deRestriccion}\`\n\n`;
-
-      resDni += `*➤ CONSULTADO POR:*\n`;
-      resDni += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-      resDni += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      resDni += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
-      const foto = datosReniec.foto;
-      const firma = datosReniec.firma;
-      const hderecha = datosReniec.hderecha;
-      const hizquierda = datosReniec.hizquierda;
-
-      const mediaGroup = [];
-
-      if (!foto) {
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-
-        bot
-          .sendPhoto(chatId, noFoto, {
-            caption: resDni,
-            reply_to_message_id: msg.message_id,
-            parse_mode: "Markdown",
-          })
-          .then(() => {
-            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
-            if (!isDev && !isAdmin && !isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
-            }
-            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-            else if (isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-            }
-          });
-
-        return;
-      } else {
-        if (foto) {
-          const fotoData = foto.replace(/^data:image\/jpeg;base64,/, "");
-          const fotoBuffer = Buffer.from(fotoData, "base64");
-          mediaGroup.push({ type: "photo", media: fotoBuffer });
-        }
-        if (firma) {
-          const foto2Data = firma.replace(/^data:image\/jpeg;base64,/, "");
-          const foto2Buffer = Buffer.from(foto2Data, "base64");
-          mediaGroup.push({ type: "photo", media: foto2Buffer });
-        }
-        if (hderecha) {
-          const foto2Data = hderecha.replace(/^data:image\/jpeg;base64,/, "");
-          const foto2Buffer = Buffer.from(foto2Data, "base64");
-          mediaGroup.push({ type: "photo", media: foto2Buffer });
-        }
-        if (hizquierda) {
-          const foto4Data = hizquierda.replace(/^data:image\/jpeg;base64,/, "");
-          const foto4Buffer = Buffer.from(foto4Data, "base64");
-          mediaGroup.push({
-            type: "photo",
-            media: foto4Buffer,
-            caption: resDni,
-            parse_mode: "Markdown",
-          });
-        }
-
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        bot.sendMediaGroup(chatId, mediaGroup, messageOptions).then(() => {
-          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
-          if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
-          }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-          else if (isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-          }
-        });
-      }
-    } catch (error) {
-      console.log("Error : " + error);
-
-      let xerror = `*[ 💤 ] Los servidores de RENIEC* andan apagados, no se ha *completado* la _búsqueda._`;
-
-      await bot
-        .deleteMessage(chatId, consultandoMessage.message_id)
-        .then(() => {
-          bot.sendMessage(chatId, xerror, messageOptions);
-        });
-    } finally {
-      delete usuariosEnConsulta[userId];
+    if (apPaterno !== "Ninguno") {
+      apiUrl += `&apellidop=${apPaterno}`;
     }
-  });
+
+    if (apMaterno !== "Ninguno") {
+      apiUrl += `&apellidom=${apMaterno}`;
+    }
+
+    return axios
+      .get(apiUrl)
+      .then((response) => {
+        const data = response.data;
+        return data;
+      })
+      .catch((error) => {
+        console.log("Error en la api de nombres: ", error);
+        throw error;
+      });
+  }
+}
+
+//API ACTA NACIMIENTO
+async function getActaNacimiento(dni) {
+  //END - PONT ACTA - API
+  const apiUrl = `https://api.ddosis.fun/actav2nac?token=${token_api}&dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener el acta de nacimiento: ${response.status}`
+      );
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener el acta de nacimiento desde la API");
+    throw error;
+  }
+}
+
+//API ACTA NACIMIENTO
+async function getActaMatrimonio(dni) {
+  //END - PONT ACTA - API
+  const apiUrl = `https://api.ddosis.fun/actav2mat?token=${token_api}&dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener el acta de nacimiento: ${response.status}`
+      );
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener el acta de nacimiento desde la API");
+    throw error;
+  }
+}
+
+//API ACTA DEFUNCIÓN
+async function getActaDefuncion(dni) {
+  //END - PONT ACTA - API
+  const apiUrl = `https://api.ddosis.fun/actav2def?token=${token_api}&dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener el acta de nacimiento: ${response.status}`
+      );
+    }
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.error("Error al obtener el acta de defunción desde la API");
+    throw error;
+  }
+}
+
+//API DNI VIRTUAL
+async function getDNIVirtual(dni) {
+  //END - POINT DNIVirtual - API
+  const apiUrl = `http://161.132.48.228:4000/procesar_dni?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener el DNI Virtual: ${response.status}`);
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener el DNI Virtual desde la API", error);
+    throw error;
+  }
+}
+
+//C4's
+const fichaEndPoint = "http://161.132.48.228:4045";
+
+//C4 azul
+async function fichaAzul(dni) {
+  //END - POINT FICHA AZUL - API
+  const extencionFicha = "consulta/fichaAzul";
+  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la ficha azul desde la API");
+    throw error;
+  }
+}
+
+async function fichaInscripcion(dni) {
+  //END - POINT FICHA AZUL - API
+  const extencionFicha = "consulta/fichaInscripcion";
+  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la ficha azul desde la API");
+    throw error;
+  }
+}
+
+async function fichaAntPol(dni) {
+  //END - POINT FICHA AZUL - API
+  const extencionFicha = "consulta/certiPolicial";
+  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la ficha azul desde la API");
+    throw error;
+  }
+}
+
+async function fichaAntJud(dni) {
+  //END - POINT FICHA AZUL - API
+  const extencionFicha = "consulta/antCertiJudiPenales";
+  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la ficha azul desde la API");
+    throw error;
+  }
+}
+
+async function fichaAntPen(dni) {
+  //END - POINT FICHA AZUL - API
+  const extencionFicha = "consulta/antJudiciales";
+  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la ficha azul desde la API");
+    throw error;
+  }
+}
+
+//API CEL
+const apiTelEndPoint = "http://161.132.48.228:10";
+
+async function getApiTel(tel) {
+  //END - POINT TITULAR DE CELULAR - API
+  const extencionApi = "consultar";
+  A;
+  const apiUrl = `${apiTelEndPoint}/${extencionApi}?tel=${tel}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener la respuesta de la API-TEL: ${response.status}`
+      );
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la respuesta desde la API-TEL", error);
+    throw error;
+  }
+}
+
+//API VALIDACIÓN
+async function apiValidar(tel) {
+  //END - POINT
+  const apiUrl = `https://val-apinum.onrender.com/val?num=${tel}`;
+
+  try {
+    const responseApi = await axios.get(apiUrl);
+
+    if (responseApi.status !== 200) {
+      throw new Error(
+        `Error al obtener la información de la api VALIDACION NUMERO: ${responseApi.status}`
+      );
+    }
+
+    const data = responseApi.data;
+    return data;
+  } catch (error) {
+    console.log(`Error en la api Validacion Numero: ` + error);
+  }
+}
+
+//API BITEL
+async function titularBitel(tel) {
+  //END - POINT
+  const apiUrl = `https://bit2-dat.onrender.com/bit?num=${tel}`;
+
+  try {
+    const responseBitel = await axios.get(apiUrl);
+
+    if (responseBitel.status !== 200) {
+      throw new Error(
+        `Error al obtener la información de la api BITEL: ${responseBitel.status}`
+      );
+    }
+
+    const data = responseBitel.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Bitel: ", error);
+  }
+}
+
+//API CLARO
+async function titularClaro(tel) {
+  //END - PINT
+  const apiUrl = `https://claroapi.onrender.com/clanum?num=${tel}`;
+
+  try {
+    const responseClaro = await axios.get(apiUrl);
+
+    if (responseClaro.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api CLARO: ",
+        responseClaro.status
+      );
+    }
+
+    const data = responseClaro.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Claro: ", error);
+  }
+}
+
+//API MOVISTAR
+async function titularMov(tel) {
+  //END - POINT
+  const apiUrl = `http://161.132.48.228:2000/numero?num=${tel}`;
+
+  try {
+    const responseMovistar = await axios.get(apiUrl);
+
+    if (responseMovistar.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api MOVISTAR: ",
+        responseMovistar.status
+      );
+    }
+
+    const data = responseMovistar.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Movistar: ", error);
+  }
+}
+
+//API MOVISTAR x DNI
+async function numerosMov(dni) {
+  //END - POINT
+  const apiUrl = `https://movistar-6j4y.onrender.com/movistar/dni?dni=${dni}`;
+
+  const responseMovistar = await axios.get(apiUrl);
+
+  try {
+    if (responseMovistar.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api MOVISTAR x DNI: ",
+        responseMovistar.status
+      );
+    }
+
+    const data = responseMovistar.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Movistar x DNI: ", error);
+  }
+}
+
+//API CELULAR BÁSICO
+async function titularBasic(tel) {
+  
+  const apiUrl = `http://161.132.39.14/v1/tel?n=${tel}`;
+  const headers = {
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
+  };
+
+  const responseTitular = await axios.post(apiUrl, {}, { headers });
+  
+  try {
+    if (responseTitular.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api TITULAR BASICO: ",
+        responseTitular.status
+      );
+    }
+
+    const data = responseTitular.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api TITULAR BASICO: ", error);
+  }
+}
+
+//API AUTO
+async function titularPlaca(placa) {
+  //END - PONTS TITULAR PLACAS
+  const apiUrl_1 = `https://pla-img.onrender.com/api/imgsun?pla=${placa}`; //<-- API IMAGEN
+  const apiUrl_2 = `http://161.132.48.228:7130/api/${placa}`;
+
+  try {
+    const response_1 = await axios.get(apiUrl_1);
+    const response_2 = await axios.get(apiUrl_2);
+
+    if (response_1.status !== 200) {
+      throw new Error(
+        `Error al obtener la información de la api_1: ${response_1.status}`
+      );
+    }
+
+    if (response_2.status !== 200) {
+      throw new Error(
+        `Error al obtener la información de la api_2: ${response_2.status}`
+      );
+    }
+    const data_1 = response_1.data;
+    const data_2 = response_2.data;
+
+    return {
+      api1: data_1,
+      api2: data_2,
+    };
+  } catch (error) {
+    console.error(
+      "Error al obtener la información desde alguna de las APIS de PLACAS"
+    );
+    throw error;
+  }
+}
+
+//ÁRBOL GENEALÓGICO
+async function arbolGen(dni) {
+  //END - POINT
+  const apiUrl = `https://apiarbol3.pythonanywhere.com/docragex/${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener la información del CUIT: ${response.status}`
+      );
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la información desde la API ARBOL");
+    throw error;
+  }
+}
+
+//API CUIT ARGENTINO
+async function argentinaData(cuit) {
+  //END - PONIT CUIT - API
+  const apiUrl = `https://prueba-argen.onrender.com/api/argen/cui?cui=${cuit}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status !== 200) {
+      throw new Error(
+        `Error al obtener la información del CUIT: ${response.status}`
+      );
+    }
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener la información del CUIT desde la API");
+    throw error;
+  }
+}
+
+module.exports = {
+  getReniec,
+  getReniecRes,
+  getNombres,
+  getActaNacimiento,
+  getActaMatrimonio,
+  getActaDefuncion,
+  getDNIVirtual,
+  fichaAzul,
+  fichaInscripcion,
+  fichaAntPol,
+  fichaAntJud,
+  fichaAntPen,
+  getApiTel,
+  apiValidar,
+  titularBitel,
+  titularClaro,
+  titularMov,
+  numerosMov,
+  titularBasic,
+  titularPlaca,
+  arbolGen,
+  argentinaData,
 };
+

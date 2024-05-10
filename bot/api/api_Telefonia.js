@@ -73,4 +73,19 @@ async function apiMovDni(dni) {
   }
 }
 
-module.exports = { validarOp, apiBitel, apiMovDni };
+//API ENTEL
+async function apiEntel(tel) {
+  //URL API
+  const apiUrl = `http://161.132.48.60:5000/api/cel?num=${tel}`;
+
+  try {
+    const responseApi = await axios.get(apiUrl);
+    const data = responseApi.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la Api Movistar x DNI: " + error);
+    throw error;
+  }
+}
+
+module.exports = { validarOp, apiBitel, apiMovDni, apiEntel };

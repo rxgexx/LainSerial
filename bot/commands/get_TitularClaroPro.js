@@ -167,6 +167,11 @@ module.exports = (bot) => {
 
     const validarOperador = await validarOp(tel);
 
+    if (validarOp.base.status === "resolverCapcha") {
+      let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
+
     // if (validarOp.data === "Error en la conexion con la fuente.") {
     //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);

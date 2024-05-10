@@ -1,5 +1,5 @@
 //SE REQUIRE LAS APIS
-const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
+const { validarOp, apiEntel } = require("../api/api_Telefonia.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -14,7 +14,7 @@ const moment = require("moment");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]bitx (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]entel (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -156,7 +156,7 @@ module.exports = (bot) => {
     }
     if (tel.length !== 9) {
       let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/bitxx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/bitx 957908908\`*]*\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/etntel 957908908\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -168,14 +168,10 @@ module.exports = (bot) => {
       let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
       return bot.sendMessage(chatId, yxx, messageOptions);
     }
-    // if (validarOp.data === "Error en la conexion con la fuente.") {
-    //   let yxx = `*[ ✖️ ] Error al válidar el operador,* intente más tarde.`;
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
 
-    const datosNum = validarOperador.base.operador;
+    const datosNum = validarOperador.base.message;
 
-    if (datosNum !== "Bitel") {
+    if (datosNum !== "no encontrado. puede que sea entel") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);
@@ -188,7 +184,7 @@ module.exports = (bot) => {
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando el* \`TITULAR BITEL\` del *➜ NÚMERO* \`${tel}\``;
+    let yx = `*[ 💬 ] Consultando el* \`TITULAR ENTEL\` del *➜ NÚMERO* \`${tel}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -199,37 +195,35 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const responseBitel = await apiBitel(tel);
+      const response_Entel = await apiEntel(tel);
 
-      if (
-        responseBitel.status === "False" &&
-        responseBitel.response ===
-          "No se encontraron resultados que satisfagan las condiciones."
-      ) {
-        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es BITEL.\n\n`;
+      if (response_Entel.base === "error al encontrar titular.") {
+        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es ENTEL o es de EMPRESA.\n\n`;
         yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
         return bot.sendMessage(chatId, yx, messageOptions);
       }
 
-      const data = responseBitel.response;
-      const documento = data.nuDni;
-      const nombre = data.Titular;
-      const nacionalidad = data.infTitular.Nacionalidad;
-      const Fecha_Activacion = data.fechActivacion;
-      const Hora_Activacion = data.hrActivacion;
-      const Tipo_Plan = data.tipPlan;
+      const data = response_Entel.base;
 
-      let telRes = `*[#LAIN-DOX 🌐] ➤ #BITELONLINE*\n\n`;
+      const documento = data.infoTitular.nuDni;
+      const nombre = data.infoTitular.preNombres;
+
+      const equipo = data.infoEquipo.equipo;
+      const modelo = data.infoEquipo.modelo;
+      const nu_Imei = data.infoEquipo.imei;
+      const Tipo_Plan = data.infoEquipo.plan;
+
+      let telRes = `*[#LAIN-DOX 🌐] ➤ #ENTELONLINE*\n\n`;
       telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
-      telRes += `*➤ BITEL EN TIEMPO REAL*\n`;
+      telRes += `*➤ ENTEL EN TIEMPO REAL*\n`;
       telRes += `  \`⌞\` *TITULAR:* \`${nombre}\`\n`;
       telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
-      telRes += `  \`⌞\` *NACIONALIDAD:* \`${nacionalidad}\`\n`;
-      telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${Hora_Activacion}\`\n`;
-      telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${Fecha_Activacion}\`\n`;
-      telRes += `  \`⌞\` *TIPO. PLAN:* \`${Tipo_Plan}\`\n\n`;
+      telRes += `  \`⌞\` *TIPO. PLAN:* \`${Tipo_Plan}\`\n`;
+      telRes += `  \`⌞\` *TIPO. MODELO:* \`${modelo}\`\n`;
+      telRes += `  \`⌞\` *NOMBRE. EQUIPO:* \`${equipo}\`\n`;
+      telRes += `  \`⌞\` *NUMERO DE IMEI:* \`${nu_Imei}\`\n\n`;
       telRes += `*➤ CONSULTADO POR:*\n`;
       telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
       telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
