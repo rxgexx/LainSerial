@@ -212,7 +212,7 @@ module.exports = (bot) => {
       const data = responseBitel.response;
       const documento = data.nuDni;
       const nombre = data.Titular;
-      const nacionalidad = data.Info_Titular.Nacionalidad;
+      const nacionalidad = data.infTitular.Nacionalidad;
       const Fecha_Activacion = data.fechActivacion;
       const Hora_Activacion = data.hrActivacion;
       const Tipo_Plan = data.tipPlan;
