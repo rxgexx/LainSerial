@@ -1,5 +1,8 @@
 //SE REQUIRE LAS APIS
-const { apiValidar, titularClaro } = require("../api/apis.js");
+const { titularClaro } = require("../api/apis.js");
+//SE REQUIRE LAS APIS
+const { validarOp } = require("../api/api_Telefonia.js");
+
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -159,14 +162,14 @@ module.exports = (bot) => {
       return;
     }
 
-    const validarOp = await apiValidar(tel);
+    const validarOperador = await validarOp(tel);
 
     // if (validarOp.data === "Error en la conexion con la fuente.") {
     //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOp.base.operador;
+    const datosNum = validarOperador.base.operador;
 
     if (datosNum !== "Claro") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
