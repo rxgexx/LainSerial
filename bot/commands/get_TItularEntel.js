@@ -156,7 +156,7 @@ module.exports = (bot) => {
     }
     if (tel.length !== 9) {
       let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/bitxx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/etntel 957908908\`*]*\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/entel 957908908\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -196,6 +196,13 @@ module.exports = (bot) => {
 
     try {
       const response_Entel = await apiEntel(tel);
+
+      if (response_Entel.mensaje === "Error en la conexion.") {
+        let yx = `*[ ✖️ ] Ha ocurrido un error* en la fuente *ENTEL*\n\n`;
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+        return bot.sendMessage(chatId, yx, messageOptions);
+      }
 
       if (response_Entel.base === "error al encontrar titular.") {
         let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es ENTEL o es de EMPRESA.\n\n`;
