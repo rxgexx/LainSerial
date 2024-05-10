@@ -25,10 +25,9 @@ async function getReniec(dni) {
     console.log("API 1");
     // Verificación de la respuesta
     if (response.data.message === "intente nuevamente") {
-
       console.log("API 2 ESTOY ACA");
       await retrasar(3);
-      response = await axios.get(apiUrl_2);
+      const response = await axios.get(apiUrl_2);
       data = response.data;
       return data;
     }
