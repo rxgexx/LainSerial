@@ -210,12 +210,12 @@ module.exports = (bot) => {
       }
 
       const data = responseBitel.response;
-      const documento = data.Documento;
+      const documento = data.nuDni;
       const nombre = data.Titular;
       const nacionalidad = data.Info_Titular.Nacionalidad;
-      const Fecha_Activacion = data.Fecha_Activacion;
-      const Hora_Activacion = data.Hora_Activacion;
-      const Tipo_Plan = data.Tipo_Plan;
+      const Fecha_Activacion = data.fechActivacion;
+      const Hora_Activacion = data.hrActivacion;
+      const Tipo_Plan = data.tipPlan;
 
       let telRes = `*[#LAIN-DOX 🌐] ➤ #BITELONLINE*\n\n`;
       telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
