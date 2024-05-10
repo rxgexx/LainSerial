@@ -159,20 +159,20 @@ module.exports = (bot) => {
       return;
     }
 
-    // const validarOp = await apiValidar(tel);
+    const validarOp = await apiValidar(tel);
 
-    // if (validarOp.data === "Error en la conexion con la fuente.") {
-    //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+    if (validarOp.data === "Error en la conexion con la fuente.") {
+      let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
-    // const datosNum = validarOp.datos.Operador;
+    const datosNum = validarOperador.base.operador;
 
-    // if (datosNum !== "Claro") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
+    if (datosNum !== "Claro") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
 
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {

@@ -179,27 +179,126 @@ module.exports = (bot) => {
     try {
       //VALIDAR NÚMERO
       const validarResponse = await validarOp(tel);
-      
-      if (validarOp.data === "Error en la conexion con la fuente.") {
-        let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-        return bot.sendMessage(chatId, yxx, messageOptions);
+      console.log(validarResponse);
+
+      const datosNumero = validarResponse.base;
+
+      if (datosNumero.operador === "Claro") {
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
+        telRes += `*El número* consultado pertenece a la línea \`${datosNumero.operador.toUpperCase()}\`\n`;
+
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/claxx ${tel}\`\n\n\`/clax ${tel}\`\n`;
+
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        return bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(() => {
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 10 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR BASIC: " + error
+            );
+          });
       }
-  
 
-      const datosNumero = validarResponse.datos;
+      if (datosNumero.operador === "Bitel") {
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
+        telRes += `*El número* consultado pertenece a la línea \`${datosNumero.operador.toUpperCase()}\`\n`;
 
-      //MENSAJE DEL BOT
-      let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
-      telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
-      telRes += `*➜ EMPRESA:* \`${datosNumero.Empresa}\`\n`;
-      telRes += `*➜ OPERADOR:* \`${datosNumero.Operador}\`\n\n`;
-      telRes += `*➤ CONSULTADO POR:*\n`;
-      telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/bitx ${tel}\`\n`;
+
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        return bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(() => {
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 10 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR BASIC: " + error
+            );
+          });
+      }
+
+      if (datosNumero.message === "no encontrado. puede que sea entel") {
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
+        telRes += `*El número* consultado pertenece a la línea \`ENTEL\`\n`;
+
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/entel ${tel}\`\n`;
+
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        return bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(() => {
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 10 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR BASIC: " + error
+            );
+          });
+      }
+
+      if (datosNumero.operador === "Movistar") {
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
+        telRes += `*El número* consultado pertenece a la línea \`${datosNumero.operador.toUpperCase()}\`\n`;
+
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/celx ${tel}\`\n`;
+
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        return bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(() => {
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 10 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR BASIC: " + error
+            );
+          });
+      }
+
+      let telRes = `*No se encontró* operador para el número \`${tel}\`, pueda ser que no exista o la línea esté de baja.`;
 
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      bot
+      return bot
         .sendMessage(chatId, telRes, messageOptions)
         .then(() => {
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
@@ -217,12 +316,12 @@ module.exports = (bot) => {
           );
         });
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {
-          bot.sendMessage(chatId, xerror, messageOptions);
+          let yxx = `*[ ✖️ ] Error al válidar el operador,* intente más tarde.`;
+          return bot.sendMessage(chatId, yxx, messageOptions);
         });
     } finally {
       delete usuariosEnConsulta[userId];

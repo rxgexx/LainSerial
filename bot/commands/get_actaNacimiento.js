@@ -188,6 +188,15 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+      bot.sendMessage(
+        chatId,
+        `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
+        messageOptions
+      );
+
+      return;
       const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
@@ -319,7 +328,6 @@ module.exports = (bot) => {
         });
       }
     } catch (error) {
-      
       console.log(error);
 
       if (error.response && error.response.status === 500) {

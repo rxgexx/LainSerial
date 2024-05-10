@@ -162,20 +162,20 @@ module.exports = (bot) => {
       return;
     }
 
-    // const validarOperador = await validarOp(tel);
+    const validarOperador = await validarOp(tel);
 
-    // if (validarOp.data === "Error en la conexion con la fuente.") {
-    //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+    if (validarOp.data === "Error en la conexion con la fuente.") {
+      let yxx = `*[ ✖️ ] Error al válidar el operador,* intente más tarde.`;
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
-    // const datosNum = validarOperador.datos.Operador;
+    const datosNum = validarOperador.base.operador;
 
-    // if (datosNum !== "Bitel") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+    if (datosNum !== "Bitel") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
 
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -209,13 +209,13 @@ module.exports = (bot) => {
         return bot.sendMessage(chatId, yx, messageOptions);
       }
 
-      const data = responseBitel.response;
-      const documento = data.nuDni;
+      const data = responseBitel.bitelData;
+      const documento = data.Documento;
       const nombre = data.Titular;
-      const nacionalidad = data.infTitular.Nacionalidad;
-      const Fecha_Activacion = data.fechActivacion;
-      const Hora_Activacion = data.hrActivacion;
-      const Tipo_Plan = data.tipPlan;
+      const nacionalidad = data.Info_Titular.Nacionalidad;
+      const Fecha_Activacion = data.Fecha_Activacion;
+      const Hora_Activacion = data.Hora_Activacion;
+      const Tipo_Plan = data.Tipo_Plan;
 
       let telRes = `*[#LAIN-DOX 🌐] ➤ #BITELONLINE*\n\n`;
       telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
