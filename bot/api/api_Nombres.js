@@ -35,14 +35,14 @@ async function apiName_1(nombre, apPaterno = " ", apMaterno = " ") {
   }
 }
 
-async function apiName_2(nombre, apPaterno = " ", apMaterno = " ") {
+async function apiName_2(nombre, apPaterno = " ", apMaterno = " ", edadMin = " ", edadMax = " ") {
   // Convertir a mayúsculas
   nombre = nombre.toUpperCase();
   apPaterno = apPaterno.toUpperCase();
   apMaterno = apMaterno.toUpperCase();
 
-  const url = `https://dashboard.knowlers.xyz/apires?tipo=personasxnombres&token=b305f85e20f73e1e27c6631065e69e93c9b5d0d8`;
-  const api_url = `${url}&nombres=${nombre}&appMaterno=${apMaterno}&appPaterno=${apPaterno}`;
+  const url = `https://dashboard.knowlers.xyz/apires?tipo=reniecxnombresonline&token=e5b466caed670f122086d9f3be08e4424189a687`;
+  const api_url = `${url}&nombre=${nombre}&apPaterno=${apPaterno}&apMaterno=${apMaterno}&edadMin=${edadMin}&edadMax=${edadMax}`;
   let data;
 
   try {
