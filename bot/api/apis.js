@@ -8,12 +8,19 @@ const token_api = process.env.TOKEN_API;
 //LINK API
 const link_api = `https://api.ddosis.fun`;
 
+function retrasar(seconds) {
+  return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+}
+
 //API RENIEC
 async function getReniec(dni) {
   //END - PONT ACTA - API
   const API_ENDPOINT = `${link_api}/reniec`;
-  const apiUrl = `http://161.132.41.103:3998/API/ALQUILER/GENIOSMASH/9d39c08t642f3677ac1f7a90d9f6785b/reniec_original/${dni}`;
+  const apiUrl = `http://161.132.48.60:5050/reniec/${dni}`;
   try {
+
+    retrasar(3000)
+
     const response = await axios.get(apiUrl);
     if (response.status !== 200) {
       throw new Error(`Error al obtener los datos reniec: ${response.status}`);
