@@ -26,8 +26,10 @@ async function getReniec(dni) {
       await retrasar(3);
       response = await axios.get(apiUrl_2);
     }
+    console.log(response.data);
 
     return response.data;
+
   } catch (error) {
     console.error("Error al obtener los datos de RENIEC desde la API:", error);
     throw error;
