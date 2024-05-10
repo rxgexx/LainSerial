@@ -164,10 +164,10 @@ module.exports = (bot) => {
 
     const validarOp = await apiValidar(tel);
 
-    if (validarOp.data === "Error en la conexion con la fuente.") {
-      let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    // if (validarOp.data === "Error en la conexion con la fuente.") {
+    //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     const datosNum = validarOperador.base.operador;
 
