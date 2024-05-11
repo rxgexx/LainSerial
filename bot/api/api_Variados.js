@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function apiPlaca(placa) {
-  const apiUrl = `https://placa-img5.onrender.com/api/imgsun?pla=${placa}`;
+  const apiUrl = `https://placa-img6.onrender.com/api/imgsun?pla=${placa}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
