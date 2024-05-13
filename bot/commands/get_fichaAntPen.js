@@ -221,7 +221,7 @@ module.exports = (bot) => {
       const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       const responsefichaAntPen = await fichaAntPen(dni);
-      const listaAni = responsefichaAntPen.listaAni[0];
+      const listaAni = responsefichaAntPen.listaAni;
       const {
         apeMaterno, // Apellido materno
         apePaterno, // Apellido paterno
