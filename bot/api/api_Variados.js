@@ -11,6 +11,17 @@ async function apiPlaca(placa) {
   }
 }
 
+async function apiPlaca_2(placa) {
+  const apiUrl = `https://api.ddosis.fun/placav2?token=gD75X1MxvcbuOxe11d6dJUiQlpv&placa=${placa}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api de placas: " + error);
+  }
+}
+
 async function apiMPFN(dni) {
   const apiUrl = `http://161.132.41.107:3000/mpfn?dni=${dni}`;
 
@@ -47,4 +58,4 @@ async function api_infoburo(dni) {
   }
 }
 
-module.exports = { apiPlaca, apiMPFN, apiNotas, api_infoburo };
+module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_infoburo };

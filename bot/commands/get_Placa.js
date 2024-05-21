@@ -1,4 +1,4 @@
-const { apiPlaca } = require("../api/api_Variados");
+const { apiPlaca, apiPlaca_2 } = require("../api/api_Variados");
 
 //SE REQUIRE LAS APIS
 const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
