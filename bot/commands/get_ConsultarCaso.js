@@ -184,7 +184,8 @@ module.exports = (bot) => {
       //CORREGIR RESPONSE
       // Función para normalizar la cadena JSON
 
-      const response = await mpfnCaso(caso);
+      const response_api = await mpfnCaso(dni);
+      const response = response_api.response
 
       if (
         response.respuesta.infPersona === "No hay datos" &&

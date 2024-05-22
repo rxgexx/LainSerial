@@ -184,8 +184,9 @@ module.exports = (bot) => {
       //CORREGIR RESPONSE
       // Función para normalizar la cadena JSON
 
-      const response = await mpfnDni(dni);
-      
+      const response_api = await mpfnDni(dni);
+      const response = response_api.response
+
       if (
         response.respuesta === "No se encontraro registros para su busqueda"
       ) {
