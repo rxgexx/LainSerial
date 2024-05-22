@@ -188,6 +188,9 @@ module.exports = (bot) => {
       const imgPlaca = foto.replace(/^data:image\/jpeg;base64,/, "");
       const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
+      const response_2 = await apiPlaca_2(placa)
+      const datos_placa = 
+
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {
