@@ -128,6 +128,7 @@ module.exports = (bot) => {
       let cmds = `*[#LAIN-DOX 🌐]*\n\n`;
       cmds += `*➤ LISTA DE COMANDOS DISPONIBLES*\n\n`;
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
+      cmds += `*➜ /nmdb:* _Búsqueda de nombres en base de datos - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
       cmds += `*➜ /fxmpfn:* _Búsqueda de casos MPFN - 🟢_\n`;
       cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
@@ -139,6 +140,7 @@ module.exports = (bot) => {
       cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
+      cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
       cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;
       cmds += `*➜ /fxazul:* _C4 AZUL - 🟢_\n`;
