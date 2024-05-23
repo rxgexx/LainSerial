@@ -159,7 +159,7 @@ module.exports = (bot) => {
       // Verificar si la entrada contiene el carácter "|"
       if (!input.includes("|")) {
         let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, asegúrate de usar el siguiente formato: \`/nm\` *nombre*|*apellido1*|*apellido2*\n\n`;
-        replyToUsoIncorrecto += `*➜ EJEMPLO:* \`/nm Pedro|Castillo|Terrones\``;
+        replyToUsoIncorrecto += `*➜ EJEMPLO:* \`/nmdb Pedro|Castillo|Terrones\``;
         bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
         return;
       }
