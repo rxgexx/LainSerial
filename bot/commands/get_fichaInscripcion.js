@@ -5,7 +5,7 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
 //APIS
-const { fichaAzul } = require("../api/apis");
+const { fichaInscripcion } = require("../api/apis");
 
 //SE REQUIERE "path"
 const path = require("path");
@@ -17,17 +17,11 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
 const antiSpam = {};
-
-//IMAGEN BUSCANDO
-const imagenBuscando = path.join(__dirname, "../img/buscandoImg.jpg");
-
-//USERS COMMANDS
-const userCommand = {};
 const invokedMessageIds = {}; // se almacena los ids XD
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]fxazul (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]fxins (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -41,7 +35,6 @@ module.exports = (bot) => {
     // if (messageTime < botStartTime) {
     //   return;
     // }
-
     const msg_id = msg.message_id; // 2 id
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
@@ -56,7 +49,6 @@ module.exports = (bot) => {
       parse_mode: "Markdown",
     };
 
-    // Marcamos al usuario como que ha invocado el comando
     invokedMessageIds[userId] = msg_id;
 
     //Se declaran los rangos
@@ -209,8 +201,8 @@ module.exports = (bot) => {
     }
 
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/certazul\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/certazul 07768359\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxins\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxins 07768359\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -222,7 +214,7 @@ module.exports = (bot) => {
       return;
     }
 
-    const y = `*[ ⚙️ ] Construyendo* la \`FICHA AZUL\` del *➜ DNI* \`${dni}\``;
+    const y = `*[ ⚙️ ] Construyendo* el \`DOCUMENTO C4 INSCRIPCIÓN\` del *➜ DNI* \`${dni}\``;
 
     //Si todo se cumple, se iniciará con la consulta...
     const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
@@ -230,10 +222,10 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const responseFichaAzul = await fichaAzul(dni);
-      const listaAni = responseFichaAzul.listaAni;
-      console.log("LISTA ANI FX AZUL: " + listaAni);
+      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
+      const responsefichaInscripcion = await fichaInscripcion(dni);
+      const listaAni = responsefichaInscripcion.listaAni;
       const {
         apeMaterno, // Apellido materno
         apePaterno, // Apellido paterno
@@ -274,9 +266,10 @@ module.exports = (bot) => {
         vinculoDeclarante, // Vínculo del declarante
         cancelacion,
       } = listaAni;
+      console.log(listaAni);
 
       let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-      reply += `*[ ☑️ ] DOCUMENTO C4 AZUL*\n\n`;
+      reply += `*[ ☑️ ] DOCUMENTO C4 INSCRIPCIÓN*\n\n`;
       reply += `*➤ INF. PERSONA:*\n`;
       reply += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${coDocEmi}\`\n`;
       reply += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
@@ -292,11 +285,11 @@ module.exports = (bot) => {
 
       //BUILDIDNG PDF C4
       //Staring transforming the b64 image to a image....
-      const fotoImagen = responseFichaAzul.fotoImagen;
+      const fotoImagen = responsefichaInscripcion.fotoImagen;
 
       //Declarate the path where save the pdf's
       const pdfsFolder = path.join(__dirname, "../../fichasDocuments"); // Ruta a la carpeta "docs"
-      const pdfPath = path.join(pdfsFolder, `${dni}_C4_Azul.pdf`); // Ruta al archivo PDF
+      const pdfPath = path.join(pdfsFolder, `${dni}_C4_Inscripcion.pdf`); // Ruta al archivo PDF
 
       //If don't found the folder, created it
       if (!fs.existsSync(pdfsFolder)) {
@@ -357,7 +350,6 @@ module.exports = (bot) => {
             ],
           ],
         };
-
         writeStream.on("finish", async function () {
           //Se manda el documento
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -399,7 +391,6 @@ module.exports = (bot) => {
                   }
                 }
               });
-
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
               if (!isDev && !isAdmin && !isBuyer) {
                 antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
