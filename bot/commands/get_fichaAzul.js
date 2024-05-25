@@ -21,10 +21,6 @@ const antiSpam = {};
 //IMAGEN BUSCANDO
 const imagenBuscando = path.join(__dirname, "../img/buscandoImg.jpg");
 
-//USERS COMMANDS
-const userCommand = {};
-const invokedMessageIds = {}; // se almacena los ids XD
-
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]fxazul (.+)/, async (msg, match) => {
@@ -42,8 +38,6 @@ module.exports = (bot) => {
     //   return;
     // }
 
-    const msg_id = msg.message_id; // 2 id
-
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
     const dni = match[1];
     const chatId = msg.chat.id;
@@ -55,9 +49,6 @@ module.exports = (bot) => {
       reply_to_message_id: msg.message_id,
       parse_mode: "Markdown",
     };
-
-    // Marcamos al usuario como que ha invocado el comando
-    invokedMessageIds[userId] = msg_id;
 
     //Se declaran los rangos
 
@@ -230,10 +221,11 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
+
       const responseFichaAzul = await fichaAzul(dni);
       const listaAni = responseFichaAzul.listaAni;
       console.log("LISTA ANI FX AZUL: " + listaAni);
-
+      
       const {
         apeMaterno, // Apellido materno
         apePaterno, // Apellido paterno
@@ -346,18 +338,6 @@ module.exports = (bot) => {
         pdfDoc.pipe(writeStream);
         pdfDoc.end();
 
-        // BOTONES
-        const botones = {
-          inline_keyboard: [
-            [
-              {
-                text: "𝒐𝒃𝒕𝒆𝒏𝒆𝒓 𝒅𝒐𝒄𝒖𝒎𝒆𝒏𝒕𝒐 𝒆𝒏 𝒊𝒎𝒂𝒈𝒆𝒏",
-                callback_data: "obtenerImagen",
-              },
-            ],
-          ],
-        };
-
         writeStream.on("finish", async function () {
           //Se manda el documento
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -366,40 +346,9 @@ module.exports = (bot) => {
               caption: reply,
               parse_mode: "Markdown",
               reply_to_message_id: msg.message_id,
-              reply_markup: JSON.stringify(botones),
               thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
             })
             .then(() => {
-              // CONSULTAR AL CLIENTE
-              bot.on("callback_query", (callbackQuery) => {
-                const msg_id_qu = callbackQuery.message.message_id; // 4 id
-                const action = callbackQuery.data;
-                const userId = callbackQuery.from.id; // 3 id
-                const firstName = callbackQuery.from.first_name;
-
-                if (action.startsWith("obtenerImagen")) {
-                  if (invokedMessageIds[userId] !== msg_id) {
-                    bot.answerCallbackQuery(
-                      callbackQuery.id,
-                      "𝗗𝗲𝗯𝗲𝘀 𝗶𝗻𝗶𝗰𝗶𝗮𝗿 𝗲𝗹 𝗰𝗼𝗺𝗮𝗻𝗱𝗼 𝗽𝗮𝗿𝗮 usar el botón."
-                    );
-                    return;
-                  } else {
-                    const fotoData = fotoImagen.replace(
-                      /^data:image\/jpeg;base64,/,
-                      ""
-                    );
-                    const fotoBuffer = Buffer.from(fotoData, "base64");
-
-                    bot.sendPhoto(chatId, fotoBuffer, {
-                      caption: reply,
-                      parse_mode: "Markdown",
-                      reply_to_message_id: msg.message_id,
-                    });
-                  }
-                }
-              });
-
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
               if (!isDev && !isAdmin && !isBuyer) {
                 antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
