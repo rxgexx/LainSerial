@@ -270,7 +270,7 @@ module.exports = (bot) => {
       let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
       reply += `*[ ☑️ ] ANTEC. POLICIALES*\n\n`;
       reply += `*➤ INF. PERSONA:*\n`;
-      reply += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${coDocEmi}\`\n`;
+      reply += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
       reply += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
       reply += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
       reply += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
