@@ -184,6 +184,15 @@ module.exports = (bot) => {
 
     try {
       const datosReniec = await getReniec(dni);
+
+      if (datosReniec.message === "El DNI no existe") {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+        let y = `*[ 💬 ] El DNI no existe o ha sido eliminado* de Reniec.`;
+
+        return bot.sendMessage(chatId, y, messageOptions);
+      }
+
       const listaAni = datosReniec.listaAni[0];
 
       const {
