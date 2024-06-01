@@ -175,7 +175,7 @@ module.exports = (bot) => {
       const datosHogar = responseHogar.response.base;
 
       if (
-        datosHogar.response ===
+        responseHogar.response ===
         "El DNI consultado no se encuentra registrado en el PGH, el ciudadano puede solicitar su CSE."
       ) {
         bot.sendMessage(
