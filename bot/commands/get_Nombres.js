@@ -211,7 +211,7 @@ module.exports = (bot) => {
       );
 
       if (
-        responseNombres.message ===
+        responseNombres.data.message ===
         "No se encontró ningún resultado con los datos ingresados."
       ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
