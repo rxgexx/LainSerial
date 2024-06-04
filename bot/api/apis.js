@@ -55,7 +55,7 @@ async function getReniecRes(dni) {
 
 async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
   {
-    let apiUrl = `http://161.132.48.228:2335/consultaReniec?dni=&nombre=${prinombre}`;
+    let apiUrl = `http://161.132.48.228:2336/consultaReniec?dni=&nombre=${prinombre}`;
 
     if (apPaterno !== "Ninguno") {
       apiUrl += `&ap_pat=${apPaterno}`;
