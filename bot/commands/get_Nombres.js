@@ -210,7 +210,10 @@ module.exports = (bot) => {
         apellidoMaterno
       );
 
-      if (responseNombres["Documentos encontrados"] === "0") {
+      if (
+        responseNombres.message ===
+        "No se encontró ningún resultado con los datos ingresados."
+      ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let x = `*[ ✖️ ] No se han* encontrado personas para los _nombres dados._`;
         bot.sendMessage(chatId, x, messageOptions);
