@@ -211,7 +211,6 @@ module.exports = (bot) => {
       );
 
       if (responseNombres["Documentos encontrados"] === "0") {
-
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let x = `*[ ✖️ ] No se han* encontrado personas para los _nombres dados._`;
         bot.sendMessage(chatId, x, messageOptions);
@@ -229,14 +228,15 @@ module.exports = (bot) => {
           nombresData.forEach((dato, index) => {
             const nuPersona = index + 1;
             const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
+            // const digitoVerificacion = dato.digitoVerificacion;
             const apePaterno = dato.apePaterno;
             const apeMaterno = dato.apeMaterno;
             const preNombres = dato.preNombres;
             const nuEdad = dato.nuEdad;
 
             replyDni += `  \`⌞\` *PERSONA:* \`${nuPersona}\`\n`;
-            replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
+            replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\`\n`;
+            // replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
             replyDni += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
             replyDni += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
             replyDni += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n\n`;
@@ -288,7 +288,8 @@ module.exports = (bot) => {
             const nuEdad = dato.nuEdad;
 
             replyToTxt = `  ⌞ PERSONA: ${nuPersona}\n`;
-            replyToTxt += `  ⌞ N° DNI: ${nuDni} - ${digitoVerificacion}\n`;
+            replyToTxt += `  ⌞ N° DNI: ${nuDni}\n`;
+            // replyToTxt += `  ⌞ N° DNI: ${nuDni} - ${digitoVerificacion}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;
             replyToTxt += `  ⌞ EDAD: ${nuEdad}\n\n`;
