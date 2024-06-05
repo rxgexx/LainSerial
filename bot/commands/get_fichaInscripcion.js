@@ -221,6 +221,18 @@ module.exports = (bot) => {
       const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       const responsefichaInscripcion = await fichaInscripcion(dni);
+
+      if (
+        responsefichaInscripcion.error ===
+        `El DNI ${dni} no cuenta con datos disponibles para la construcción de la ficha`
+      ) {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+        let yx = `*[✖️] El DNI ${dni}* no cuenta con datos suficientes para la construcción *de la ficha*.`;
+
+        return bot.sendMessage(chatId, yx, messageOptions);
+      }
+
       const listaAni = responsefichaInscripcion.listaAni;
       const {
         apeMaterno, // Apellido materno
