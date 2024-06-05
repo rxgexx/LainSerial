@@ -88,4 +88,16 @@ async function apiEntel(tel) {
   }
 }
 
-module.exports = { validarOp, apiBitel, apiMovDni, apiEntel };
+async function claroDni(dni) {
+  const apiUrl = `http://161.132.48.228:1000/claro?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { validarOp, apiBitel, apiMovDni, apiEntel, claroDni };
