@@ -180,10 +180,11 @@ module.exports = (bot) => {
 
     try {
       const responseClaro = await claroDni(dni);
+      console.log(responseClaro);
 
       if (
         responseClaro.status === "False" &&
-        responseClaro.response === "No se encontro datos."
+        responseClaro.mensaje === "No se encontro datos."
       ) {
         let yx = `*[ ✖️ ] No pude hallar números* del DNI \`${dni}\`.\n\n`;
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
