@@ -180,7 +180,7 @@ module.exports = (bot) => {
       //RESPONSE TITULAR
       const responseTitular = await titularBasic(tel);
 
-      if (responseTitular.estado === false) {
+      if (responseTitular.datos === "{}") {
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
