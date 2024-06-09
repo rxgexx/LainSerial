@@ -192,7 +192,7 @@ module.exports = (bot) => {
 
         //DATOS TITULAR
         const dni = dataTitular.datos.dni;
-        const titular = dataTitular.datos.name + dataTitular.datos.surname;
+        const titular = dataTitular.datos.titular;
 
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
