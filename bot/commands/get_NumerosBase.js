@@ -1,5 +1,5 @@
 //SE REQUIRE LAS APIS
-const { titularBasic } = require("../api/apis.js");
+const { datosNum } = require("../api/apis.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -59,7 +59,7 @@ module.exports = (bot) => {
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
         console.log(
-          "Error al obtener la información del Bot en el comando titularBasic: ",
+          "Error al obtener la información del Bot en el comando datosNum: ",
           err
         );
       });
@@ -181,7 +181,7 @@ module.exports = (bot) => {
 
     try {
       //RESPONSE TITULAR
-      const responseTitular = await titularBasic(dni);
+      const responseTitular = await datosNum(dni);
       console.log(responseTitular);
 
       if (responseTitular.estado === false) {
@@ -191,15 +191,15 @@ module.exports = (bot) => {
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
         //RESPONSE TITULAR
-        const dataNumeros = responseTitular.datos.numbers;
-        const titular = responseTitular.datos.surname + responseTitular.datos.name;
+        const dataNumeros = responseTitular.numbers;
+        // const titular = responseTitular.datos.surname + responseTitular.datos.name;
 
         //CONSTRUCCIÓN DEL MENSAJE
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] NUMEROS DE* - \`${dni}\` -\n\n`;
         telRes += `*➤ INF. PERSONA:*\n`;
-        telRes += `  \`⌞\` *DNI:* \`${dni}\`\n`;
-        telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n\n`;
+        // telRes += `  \`⌞\` *DNI:* \`${dni}\`\n`;
+        // telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n\n`;
 
         telRes += `*➤ BASE DE DATOS:*\n\n`;
 

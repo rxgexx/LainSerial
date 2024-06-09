@@ -385,7 +385,32 @@ async function numerosMov(dni) {
 
 //API CELULAR BÁSICO
 async function titularBasic(tel) {
-  const apiUrl = `http://161.132.39.14/v1/tel?n=${tel}`;
+  const apiUrl = `https://telefonia.onrender.com/numero/${tel}`;
+  const headers = {
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
+  };
+
+  const responseTitular = await axios.post(apiUrl, {}, { headers });
+
+  try {
+    if (responseTitular.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api TITULAR BASICO: ",
+        responseTitular.status
+      );
+    }
+
+    const data = responseTitular.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api TITULAR BASICO: ", error);
+  }
+}
+
+//API CELULAR BÁSICO
+async function datosNum(dni) {
+  const apiUrl = `https://telefonia.onrender.com/dni/${dni}`;
   const headers = {
     Authorization:
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
@@ -507,4 +532,5 @@ module.exports = {
   titularPlaca,
   arbolGen,
   argentinaData,
+  datosNum
 };
