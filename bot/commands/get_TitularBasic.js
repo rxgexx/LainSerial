@@ -180,7 +180,8 @@ module.exports = (bot) => {
       //RESPONSE TITULAR
       const responseTitular = await titularBasic(tel);
 
-      if (responseTitular.datos === "{}") {
+
+      if (Object.keys(responseTitular.datos).length === 0) {
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
@@ -225,7 +226,7 @@ module.exports = (bot) => {
           });
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] No encontré datos*`;
+      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

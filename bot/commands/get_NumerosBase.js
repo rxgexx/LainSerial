@@ -182,9 +182,8 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await datosNum(dni);
-      console.log(responseTitular);
 
-      if (responseTitular.estado === false) {
+      if (responseTitular.numbers.length === 0) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No pude hallar registros de números* del DNI \`${dni}\`.`;
 
@@ -335,7 +334,7 @@ module.exports = (bot) => {
         }
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] No encontré datos*`;
+      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
