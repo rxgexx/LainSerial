@@ -335,7 +335,7 @@ module.exports = (bot) => {
         }
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      let xerror = `*[ ✖️ ] No encontré datos*`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

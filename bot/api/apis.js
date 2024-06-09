@@ -391,7 +391,7 @@ async function titularBasic(tel) {
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
   };
 
-  const responseTitular = await axios.post(apiUrl, {}, { headers });
+  const responseTitular = await axios.get(apiUrl);
 
   try {
     if (responseTitular.status !== 200) {
@@ -416,7 +416,7 @@ async function datosNum(dni) {
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
   };
 
-  const responseTitular = await axios.post(apiUrl, {}, { headers });
+  const responseTitular = await axios.get(apiUrl);
 
   try {
     if (responseTitular.status !== 200) {
@@ -532,5 +532,5 @@ module.exports = {
   titularPlaca,
   arbolGen,
   argentinaData,
-  datosNum
+  datosNum,
 };
