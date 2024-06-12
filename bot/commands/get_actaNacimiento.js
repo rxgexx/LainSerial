@@ -188,15 +188,15 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-      bot.sendMessage(
-        chatId,
-        `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
-        messageOptions
-      );
+      // bot.sendMessage(
+      //   chatId,
+      //   `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
+      //   messageOptions
+      // );
 
-      return;
+      // return;
       const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
