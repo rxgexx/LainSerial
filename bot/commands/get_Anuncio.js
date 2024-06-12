@@ -20,9 +20,18 @@ module.exports = (bot) => {
       // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
-      let msg = `*✅ CLARO POR DNI AGREGADO:*\n\n`;
-      msg += `\`⌞\` *USO:* \`cladni\` seguido de un *número de DNI*.\n\n`;
-      msg += `\`⌞\` Obtén registro de \`NÚMEROS CLARO\` *en tiempo real de una persona* solamente con su *DNI*.\n`;
+      let msg = `*✅ ACTAS Y NOTAS AGREGADO:*\n\n`;
+      msg += `\`⌞\` *USO:* \`actnaci\` seguido de un *número de DNI*.\n`;
+      msg += `\`⌞\` Obtén registro de \`ACTA DE NACIMIENTO\` *oficial de una persona* solamente con su *DNI*.\n\n`;
+
+      msg += `\`⌞\` *USO:* \`actdefu\` seguido de un *número de DNI*.\n`;
+      msg += `\`⌞\` Obtén registro de \`ACTA DE DEFUNCIÓN\` *oficial de una persona* solamente con su *DNI*.\n\n`;
+
+      msg += `\`⌞\` *USO:* \`actmatri\` seguido de un *número de DNI*.\n`;
+      msg += `\`⌞\` Obtén registro de \`ACTA DE MATRIMONIO\` *oficial de una persona* solamente con su *DNI*.\n\n`;
+
+      msg += `\`⌞\` *USO:* \`fxnotas\` seguido de un *número de DNI*.\n`;
+      msg += `\`⌞\` Obtén registro de \`NOTAS\` *en tiempo real de una persona* solamente con su *DNI*.\n\n`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
