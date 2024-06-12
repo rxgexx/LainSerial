@@ -134,8 +134,10 @@ module.exports = (bot) => {
       cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
       cmds += `*➜ /hogar:* _Búsqueda de integrantes del hogar - 🟢_\n`;
-      cmds += `*➜ /dnir:* _Búsqueda de Datos Reniec Respaldo - 🟢_\n`;
       cmds += `*➜ /dnix:* _Búsqueda de Datos Reniec - 🟢_\n`;
+      cmds += `*➜ /actnaci:* _Búsqueda de ACTA DE NACIMIENTO - 🟢_\n`;
+      cmds += `*➜ /actdefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
+      cmds += `*➜ /actmatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
       cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
       cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
