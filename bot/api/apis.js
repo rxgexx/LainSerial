@@ -81,7 +81,7 @@ async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
 //API ACTA NACIMIENTO
 async function getActaNacimiento(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `https://api.ddosis.fun/actav2nac?token=${token_api}&dni=${dni}`;
+  const apiUrl = `https://pnte.onrender.com/acta/nacimiento/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -101,7 +101,7 @@ async function getActaNacimiento(dni) {
 //API ACTA NACIMIENTO
 async function getActaMatrimonio(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `https://api.ddosis.fun/actav2mat?token=${token_api}&dni=${dni}`;
+  const apiUrl = `https://pnte.onrender.com/acta/matrimonio/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -121,7 +121,7 @@ async function getActaMatrimonio(dni) {
 //API ACTA DEFUNCIÓN
 async function getActaDefuncion(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `https://api.ddosis.fun/actav2def?token=${token_api}&dni=${dni}`;
+  const apiUrl = `https://pnte.onrender.com/acta/defuncion/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);

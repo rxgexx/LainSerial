@@ -35,7 +35,7 @@ async function apiMPFN(dni) {
 }
 
 async function apiNotas(dni) {
-  const apiUrl = `https://api.ddosis.fun/minedu?token=gD75X1MxvcbuOxe11d6dJUiQlpv&dni=${dni}`;
+  const apiUrl = `https://pnte.onrender.com/minedu/${dni}}`;
 
   try {
     const response = await axios.get(apiUrl);
