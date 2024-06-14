@@ -46,7 +46,7 @@ async function validarOp(tel, maxRetries = 3) {
 //API BITEL
 async function apiBitel(tel) {
   //URL API
-  const apiUrl = `https://bitelapi-v1.replit.app/bitlive?num=${tel}`;
+  const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
