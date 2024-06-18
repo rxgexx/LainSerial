@@ -385,7 +385,7 @@ async function numerosMov(dni) {
 
 //API CELULAR BÁSICO
 async function titularBasic(tel) {
-  const apiUrl = `https://telefonia.onrender.com/numero/${tel}`;
+  const apiUrl = `https://telefonia-z3j5.onrender.com/numero/${tel}`;
   const headers = {
     Authorization:
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
@@ -410,7 +410,7 @@ async function titularBasic(tel) {
 
 //API CELULAR BÁSICO
 async function datosNum(dni) {
-  const apiUrl = `https://telefonia.onrender.com/dni/${dni}`;
+  const apiUrl = `https://telefonia-z3j5.onrender.com/dni/${dni}`;
   const headers = {
     Authorization:
       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InQ0NTUifQ.FD_By1cV_G0t2gUvu_vsj6AvXrClXCBtPX5w82QuxhY",
