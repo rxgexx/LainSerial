@@ -320,7 +320,7 @@ async function titularBitel(tel) {
 //API CLARO
 async function titularClaro(tel) {
   //END - PINT
-  const apiUrl = `https://claroapi.onrender.com/clanum?num=${tel}`;
+  const apiUrl = `https://claroapi-tjas.onrender.com/clanum?num=${tel}`;
 
   try {
     const responseClaro = await axios.get(apiUrl);
