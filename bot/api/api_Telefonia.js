@@ -7,40 +7,55 @@ function retrasar(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-async function validarOp(tel, maxRetries = 3) {
-  //URL API
-  const apiUrl = `http://161.132.48.60:3500/valop?num=${tel}`;
-  let attempts = 0;
+// async function validarOp(tel, maxRetries = 3) {
+//   //URL API
+//   const apiUrl = `http://161.132.48.60:3500/valop?num=${tel}`;
+//   let attempts = 0;
 
-  while (attempts < maxRetries) {
-    try {
-      const responseApi = await axios.get(apiUrl);
-      // Si la respuesta es exitosa, devolver los datos
-      if (responseApi.status === 200) {
-        return responseApi.data;
-      }
-    } catch (error) {
-      attempts++;
-      console.log("Error en la Api Validar Operador: " + error);
-      // Reintenta solo si el estado es 500
-      if (
-        error.response &&
-        error.response.status === 500 &&
-        attempts < maxRetries
-      ) {
-        console.log(`Reintento ${attempts}: después de un error 500`);
-        await retrasar(1000 * attempts); // Espera progresivamente más tiempo en cada reintento
-      } else {
-        // Si el error no es un 500 o ya se alcanzó el máximo de reintentos, lanza el error
-        throw error;
-      }
-    }
+//   while (attempts < maxRetries) {
+//     try {
+//       const responseApi = await axios.get(apiUrl);
+//       // Si la respuesta es exitosa, devolver los datos
+//       if (responseApi.status === 200) {
+//         return responseApi.data;
+//       }
+//     } catch (error) {
+//       attempts++;
+//       console.log("Error en la Api Validar Operador: " + error);
+//       // Reintenta solo si el estado es 500
+//       if (
+//         error.response &&
+//         error.response.status === 500 &&
+//         attempts < maxRetries
+//       ) {
+//         console.log(`Reintento ${attempts}: después de un error 500`);
+//         await retrasar(1000 * attempts); // Espera progresivamente más tiempo en cada reintento
+//       } else {
+//         // Si el error no es un 500 o ya se alcanzó el máximo de reintentos, lanza el error
+//         throw error;
+//       }
+//     }
+//   }
+
+//   // Si se agotan los intentos y siempre recibe 500, lanzar un nuevo error
+//   throw new Error(
+//     "Error en la API Validar Operador después de varios intentos"
+//   );
+// }
+
+async function validarOp(tel) {
+  const url = "https://dashboard.knowlers.xyz/personas/validateop";
+  const payload = {
+    phone: tel,
+  };
+
+  try {
+    const response = await axios.post(url, payload);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error after logging it
   }
-
-  // Si se agotan los intentos y siempre recibe 500, lanzar un nuevo error
-  throw new Error(
-    "Error en la API Validar Operador después de varios intentos"
-  );
 }
 
 //API BITEL
