@@ -51,6 +51,7 @@ async function validarOp(tel) {
 
   try {
     const response = await axios.post(url, payload);
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
