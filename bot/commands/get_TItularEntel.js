@@ -164,7 +164,7 @@ module.exports = (bot) => {
 
     const validarOperador = await validarOp(tel);
 
-    if (validarOperador.base.status === "resolverCapcha") {
+    if (validarOperador.status === "resolverCapcha") {
       let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
       return bot.sendMessage(chatId, yxx, messageOptions);
     }
