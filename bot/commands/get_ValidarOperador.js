@@ -181,7 +181,7 @@ module.exports = (bot) => {
       const validarResponse = await validarOp(tel);
       console.log(validarResponse);
 
-      const datosNumero = validarResponse.base;
+      const datosNumero = validarResponse;
 
       if (datosNumero.operador === "Claro") {
         //MENSAJE DEL BOT

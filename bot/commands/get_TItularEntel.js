@@ -169,7 +169,7 @@ module.exports = (bot) => {
       return bot.sendMessage(chatId, yxx, messageOptions);
     }
 
-    const datosNum = validarOperador.base.message;
+    const datosNum = validarOperador.message;
 
     if (datosNum !== "no encontrado. puede que sea entel") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Entel*.`;
