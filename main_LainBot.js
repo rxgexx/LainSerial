@@ -8,7 +8,15 @@ const token_bot = process.env["TOKEN_BOT"];
 console.log(token_bot); // Muestra el token del bot
 console.log("TOKEN_BOT:", process.env.TOKEN_BOT); // Muestra el token del bot también
 console.log("Polling-test: ", TelegramBot); // Muestra información sobre TelegramBot
-const bot = new TelegramBot(token_bot, { polling: true });
+const bot = new TelegramBot(token_bot, {
+  polling: true,
+  request: {
+    agentOptions: {
+      keepAlive: true,
+      family: 4,
+    },
+  },
+});
 
 //BOT PRENDIDO
 bot
