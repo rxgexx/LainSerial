@@ -44,7 +44,7 @@ function retrasar(time) {
 // }
 
 async function validarOp(tel) {
-  const url = "https://dashboard.knowlers.xyz/personas/validateop";
+  const url = "https://dashboard.knowlers.xyz/personas/validateoperador";
   const payload = {
     phone: tel,
   };
