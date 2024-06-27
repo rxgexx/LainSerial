@@ -1,8 +1,5 @@
 const { apiPlaca, apiPlaca_2 } = require("../api/api_Variados");
 
-//SE REQUIRE LAS APIS
-const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
-
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
@@ -184,18 +181,53 @@ module.exports = (bot) => {
     try {
       const response = await apiPlaca(placa);
       const foto = response.base.img64;
+      const datos = response.base.data;
 
       const imgPlaca = foto.replace(/^data:image\/jpeg;base64,/, "");
       const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
-      const response_2 = await apiPlaca_2(placa)
-      const datos_placa = 
+      const response_2 = await apiPlaca_2(placa);
+
+      // DATOS PLACA
+      const cAnioFab = datos.cAnioFab;
+      const numMotor = datos.cMotor;
+      const numSerie = datos.cPlaca;
+      const numAsientos = datos.siAsientos;
+      const tipo_descripcion = datos.cCarroceria;
+      const marca_descripcion = datos.cMarca;
+      const modelo_descripcion = datos.cModelo;
+      const propietarioNombre = `${datos.cNombre} ${datos.cPaterno} ${datos.cMaterno}`;
+      const documento = datos.cNroDocu;
+      const tipoPropietario = datos.cTipoPersona;
+      const propiedad = datos.cPropiedad;
+
+      // MENSAJE
+      let yx = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
+      yx += `*[ ☑️ ] INFORMACIÓN VEHICULAR*\n\n`;
+      yx += `*➤ INF. DE PLACA:*\n`;
+      yx += `  \`⌞\` *NUM° MOTOR:* \`${numMotor}\`\n`;
+      yx += `  \`⌞\` *NUM° SERIE:* \`${numSerie}\`\n`;
+      yx += `  \`⌞\` *NUM° ASIENTOS:* \`${numAsientos}\`\n`;
+      yx += `  \`⌞\` *AÑO. FABRICACIÓN:* \`${cAnioFab}\`\n\n`;
+      yx += `*➤ INF. MODELO VEHICULAR:*\n`;
+      yx += `  \`⌞\` *TIPO. VEHÍCULO:* \`${tipo_descripcion}\`\n`;
+      yx += `  \`⌞\` *MARCA:* \`${marca_descripcion}\`\n`;
+      yx += `  \`⌞\` *DESCRIPCIÓN:* \`${modelo_descripcion}\`\n\n`;
+      yx += `*➤ PROPIETARIO:*\n`;
+      yx += `  \`⌞\` *NOMBRE:* \`${propietarioNombre}\`\n`;
+      yx += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
+      yx += `  \`⌞\` *TIPO:* \`${tipoPropietario}\`\n`;
+      yx += `  \`⌞\` *PROPIEDAD:* \`${propiedad}\`\n\n`;
+      yx += `*➤ CONSULTADO POR:*\n`;
+      yx += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+      yx += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      yx += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {
           bot.sendPhoto(chatId, fotoBuffer, {
-            caption: `Consulta hecha con éxito :)`,
+            caption: yx,
             reply_to_message_id: msg.message_id,
             parse_mode: "Markdown",
           });
