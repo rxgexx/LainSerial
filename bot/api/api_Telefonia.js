@@ -92,7 +92,7 @@ async function apiMovDni(dni) {
 //API ENTEL
 async function apiEntel(tel) {
   //URL API
-  const apiUrl = `http://161.132.48.60:5000/api/cel?num=${tel}`;
+  const apiUrl = `http://161.132.49.207:5000/api/cel?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
