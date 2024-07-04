@@ -81,7 +81,7 @@ async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
 //API ACTA NACIMIENTO
 async function getActaNacimiento(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `https://pnte-rqj4.onrender.com/acta/nacimiento/${dni}`;
+  const apiUrl = `http://161.132.48.228:1422/api/actna?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);

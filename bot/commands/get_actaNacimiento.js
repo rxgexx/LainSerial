@@ -212,7 +212,7 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const datos = validarRes[0];
+        const datos = res.datos;
 
         //Construimos el mensaje adicional que irá con el acta
         let reply = `*[#LAIN-DOX 🌐]*\n\n`;
@@ -229,8 +229,8 @@ module.exports = (bot) => {
         reply += `*[+]* \`${userId}\`\n`;
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = datos.imagenActaAnverso;
-        const selloActa = datos.imagenActaReverso;
+        const caraActa = res.foto;
+        // const selloActa = datos.imagenActaReverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
         const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
@@ -280,14 +280,14 @@ module.exports = (bot) => {
             agregarImagenAPDF(fotoBuffer, imageDimensions);
           }
 
-          if (selloActa) {
-            const foto2Data = selloActa.replace(
-              /^data:image\/jpeg;base64,/,
-              ""
-            );
-            const foto2Buffer = Buffer.from(foto2Data, "base64");
-            agregarImagenAPDF(foto2Buffer, imageDimensions);
-          }
+          // if (selloActa) {
+          //   const foto2Data = selloActa.replace(
+          //     /^data:image\/jpeg;base64,/,
+          //     ""
+          //   );
+          //   const foto2Buffer = Buffer.from(foto2Data, "base64");
+          //   agregarImagenAPDF(foto2Buffer, imageDimensions);
+          // }
 
           // Guarda el PDF en el sistema de archivos
           const writeStream = fs.createWriteStream(pdfPath);
