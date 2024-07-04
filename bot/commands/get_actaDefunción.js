@@ -210,7 +210,7 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const datos = validarRes[0];
+        const datos = datos.res;
 
         //Construimos el mensaje adicional que irá con el acta
         let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
@@ -227,7 +227,7 @@ module.exports = (bot) => {
         reply += `*[+]* \`${userId}\`\n`;
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = datos.foto;
+        const caraActa = res.foto;
         // const selloActa = datos.imagenActaReverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
