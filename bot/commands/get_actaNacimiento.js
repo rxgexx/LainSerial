@@ -201,9 +201,9 @@ module.exports = (bot) => {
 
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
       const res = await getActaNacimiento(dni);
-      const validarRes = res.Respuesta.listResActa;
+      const validarRes = res.status;
 
-      if (validarRes.length === 0) {
+      if (validarRes.length === false) {
         const y = `*[ ✖️ ] No se encontró* el acta de nacimiento del *DNI* \`${dni}\`.`;
 
         await bot
