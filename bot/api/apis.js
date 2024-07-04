@@ -101,7 +101,7 @@ async function getActaNacimiento(dni) {
 //API ACTA NACIMIENTO
 async function getActaMatrimonio(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `https://pnte-rqj4.onrender.com/acta/matrimonio/${dni}`;
+  const apiUrl = `http://161.132.48.228:1422/api/actma?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -121,7 +121,7 @@ async function getActaMatrimonio(dni) {
 //API ACTA DEFUNCIÓN
 async function getActaDefuncion(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `https://pnte-rqj4.onrender.com/acta/defuncion/${dni}`;
+  const apiUrl = `http://161.132.48.228:1422/api/actde?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
