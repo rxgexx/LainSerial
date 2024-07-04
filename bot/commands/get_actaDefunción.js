@@ -210,7 +210,7 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const datos = datos.res;
+        const datos = res.datos;
 
         //Construimos el mensaje adicional que irá con el acta
         let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
