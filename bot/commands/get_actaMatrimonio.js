@@ -199,10 +199,10 @@ module.exports = (bot) => {
       // return;
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
       const res = await getActaMatrimonio(dni);
-      const validarRes = res.Respuesta.listResActa;
+      const validarRes = res.status;
 
-      if (validarRes.length === 0) {
-        const y = `*[ ✖️ ] No se encontró* el acta de matrimonio del *DNI* \`${dni}\`.`;
+      if (validarRes === false) {
+        const y = `*[ ✖️ ] No se encontró* el acta de defunción del *DNI* \`${dni}\`.`;
 
         await bot
           .deleteMessage(chatId, consultandoMessage.message_id)
@@ -210,7 +210,7 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const datos = validarRes[0];
+        const datos = res.datos;
 
         //Construimos el mensaje adicional que irá con el acta
         let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
@@ -227,8 +227,8 @@ module.exports = (bot) => {
         reply += `*[+]* \`${userId}\`\n`;
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = datos.imagenActaAnverso;
-        const selloActa = datos.imagenActaReverso;
+        const caraActa = datos.foto;
+        // const selloActa = datos.imagenActaReverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
         const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
@@ -277,14 +277,14 @@ module.exports = (bot) => {
             agregarImagenAPDF(fotoBuffer, imageDimensions);
           }
 
-          if (selloActa) {
-            const foto2Data = selloActa.replace(
-              /^data:image\/jpeg;base64,/,
-              ""
-            );
-            const foto2Buffer = Buffer.from(foto2Data, "base64");
-            agregarImagenAPDF(foto2Buffer, imageDimensions);
-          }
+          // if (selloActa) {
+          //   const foto2Data = selloActa.replace(
+          //     /^data:image\/jpeg;base64,/,
+          //     ""
+          //   );
+          //   const foto2Buffer = Buffer.from(foto2Data, "base64");
+          //   agregarImagenAPDF(foto2Buffer, imageDimensions);
+          // }
 
           // Guarda el PDF en el sistema de archivos
           const writeStream = fs.createWriteStream(pdfPath);

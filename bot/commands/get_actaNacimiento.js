@@ -203,7 +203,7 @@ module.exports = (bot) => {
       const res = await getActaNacimiento(dni);
       const validarRes = res.status;
 
-      if (validarRes.length === false) {
+      if (validarRes === false) {
         const y = `*[ ✖️ ] No se encontró* el acta de nacimiento del *DNI* \`${dni}\`.`;
 
         await bot
