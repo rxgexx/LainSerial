@@ -29,7 +29,7 @@ module.exports = (bot) => {
     // if (messageTime < botStartTime) {
     //   return;
     // }
-    
+
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
     const caso = match[1];
     const chatId = msg.chat.id;
@@ -181,11 +181,19 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+      return bot.sendMessage(
+        chatId,
+        `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
+        messageOptions
+      );
+
       //CORREGIR RESPONSE
       // Función para normalizar la cadena JSON
 
       const response_api = await mpfnCaso(caso);
-      const response = response_api.response
+      const response = response_api.response;
 
       if (
         response.respuesta.infPersona === "No hay datos" &&
@@ -215,7 +223,12 @@ module.exports = (bot) => {
         const infPersona = detalles.infPersona;
 
         const nombres =
-          infPersona.apPaterno + " " + infPersona.apMaterno + " " + " " + infPersona.preNombres;
+          infPersona.apPaterno +
+          " " +
+          infPersona.apMaterno +
+          " " +
+          " " +
+          infPersona.preNombres;
         const pais = infPersona.pais;
         const departamento = infPersona.departamento;
         const provincia = infPersona.provincia;
@@ -291,7 +304,8 @@ module.exports = (bot) => {
         res += `*➤ CONSULTADO POR:*\n`;
         res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
         res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-        res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;        await bot
+        res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+        await bot
           .deleteMessage(chatId, consultandoMessage.message_id)
           .then(() => {
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos

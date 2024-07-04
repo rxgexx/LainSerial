@@ -128,10 +128,9 @@ module.exports = (bot) => {
       let cmds = `*[#LAIN-DOX 🌐]*\n\n`;
       cmds += `*➤ LISTA DE COMANDOS DISPONIBLES*\n\n`;
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
-      cmds += `*➜ /nmdb:* _Búsqueda de nombres en base de datos - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
-      cmds += `*➜ /fxmpfn:* _Búsqueda de casos MPFN - 🟢_\n`;
-      cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
+      // cmds += `*➜ /fxmpfn:* _Búsqueda de casos MPFN - 🟢_\n`;
+      // cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
       cmds += `*➜ /hogar:* _Búsqueda de integrantes del hogar - 🟢_\n`;
       cmds += `*➜ /dnix:* _Búsqueda de Datos Reniec - 🟢_\n`;
@@ -149,7 +148,6 @@ module.exports = (bot) => {
       cmds += `*➜ /fxantpol:* _FICHA ANT. POLICIALES - 🟢_\n`;
       cmds += `*➜ /fxantpen:* _FICHA ANT. PENALES - 🟢_\n`;
       cmds += `*➜ /fxantjud:* _FICHA ANT. JUDICIALES - 🟢 _\n`;
-      cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;

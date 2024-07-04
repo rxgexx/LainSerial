@@ -181,11 +181,19 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+      return bot.sendMessage(
+        chatId,
+        `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
+        messageOptions
+      );
+
       //CORREGIR RESPONSE
       // Función para normalizar la cadena JSON
 
       const response_api = await mpfnDni(dni);
-      const response = response_api.response
+      const response = response_api.response;
 
       if (
         response.respuesta === "No se encontraro registros para su busqueda"
