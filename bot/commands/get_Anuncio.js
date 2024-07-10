@@ -21,8 +21,7 @@ module.exports = (bot) => {
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
       let msg = `*✅ ÙNETE AL CANAL OFICIAL DEL BOT :)*\n\n`;
-      msg += `*➜ COMANDO /hogar ARREGLADO Y MEJORADO*\n\n`;
-      msg += `*➜ EN UNAS HORAS* se estará *agregando / mejorando nuevos comandos al Bot.* No te quedes atrás y entérate *de todo https://t.me/LainDox_Info.*\n\n`;
+      msg += `*➜ EN UNOS MINUTOS SE AGREGARÁ* un nuevo comando, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando.*\n\n`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
