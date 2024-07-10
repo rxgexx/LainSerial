@@ -22,6 +22,7 @@ module.exports = (bot) => {
 
       let msg = `*✅ ÙNETE AL CANAL OFICIAL DEL BOT :)*\n\n`;
       msg += `*➜ EN UNOS MINUTOS SE AGREGARÁ* un nuevo comando, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
+      msg += `*➜ NUEVO COMANDO AGREGADO 🚀* \`/seeker < dni >\`, *úsalo ya!*\n\n`;
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
