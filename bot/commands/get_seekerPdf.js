@@ -198,18 +198,18 @@ module.exports = (bot) => {
       const edad = data.edad;
       const ubigeo = data.ubigeoa;
 
-      let msg = `*[#LAIN-DOX 🌐] ➤ #SEEKER*\n\n`;
-      msg += `*➜ INF. PERSONA:*\n`;
-      msg += `  \`⌞\` *NOMBRE:* \`${nombre}\`\n`;
-      msg += `  \`⌞\` *AP. PATERNO:* \`${apellidoPaterno}\`\n`;
-      msg += `  \`⌞\` *AP. MATERNO:* \`${apellidoMaterno}\`\n`;
-      msg += `  \`⌞\` *FECHA. NACIMIENTO:* \`${feNacimiento}\`\n`;
-      msg += `  \`⌞\` *UBIGEO. DIRECCIÓN:* \`${ubigeo}\`\n\n`;
+      let msg_chat = `*[#LAIN-DOX 🌐] ➤ #SEEKER*\n\n`;
+      msg_chat += `*➜ INF. PERSONA:*\n`;
+      msg_chat += `  \`⌞\` *NOMBRE:* \`${nombre}\`\n`;
+      msg_chat += `  \`⌞\` *AP. PATERNO:* \`${apellidoPaterno}\`\n`;
+      msg_chat += `  \`⌞\` *AP. MATERNO:* \`${apellidoMaterno}\`\n`;
+      msg_chat += `  \`⌞\` *FECHA. NACIMIENTO:* \`${feNacimiento}\`\n`;
+      msg_chat += `  \`⌞\` *UBIGEO. DIRECCIÓN:* \`${ubigeo}\`\n\n`;
 
-      msg += `*➤ CONSULTADO POR:*\n`;
-      msg += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-      msg += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      msg += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+      msg_chat += `*➤ CONSULTADO POR:*\n`;
+      msg_chat += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+      msg_chat += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      msg_chat += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
       //PDF
 
@@ -233,7 +233,7 @@ module.exports = (bot) => {
 
         bot
           .sendDocument(chatId, tempFilePath, {
-            caption: msg,
+            caption: msg_chat,
             reply_to_message_id: msg.message_id,
             parse_mode: "Markdown",
           })
