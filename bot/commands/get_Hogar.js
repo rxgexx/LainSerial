@@ -172,39 +172,73 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
     try {
       const responseHogar = await apiHogar(dni);
-      const datosHogar = responseHogar.response.base;
+      const datosHogar = responseHogar.response;
 
-      if (
-        responseHogar.response ===
-        "El DNI consultado no se encuentra registrado en el PGH, el ciudadano puede solicitar su CSE."
-      ) {
+      if (datosHogar.PGH === "No existe registro.") {
         bot.sendMessage(
           chatId,
           `*[ ✖️ ] El DNI consultado* no se encuentra registrado en el PGH.`,
           messageOptions
         );
       } else {
-        const integrantes = datosHogar.integrantes_hogar;
+        const integrantes = datosHogar.integrantes;
+        const pgh = datosHogar.PGH;
+        const fsu = datosHogar.FSU;
+
+        //DATOS FSU
+        const Fecha_de_empadronamiento = fsu.Fecha_de_empadronamiento;
+
+        //DATOS PGH
+        const Clasificación_socioeconómica = pgh.Clasificación_socioeconómica;
+        const Departamento = pgh.Departamento;
+        const Dirección = pgh.Dirección;
+        const Distrito = pgh.Distrito;
+        const Estado = pgh.Estado;
+        const Provincia = pgh.Provincia;
 
         let res = `*[#LAIN-DOX 🌐] ➤ #HOGAR*\n\n`;
-        res += `Se han *encontrado* \`${integrantes.length}\` _integrantes del hogar_ para el *DNI ${dni}.*\n\n`;
+
+        res += `*- 🏠 - INFORMACIÓN. HOGAR\n\n*`;
+        res += `  \`⌞\` *ESTADO:* \`${Estado}\`\n`;
+        res += `  \`⌞\` *FECHA. EMPADRONAMIENTO:* \`${Fecha_de_empadronamiento}\`\n`;
+        res += `  \`⌞\` *CLASIFICACIÓN SOCIOECONÓMICA:* \`${Clasificación_socioeconómica}\`\n`;
+        res += `  \`⌞\` *DEPARTAMENTO:* \`${Departamento}\`\n`;
+        res += `  \`⌞\` *PROVINCIA:* \`${Provincia}\`\n`;
+        res += `  \`⌞\` *DISTRITO* \`${Distrito}\`\n`;
+        res += `  \`⌞\` *DIRECCIÓN* \`${Dirección}\`\n\n`;
+
+        // PERSONA CONSULTADA
+        const consultado = datosHogar.consultado;
+
+        res += `*- 👪 - INTEGRANTES. HOGAR\n\n*`;
+        res += `*➜ La persona consultada es * \`${consultado}\`\n`;
+        res += `*➜ Se han encontrado* \`${datosHogar.cantIntegrantes}\` _integrantes del hogar_ para el *DNI ${dni}.*\n\n`;
+
+        function jefeTitular(jefe) {
+          if (jefe === "Jefe") {
+            return "Titular del Hogar";
+          }
+          return jefe;
+        }
+
+        console.log(integrantes.length);
 
         if (integrantes.length <= 10) {
           integrantes.forEach((dato, index) => {
             const numero = index + 1;
-            const apeMaterno = dato.apellido_materno;
-            const apePaterno = dato.apellido_paterno;
-            const feNacimiento = dato.fecha_nacimiento;
-            const nuDni = dato.numero_documento;
-            const preNombres = dato.nombres;
-            const sexo = dato.genero;
+            const apeMaterno = dato.apMat;
+            const apePaterno = dato.apPat;
+            const feNacimiento = dato.fechaNacimiento;
+            const nuDni = dato.nuDni;
+            const preNombres = dato.preNombres;
+            const relacion = jefeTitular(dato.relacion);
 
-            res += `*➜ NÚMERO:* \`${numero}\`\n`;
-            res += `*➜ N° DNI:* \`${nuDni}\`\n`;
-            res += `*➜ APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
-            res += `*➜ NOMBRES:* \`${preNombres}\`\n`;
-            res += `*➜ FE. NACIMIENTO:* \`${feNacimiento}\`\n`;
-            res += `*➜ GÉNERO:* \`${sexo}\`\n\n`;
+            res += `  \`⌞\` *NÚMERO:* \`${numero}\`\n`;
+            res += `  \`⌞\` *N° DNI:* \`${nuDni}\`\n`;
+            res += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
+            res += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
+            res += `  \`⌞\` *FE. NACIMIENTO:* \`${feNacimiento}\`\n`;
+            res += `  \`⌞\` *RELACIÓN:* \`${relacion}\`\n\n`;
           });
 
           res += `*➤ CONSULTADO POR:*\n`;
