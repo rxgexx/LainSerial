@@ -181,13 +181,13 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-      return bot.sendMessage(
-        chatId,
-        `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
-        messageOptions
-      );
+      // return bot.sendMessage(
+      //   chatId,
+      //   `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
+      //   messageOptions
+      // );
 
       //CORREGIR RESPONSE
       // Función para normalizar la cadena JSON
