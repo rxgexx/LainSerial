@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function apiPlaca(placa) {
-  const apiUrl = `https://sun-img-dzkh.onrender.com/api/imgsun?pla=${placa}`;
+  const apiUrl = `https://placa-img7.onrender.com/api/imgsun?pla=${placa}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -35,7 +35,7 @@ async function apiMPFN(dni) {
 }
 
 async function apiNotas(dni) {
-  const apiUrl = `https://pnte-rqj4.onrender.com/minedu/${dni}`;
+  const apiUrl = `https://api.ddosis.fun/minedu?token=gD75X1MxvcbuOxe11d6dJUiQlpv&dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -46,8 +46,8 @@ async function apiNotas(dni) {
   }
 }
 
-async function api_infoburo(dni) {
-  const apiUrl = `http://161.132.48.228:3505/infoburo?dni=${dni}`;
+async function api_trabajos(dni) {
+  const apiUrl = `http://161.132.38.231:2175/laboral?dni=${dni}&auth=clay:osiris`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -58,4 +58,4 @@ async function api_infoburo(dni) {
   }
 }
 
-module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_infoburo };
+module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_trabajos };
