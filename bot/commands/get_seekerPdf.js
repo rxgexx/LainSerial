@@ -191,76 +191,137 @@ module.exports = (bot) => {
       //MENSAJE DEL BOT
 
       const data = res.data2.objeto;
-      const apellidoPaterno = data.paterno;
-      const apellidoMaterno = data.materno;
-      const nombre = data.nombre;
-      const feNacimiento = data.nacimiento;
-      const edad = data.edad;
-      const ubigeo = data.ubigeoa;
 
-      let msg_chat = `*[#LAIN-DOX 🌐] ➤ #SEEKER*\n\n`;
-      msg_chat += `*➜ INF. PERSONA:*\n`;
-      msg_chat += `  \`⌞\` *NOMBRE:* \`${nombre}\`\n`;
-      msg_chat += `  \`⌞\` *AP. PATERNO:* \`${apellidoPaterno}\`\n`;
-      msg_chat += `  \`⌞\` *AP. MATERNO:* \`${apellidoMaterno}\`\n`;
-      msg_chat += `  \`⌞\` *FECHA. NACIMIENTO:* \`${feNacimiento}\`\n`;
-      msg_chat += `  \`⌞\` *UBIGEO. DIRECCIÓN:* \`${ubigeo}\`\n\n`;
+      if (data !== null) {
+        const apellidoPaterno = data.paterno;
+        const apellidoMaterno = data.materno;
+        const nombre = data.nombre;
+        const feNacimiento = data.nacimiento;
+        const edad = data.edad;
+        const ubigeo = data.ubigeoa;
 
-      msg_chat += `*➤ CONSULTADO POR:*\n`;
-      msg_chat += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-      msg_chat += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      msg_chat += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+        let msg_chat = `*[#LAIN-DOX 🌐] ➤ #SEEKER*\n\n`;
+        msg_chat += `*➜ INF. PERSONA:*\n`;
+        msg_chat += `  \`⌞\` *NOMBRE:* \`${nombre}\`\n`;
+        msg_chat += `  \`⌞\` *AP. PATERNO:* \`${apellidoPaterno}\`\n`;
+        msg_chat += `  \`⌞\` *AP. MATERNO:* \`${apellidoMaterno}\`\n`;
+        msg_chat += `  \`⌞\` *FECHA. NACIMIENTO:* \`${feNacimiento}\`\n`;
+        msg_chat += `  \`⌞\` *UBIGEO. DIRECCIÓN:* \`${ubigeo}\`\n\n`;
 
-      //PDF
+        msg_chat += `*➤ CONSULTADO POR:*\n`;
+        msg_chat += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+        msg_chat += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        msg_chat += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-      const pdf = res_pdf.base64PDF;
-      // Convertir base64 a buffer
-      const pdfBuffer = Buffer.from(pdf, "base64");
+        //PDF
 
-      const save = path.join(__dirname, "../../fichasDocuments");
+        const pdf = res_pdf.base64PDF;
+        // Convertir base64 a buffer
+        const pdfBuffer = Buffer.from(pdf, "base64");
 
-      // Crear un archivo temporal para guardar el PDF
-      const tempFilePath = path.join(save, `${dni}_data.pdf`);
+        const save = path.join(__dirname, "../../fichasDocuments");
 
-      fs.writeFile(tempFilePath, pdfBuffer, async (err) => {
-        if (err) {
-          console.error("Error al guardar el archivo temporal:", err);
-          return;
-        }
+        // Crear un archivo temporal para guardar el PDF
+        const tempFilePath = path.join(save, `${dni}_data.pdf`);
 
-        // Enviar el archivo PDF a través de Telegram
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        fs.writeFile(tempFilePath, pdfBuffer, async (err) => {
+          if (err) {
+            console.error("Error al guardar el archivo temporal:", err);
+            return;
+          }
 
-        bot
-          .sendDocument(chatId, tempFilePath, {
-            caption: msg_chat,
-            reply_to_message_id: msg.message_id,
-            parse_mode: "Markdown",
-          })
-          .then(() => {
-            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
-            if (!isDev && !isAdmin && !isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 120;
-            }
-            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-            else if (isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
-            }
+          // Enviar el archivo PDF a través de Telegram
+          await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-            console.log("PDF enviado exitosamente");
-            // Eliminar el archivo temporal después de enviarlo
-            fs.unlink(tempFilePath, (err) => {
-              if (err) {
-                console.error("Error al eliminar el archivo temporal:", err);
-              } else {
-                console.log("Archivo temporal eliminado");
+          bot
+            .sendDocument(chatId, tempFilePath, {
+              caption: msg_chat,
+              reply_to_message_id: msg.message_id,
+              parse_mode: "Markdown",
+            })
+            .then(() => {
+              //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+              if (!isDev && !isAdmin && !isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 120;
               }
+              //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+              else if (isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
+              }
+
+              console.log("PDF enviado exitosamente");
+              // Eliminar el archivo temporal después de enviarlo
+              fs.unlink(tempFilePath, (err) => {
+                if (err) {
+                  console.error("Error al eliminar el archivo temporal:", err);
+                } else {
+                  console.log("Archivo temporal eliminado");
+                }
+              });
+            })
+            .catch((err) => {
+              console.error("Error al enviar el PDF:", err);
             });
-          })
-          .catch((err) => {
-            console.error("Error al enviar el PDF:", err);
-          });
-      });
+        });
+      } else {
+        let msg_chat = `*[#LAIN-DOX 🌐] ➤ #SEEKER*\n\n`;
+
+        msg_chat += `*➤ CONSULTADO POR:*\n`;
+        msg_chat += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+        msg_chat += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        msg_chat += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+        //PDF
+
+        const pdf = res_pdf.base64PDF;
+        // Convertir base64 a buffer
+        const pdfBuffer = Buffer.from(pdf, "base64");
+
+        const save = path.join(__dirname, "../../fichasDocuments");
+
+        // Crear un archivo temporal para guardar el PDF
+        const tempFilePath = path.join(save, `${dni}_data.pdf`);
+
+        fs.writeFile(tempFilePath, pdfBuffer, async (err) => {
+          if (err) {
+            console.error("Error al guardar el archivo temporal:", err);
+            return;
+          }
+
+          // Enviar el archivo PDF a través de Telegram
+          await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+          bot
+            .sendDocument(chatId, tempFilePath, {
+              caption: msg_chat,
+              reply_to_message_id: msg.message_id,
+              parse_mode: "Markdown",
+            })
+            .then(() => {
+              //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+              if (!isDev && !isAdmin && !isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 120;
+              }
+              //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+              else if (isBuyer) {
+                antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
+              }
+
+              console.log("PDF enviado exitosamente");
+              // Eliminar el archivo temporal después de enviarlo
+              fs.unlink(tempFilePath, (err) => {
+                if (err) {
+                  console.error("Error al eliminar el archivo temporal:", err);
+                } else {
+                  console.log("Archivo temporal eliminado");
+                }
+              });
+            })
+            .catch((err) => {
+              console.error("Error al enviar el PDF:", err);
+            });
+        });
+      }
     } catch (error) {
       let xerror = `*[ ✖️ ] No se ha *encontrado u obtenido la ficha informativa para el DNI consultado.*`;
       console.log(error);
