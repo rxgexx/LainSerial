@@ -20,9 +20,12 @@ module.exports = (bot) => {
       // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
 
-      let msg = `*✅ ÙNETE AL CANAL OFICIAL DEL BOT :)*\n\n`;
-      msg += `*➜ EN UNOS MINUTOS SE AGREGARÁ* un nuevo comando, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
-      msg += `*➜ NUEVO COMANDO AGREGADO 🚀* \`/seeker < dni >\`, *úsalo ya!*\n\n`;
+      // let msg = `*✅ ÙNETE AL CANAL OFICIAL DEL BOT :)*\n\n`;
+      // msg += `*➜ EN UNOS MINUTOS SE AGREGARÁ* un nuevo comando, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
+      // msg += `*➜ NUEVO COMANDO AGREGADO 🚀* \`/seeker < dni >\`, *úsalo ya!*\n\n`;
+
+      let msg = `*[ ⚠️ ] BOT EN MANTENIMIENTO UNOS MINUTOS...,* se está agregando nueva fuente RENIEC`
+
 
       // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
