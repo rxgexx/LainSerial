@@ -4,6 +4,7 @@ const img = path.join(__dirname, "../img/anuncio__4.jpg");
 
 module.exports = (bot) => {
   bot.onText(/\/anuncio/, async (msg) => {
+    console.log(msg);
     try {
       // Leer el archivo JSON que contiene los IDs de usuarios y grupos permitidos
       const usuarios = require("../config/rangos/rangos.json");
@@ -12,11 +13,11 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let msg = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
-      msg += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
-      msg += `*[ ☑️ ] COMANDO TRABAJOS arreglado* - \`/fxtrabajos\` - *:*\n`;
-      msg += `   \`⌞\` Obtén el \`REGISTRO LABORAL\` de una *persona* solamente con su *DNI*.\n\n`;
-      msg += `➜ @SinFlowxr | @LainDox_Info\n\n`;
+      let anuncio = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
+      anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
+      anuncio += `*[ ☑️ ] COMANDO TRABAJOS arreglado* - \`/fxtrabajos\` - *:*\n`;
+      anuncio += `   \`⌞\` Obtén el \`REGISTRO LABORAL\` de una *persona* solamente con su *DNI*.\n\n`;
+      anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
 
       // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
@@ -40,7 +41,7 @@ module.exports = (bot) => {
           //   parse_mode: "Markdown",
           // });
 
-          bot.sendMessage(usuarioId, msg, { parse_mode: "Markdown" });
+          bot.sendMessage(usuarioId, anuncio, { parse_mode: "Markdown" });
         } catch (error) {
           console.error(
             `No se pudo enviar mensaje a usuario ${usuarioId}:`,
@@ -61,7 +62,7 @@ module.exports = (bot) => {
           //   parse_mode: "Markdown",
           // });
 
-          bot.sendMessage(grupoId, msg, { parse_mode: "Markdown" });
+          bot.sendMessage(grupoId, anuncio, { parse_mode: "Markdown" });
         } catch (error) {
           console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
         }
