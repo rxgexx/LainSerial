@@ -14,7 +14,7 @@ module.exports = (bot) => {
 
       let msg = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
       msg += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
-      msg += `[ ☑️ ] COMANDO *TRABAJOS arreglado* - \`/fxtrabajos\` - *:*\n`;
+      msg += `*[ ☑️ ] COMANDO TRABAJOS arreglado* - \`/fxtrabajos\` - *:*\n`;
       msg += `   \`⌞\` Obtén el \`REGISTRO LABORAL\` de una *persona* solamente con su *DNI*.\n\n`;
       msg += `➜ @SinFlowxr | @LainDox_Info\n\n`;
 
