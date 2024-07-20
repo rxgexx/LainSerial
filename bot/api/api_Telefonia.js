@@ -51,7 +51,6 @@ async function validarOp(tel) {
 
   try {
     const response = await axios.post(url, payload);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
@@ -77,7 +76,7 @@ async function apiBitel(tel) {
 //API MOVISTAR x DNI
 async function apiMovDni(dni) {
   //URL API
-  const apiUrl = `http://161.132.48.228:2000/dni?dni=${dni}`;
+  const apiUrl = `http://161.132.56.82:4010/dniv2/${dni}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
@@ -86,6 +85,28 @@ async function apiMovDni(dni) {
   } catch (error) {
     console.log("Error en la Api Movistar x DNI: " + error);
     throw error;
+  }
+}
+
+//API MOVISTAR
+async function titularMov(tel) {
+  //END - POINT
+  const apiUrl = `http://161.132.56.82:4010/numero/${tel}`;
+
+  try {
+    const responseMovistar = await axios.get(apiUrl);
+
+    if (responseMovistar.status !== 200) {
+      throw new Error(
+        "Error al obtener la información de la api MOVISTAR: ",
+        responseMovistar.status
+      );
+    }
+
+    const data = responseMovistar.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la api Movistar: ", error);
   }
 }
 
@@ -116,4 +137,11 @@ async function claroDni(dni) {
   }
 }
 
-module.exports = { validarOp, apiBitel, apiMovDni, apiEntel, claroDni };
+module.exports = {
+  validarOp,
+  apiBitel,
+  apiMovDni,
+  titularMov,
+  apiEntel,
+  claroDni,
+};

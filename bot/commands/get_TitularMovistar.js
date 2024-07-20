@@ -1,5 +1,5 @@
 //SE REQUIRE LAS APIS
-const { apiValidar, titularMov } = require("../api/apis.js");
+const { validarOp, titularMov } = require("../api/api_Telefonia.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -162,20 +162,20 @@ module.exports = (bot) => {
       return;
     }
 
-    // const validarOp = await apiValidar(tel);
+    const validarOperador = await validarOp(tel);
 
     // if (validarOp.data === "Error en la conexion con la fuente.") {
     //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    // const datosNum = validarOp.datos.Operador;
+    const datosNum = validarOperador.operador;
 
-    // if (datosNum !== "Movistar") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
+    if (datosNum !== "Movistar") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
 
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -197,7 +197,7 @@ module.exports = (bot) => {
     try {
       //RESPONSE BITEL
       const responseMov = await titularMov(tel);
-      if (responseMov.error === "No se encontro datos.") {
+      if (responseMov[0].length === 0) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Movistar.\n\n`;
         yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
@@ -216,30 +216,40 @@ module.exports = (bot) => {
       } else {
         //RESPONSE BITEL
         //RESPONSE MOVISTAR
-        const dataMovistar = responseMov;
+        const dataMovistar = responseMov[0];
+        console.log(dataMovistar);
+
         //DATOS MOVISTAR
         const tipoProducto = dataMovistar.tipoProducto;
         const modo = dataMovistar.modo;
         const plan = dataMovistar.plan;
-        const tipoDoc = dataMovistar.tipoDoc;
-        const titular = dataMovistar.titular;
-        const documento = dataMovistar.documento;
-        const fechaActivacion = dataMovistar.fechaActivacion;
+        // const tipoDoc = dataMovistar.tipoDoc;
+        const imei = dataMovistar.numImei;
+        const titular = dataMovistar.nomTitular;
+        const tecnologia = dataMovistar.desTecnologia;
+        const tipProducto = dataMovistar.tipProducto;
+        const feCompra = dataMovistar.celInfo.feCompra;
+        // const documento = dataMovistar.documento;
+        // const fechaActivacion = dataMovistar.fechaActivacion;
         //PONER FORMATO CORRECTO LA FECHA
-        const fecha = moment(fechaActivacion);
-        const fechaPeru = fecha.utcOffset(-5).format("YYYY-MM-DD HH:mm:ss");
+        // const fecha = moment(fechaActivacion);
+        // const fechaPeru = fecha.utcOffset(-5).format("YYYY-MM-DD HH:mm:ss");
 
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
         telRes += `*➤ MOVISTAR EN TIEMPO REAL*\n`;
-        telRes += `  \`⌞\` *TIPO. DOC:* \`${tipoDoc}\`\n`;
-        telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
+        // telRes += `  \`⌞\` *TIPO. DOC:* \`${tipoDoc}\`\n`;
+        // telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
         telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
-        telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan.toUpperCase()}\`\n`;
-        telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo.toUpperCase()}\`\n`;
-        telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${fechaPeru}\`\n`;
-        telRes += `  \`⌞\` *TIPO. PRODUCTO:* \`${tipoProducto.toUpperCase()}\`\n\n`;
+        telRes += `  \`⌞\` *IMEI:* \`${imei}\`\n`;
+        telRes += `  \`⌞\` *TECONOLOGÍA:* \`${tecnologia}\`\n`;
+        // telRes += `  \`⌞\` *TIPO:* \`${tecnologia}\`\n`;
+        // telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan.toUpperCase()}\`\n`;
+        // telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo.toUpperCase()}\`\n`;
+        // telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${fechaPeru}\`\n`;
+        telRes += `  \`⌞\` *FECHA. COMPRA:* \`${feCompra}\`\n`;
+        telRes += `  \`⌞\` *TIPO. PRODUCTO:* \`${tipProducto.toUpperCase()}\`\n\n`;
         telRes += `*➤ CONSULTADO POR:*\n`;
         telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
         telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
@@ -257,8 +267,7 @@ module.exports = (bot) => {
             else if (isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
             }
-          })
-          .catch((error) => {
+          }).catch((error) => {
             console.log(
               "Error al enviar el mensaje en la API TITULAR MOVISTAR: " + error
             );

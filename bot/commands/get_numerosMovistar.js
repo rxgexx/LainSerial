@@ -201,50 +201,56 @@ module.exports = (bot) => {
       //RESPONSE TITULAR
       const responseTitular = await apiMovDni(dni);
 
-      if (responseTitular.error === "No se encontro datos.") {
+      if (responseTitular[0].length === 0) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] El cliente* \`${dni}\` *no es* \`MOVISTAR\` o no tiene líneas a su nombre.`;
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
         //RESPONSE TITULAR
-        const baseNumeros = responseTitular.baseNumeros;
+        const baseNumeros = responseTitular;
+        console.log(baseNumeros);
 
         //CONSTRUCCIÓN DEL MENSAJE
         let telRes = `*[#LAIN-DOX 🌐] ➤ #MOVISTARONLINE*\n\n`;
         telRes += `*[ ☑️ ] NUMEROS MOVISTAR DE* - \`${dni}\` -\n\n`;
-        telRes += `*➤ INF. PERSONA:*\n`;
-        telRes += `  \`⌞\` *TITULAR:* \`${responseTitular.titular}\`\n\n`;
+        // telRes += `*➤ INF. PERSONA:*\n`;
+        // telRes += `  \`⌞\` *TITULAR:* \`${responseTitular.titular}\`\n\n`;
 
         baseNumeros.forEach((dato, index) => {
           const lista = index + 1;
-          const numero = dato.numero;
-          const productoTipo = dato.productoTipo;
+          const numero = dato.numProducto;
+          const imei = dato.celInfo.numImei;
+          const productoTipo = dato.tipProducto;
+          const titular = dato.nomTitular;
 
           telRes += `*➜ NÚMERO ${lista}:* \`${numero}\`\n`;
+          telRes += `  \`⌞\` *TITULAR:* \`${titular.toUpperCase()}\`\n`;
           telRes += `  \`⌞\` *TIPO. EQUIPO:* \`${productoTipo.toUpperCase()}\`\n`;
-          const plan = dato.plan;
-          telRes += `  \`⌞\` *PLAN:* \`${plan.toUpperCase()}\`\n`;
+          // const plan = dato.plan;
+          const correo = dato.deEmail;
+          telRes += `  \`⌞\` *IMEI:* \`${imei}\`\n`;
+          telRes += `  \`⌞\` *CORREO:* \`${correo}\`\n`;
 
-          if (dato.fechaActivacion) {
-            const fechaActivacion = dato.fechaActivacion;
-            telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${convertirFechaLocal(
-              fechaActivacion
-            )}\`\n`;
-          }
+          // if (dato.fechaActivacion) {
+          //   const fechaActivacion = dato.fechaActivacion;
+          //   telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${convertirFechaLocal(
+          //     fechaActivacion
+          //   )}\`\n`;
+          // }
 
-          if (dato.tegnologia !== null) {
-            const tecnologia = dato.tegnologia;
-            telRes += `  \`⌞\` *TECNOLOGÍA:* \`${tecnologia}\`\n`;
-          }
-          if (dato.celInfo !== null) {
-            const fecCompra = dato.celInfo.fecCompra;
-            const numImei = dato.celInfo.numImei;
+          // if (dato.tegnologia !== null) {
+          //   const tecnologia = dato.tegnologia;
+          //   telRes += `  \`⌞\` *TECNOLOGÍA:* \`${tecnologia}\`\n`;
+          // }
+          // if (dato.celInfo !== null) {
+          //   const fecCompra = dato.celInfo.fecCompra;
+          //   const numImei = dato.celInfo.numImei;
 
-            telRes += `  \`⌞\` *FECHA. COMPRA:* \`${fecCompra}\`\n`;
-            telRes += `  \`⌞\` *NUM° IMEI:* \`${numImei}\`\n`;
-          }
-          const status = dato.status;
+          //   telRes += `  \`⌞\` *FECHA. COMPRA:* \`${fecCompra}\`\n`;
+          //   telRes += `  \`⌞\` *NUM° IMEI:* \`${numImei}\`\n`;
+          // }
+          const status = dato.estProducto;
           telRes += `  \`⌞\` *ESTADO:* \`${status.toUpperCase()}\`\n\n`;
         });
 
