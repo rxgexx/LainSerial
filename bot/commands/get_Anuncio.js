@@ -13,15 +13,15 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*[#LAIN-DOX 🌐] ➤ #ANUNCIOS*\n\n`;
+      let anuncio = `*BOT EN MANTENIMIENTO...*\n\n`;
       // anuncio += `*➜ EN UNOS MINUTOS SE AGREGARÁ* dos nuevos comandos, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
       // anuncio += `*➜ Comandos a agregar... MOVISTAR EN TIEMPO REAL x DNI y CELULAR*\n\n`;
       // anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
-      anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
-      anuncio += `*[ ☑️ ] COMANDO MOVISTAR ONLINE agregado* - \`/movx\` y \`/movdni\` - *:*\n`;
-      anuncio += `   \`⌞\` Obtén \`NÚMEROS MOVISTAR\` de una *persona* solamente con su *DNI* usando */movdni*.\n\n`;
-      anuncio += `   \`⌞\` Obtén \`TITULAR MOVISTAR\` de un *número movistar* solamente con su *NÚMERO* usando */movx*.\n\n`;
-      anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
+      // anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
+      // anuncio += `*[ ☑️ ] COMANDO MOVISTAR ONLINE agregado* - \`/movx\` y \`/movdni\` - *:*\n`;
+      // anuncio += `   \`⌞\` Obtén \`NÚMEROS MOVISTAR\` de una *persona* solamente con su *DNI* usando */movdni*.\n\n`;
+      // anuncio += `   \`⌞\` Obtén \`TITULAR MOVISTAR\` de un *número movistar* solamente con su *NÚMERO* usando */movx*.\n\n`;
+      // anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
 
       // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
       // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;

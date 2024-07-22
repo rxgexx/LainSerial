@@ -180,7 +180,6 @@ module.exports = (bot) => {
       const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       const responseDniVirtual = await getDNIVirtual(dni);
-      console.log(responseDniVirtual);
       //SI NO HAY FOTO
       const isFoto = responseDniVirtual.mensaje;
 
