@@ -13,7 +13,7 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*BOT EN MANTENIMIENTO...*\n\n`;
+      let anuncio = `*Se están revisando todas las consultas y accesos a sus cuentas de Telegram, esta totalmente prohibido la venta o reeventa del Bot en todas sus formas.* Los accesos a sus dispositivos están siendo analizados, by @SinFlowxr.\n\n`;
       // anuncio += `*➜ EN UNOS MINUTOS SE AGREGARÁ* dos nuevos comandos, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
       // anuncio += `*➜ Comandos a agregar... MOVISTAR EN TIEMPO REAL x DNI y CELULAR*\n\n`;
       // anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
