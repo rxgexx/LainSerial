@@ -54,7 +54,7 @@ async function seekerApi(dni) {
 }
 
 async function seekerApi_pdf(dni) {
-  const apiUrl = `http://161.132.49.224:2210/seeker?dni=${dni}`;
+  const apiUrl = `http://161.132.49.224:1240/seeker?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
