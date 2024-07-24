@@ -264,12 +264,12 @@ module.exports = (bot) => {
       //       });
       //   });
       // } else {
-      // let msg_chat = `*[#LAIN-DOX 🌐] ➤ #SEEKER*\n\n`;
+      let msg_chat = `*[#LAIN-DOX 🌐] ➤ #SEEKER*\n\n`;
 
-      // msg_chat += `*➤ CONSULTADO POR:*\n`;
-      // msg_chat += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-      // msg_chat += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      // msg_chat += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+      msg_chat += `*➤ CONSULTADO POR:*\n`;
+      msg_chat += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+      msg_chat += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      msg_chat += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
       //PDF
 
