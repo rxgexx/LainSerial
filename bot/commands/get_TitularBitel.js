@@ -229,7 +229,7 @@ module.exports = (bot) => {
       const documento = data.DNI;
       const nombre = data.Titular;
       const Fecha_Activacion = data.Fecha;
-      const Tipo_Plan = data.tipPlan;
+      const Tipo_Plan = data.Plan;
 
       let telRes = `*[#LAIN-DOX 🌐] ➤ #BITELONLINE*\n\n`;
       telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
