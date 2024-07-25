@@ -61,7 +61,8 @@ async function validarOp(tel) {
 //API BITEL
 async function apiBitel(tel) {
   //URL API
-  const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
+  const apiUrl = `https://api.ddosis.fun/bitel?token=fbXY00AC9JLJtVlwBfxA563kPK0&numero=${tel}`;
+  // const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);

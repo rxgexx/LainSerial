@@ -201,11 +201,15 @@ module.exports = (bot) => {
     try {
       const responseBitel = await apiBitel(tel);
 
-      if (
-        responseBitel.status === "False" &&
-        responseBitel.response ===
-          "No se encontraron resultados que satisfagan las condiciones."
-      ) {
+      let esTitular = true;
+
+      for (const [clave, valor] of Object.entries(responseBitel.Respuesta)) {
+        if (valor !== "SIN DATOS") {
+          break;
+        }
+      }
+
+      if (!esTitular) {
         let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es BITEL.\n\n`;
         yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -213,12 +217,18 @@ module.exports = (bot) => {
         return bot.sendMessage(chatId, yx, messageOptions);
       }
 
-      const data = responseBitel.response;
-      const documento = data.nuDni;
+      // const data = responseBitel.response;
+      // const documento = data.nuDni;
+      // const nombre = data.Titular;
+      // const nacionalidad = data.infTitular.Nacionalidad;
+      // const Fecha_Activacion = data.fechActivacion;
+      // const Hora_Activacion = data.hrActivacion;
+      // const Tipo_Plan = data.tipPlan;
+
+      const data = responseBitel.Respuesta;
+      const documento = data.DNI;
       const nombre = data.Titular;
-      const nacionalidad = data.infTitular.Nacionalidad;
-      const Fecha_Activacion = data.fechActivacion;
-      const Hora_Activacion = data.hrActivacion;
+      const Fecha_Activacion = data.Fecha;
       const Tipo_Plan = data.tipPlan;
 
       let telRes = `*[#LAIN-DOX 🌐] ➤ #BITELONLINE*\n\n`;
@@ -226,8 +236,8 @@ module.exports = (bot) => {
       telRes += `*➤ BITEL EN TIEMPO REAL*\n`;
       telRes += `  \`⌞\` *TITULAR:* \`${nombre}\`\n`;
       telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
-      telRes += `  \`⌞\` *NACIONALIDAD:* \`${nacionalidad}\`\n`;
-      telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${Hora_Activacion}\`\n`;
+      // telRes += `  \`⌞\` *NACIONALIDAD:* \`${nacionalidad}\`\n`;
+      // telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${Hora_Activacion}\`\n`;
       telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${Fecha_Activacion}\`\n`;
       telRes += `  \`⌞\` *TIPO. PLAN:* \`${Tipo_Plan}\`\n\n`;
       telRes += `*➤ CONSULTADO POR:*\n`;
