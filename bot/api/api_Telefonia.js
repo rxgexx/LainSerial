@@ -114,7 +114,7 @@ async function titularMov(tel) {
 //API ENTEL
 async function apiEntel(tel) {
   //URL API
-  const apiUrl = `http://161.132.48.228:2442/api/cel?num=${tel}`;
+  const apiUrl = `http://161.132.48.228:7884/api/cel?num=${tel}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
