@@ -12,7 +12,7 @@ async function apiPlaca(placa) {
 }
 
 async function apiPlaca_2(placa) {
-  const apiUrl = `https://api.ddosis.fun/placav2?token=gD75X1MxvcbuOxe11d6dJUiQlpv&placa=${placa}`;
+  const apiUrl = `https://api.ddosis.fun/placav2?token=fbXY00AC9JLJtVlwBfxA563kPK0&placa=${placa}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
