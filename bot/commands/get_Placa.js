@@ -1,5 +1,8 @@
 const { apiPlaca, apiPlaca_2 } = require("../api/api_Variados");
 
+//SE REQUIRE LAS APIS
+const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
+
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
@@ -179,55 +182,89 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const response = await apiPlaca(placa);
-      const foto = response.base.img64;
-      const datos = response.base.data;
+      // const response = await apiPlaca(placa);
+      // const foto = response.base.img64;
 
-      const imgPlaca = foto.replace(/^data:image\/jpeg;base64,/, "");
-      const fotoBuffer = Buffer.from(imgPlaca, "base64");
+      // const imgPlaca = foto.replace(/^data:image\/jpeg;base64,/, "");
+      // const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
-      const response_2 = await apiPlaca_2(placa);
+      const res = await apiPlaca_2(placa);
+      const response_2 = res.Informacion;
 
-      // DATOS PLACA
-      const cAnioFab = datos.cAnioFab;
-      const numMotor = datos.cMotor;
-      const numSerie = datos.cPlaca;
-      const numAsientos = datos.siAsientos;
-      const tipo_descripcion = datos.cCarroceria;
-      const marca_descripcion = datos.cMarca;
-      const modelo_descripcion = datos.cModelo;
-      const propietarioNombre = `${datos.cNombre} ${datos.cPaterno} ${datos.cMaterno}`;
-      const documento = datos.cNroDocu;
-      const tipoPropietario = datos.cTipoPersona;
-      const propiedad = datos.cPropiedad;
+      //Propietario
+      const datos_propietario = response_2.LPropietario[0];
 
-      // MENSAJE
-      let yx = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-      yx += `*[ ☑️ ] INFORMACIÓN VEHICULAR*\n\n`;
-      yx += `*➤ INF. DE PLACA:*\n`;
-      yx += `  \`⌞\` *NUM° MOTOR:* \`${numMotor}\`\n`;
-      yx += `  \`⌞\` *NUM° SERIE:* \`${numSerie}\`\n`;
-      yx += `  \`⌞\` *NUM° ASIENTOS:* \`${numAsientos}\`\n`;
-      yx += `  \`⌞\` *AÑO. FABRICACIÓN:* \`${cAnioFab}\`\n\n`;
-      yx += `*➤ INF. MODELO VEHICULAR:*\n`;
-      yx += `  \`⌞\` *TIPO. VEHÍCULO:* \`${tipo_descripcion}\`\n`;
-      yx += `  \`⌞\` *MARCA:* \`${marca_descripcion}\`\n`;
-      yx += `  \`⌞\` *DESCRIPCIÓN:* \`${modelo_descripcion}\`\n\n`;
-      yx += `*➤ PROPIETARIO:*\n`;
-      yx += `  \`⌞\` *NOMBRE:* \`${propietarioNombre}\`\n`;
-      yx += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
-      yx += `  \`⌞\` *TIPO:* \`${tipoPropietario}\`\n`;
-      yx += `  \`⌞\` *PROPIEDAD:* \`${propiedad}\`\n\n`;
-      yx += `*➤ CONSULTADO POR:*\n`;
-      yx += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      yx += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      yx += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+      const NombrePropietario = datos_propietario.NombrePropietario;
+      const TipoPartic = datos_propietario.TipoPartic;
+      const TipoDocumento = datos_propietario.TipoDocumento;
+      const NroDocumento = datos_propietario.NroDocumento;
+      const FechaPropiedad = datos_propietario.FechaPropiedad;
+      const Direccion = datos_propietario.Direccion;
+
+      //Detalles del vehículo
+      const detalles_vehiculo = response_2;
+
+      const numPartida = detalles_vehiculo.numPartida;
+      const anMode = detalles_vehiculo.anMode;
+      const fecIns = detalles_vehiculo.fecIns;
+      const descTipoCarr = detalles_vehiculo.descTipoCarr;
+      const marca = detalles_vehiculo.marca;
+      const modelo = detalles_vehiculo.modelo;
+      const anoFab = detalles_vehiculo.anoFab;
+      const descTipoComb = detalles_vehiculo.descTipoComb;
+      const numCilindros = detalles_vehiculo.numCilindros;
+      const color = detalles_vehiculo.color;
+      const numMotor = detalles_vehiculo.numMotor;
+      const numSerie = detalles_vehiculo.numSerie;
+      const descTipoUso = detalles_vehiculo.descTipoUso;
+      const numRuedas = detalles_vehiculo.numRuedas;
+      const numPasajeros = detalles_vehiculo.numPasajeros;
+      const numAsientos = detalles_vehiculo.numAsientos;
+      const longitud = detalles_vehiculo.longitud;
+      const altura = detalles_vehiculo.altura;
+      const ancho = detalles_vehiculo.ancho;
+      const estado = detalles_vehiculo.estado;
+
+      let mssg = `*[#LAIN-DOX 🌐] ➤ #PLACAS*\n\n`;
+      mssg += `*[ ☑️ ] BÚSQUEDA DE PLACA -* \`${placa}\` *- *\n\n`;
+      mssg += `*➤ PROPIETARIO:*\n`;
+      mssg += `  \`⌞\` *NOMBRE:* \`${NombrePropietario}\`\n`;
+      mssg += `  \`⌞\` *TIPO. PARTIDA:* \`${TipoPartic}\`\n`;
+      mssg += `  \`⌞\` *TIPO. DOCUMENTO:* \`${TipoDocumento}\`\n`;
+      mssg += `  \`⌞\` *NÚMERO. DOCUMENTO:* \`${NroDocumento}\`\n`;
+      mssg += `  \`⌞\` *FECHA. PROPIEDAD:* \`${FechaPropiedad}\`\n`;
+      mssg += `  \`⌞\` *DIRECCIÓN:* \`${Direccion}\`\n\n`;
+      mssg += `*➤ DETALLES DEL VEHÍCULO:*\n`;
+      mssg += `  \`⌞\` *NÚMERO. PARTIDA:* \`${numPartida}\`\n`;
+      mssg += `  \`⌞\` *AÑO. MODELO:* \`${anMode}\`\n`;
+      mssg += `  \`⌞\` *FECHA. INSCRIPCIÓN:* \`${fecIns}\`\n`;
+      mssg += `  \`⌞\` *DESCRIPCIÓN TIPO CARR:* \`${descTipoCarr}\`\n`;
+      mssg += `  \`⌞\` *MARCA:* \`${marca}\`\n`;
+      mssg += `  \`⌞\` *MODELO:* \`${modelo}\`\n`;
+      mssg += `  \`⌞\` *AÑO DE FABRICACIÓN:* \`${anoFab}\`\n`;
+      mssg += `  \`⌞\` *TIPO DE COMBUSTIBLE:* \`${descTipoComb}\`\n`;
+      mssg += `  \`⌞\` *NÚMERO DE CILINDROS:* \`${numCilindros}\`\n`;
+      mssg += `  \`⌞\` *COLOR:* \`${color}\`\n`;
+      mssg += `  \`⌞\` *NÚMERO DE MOTOR:* \`${numMotor}\`\n`;
+      mssg += `  \`⌞\` *NÚMERO DE SERIE:* \`${numSerie}\`\n`;
+      mssg += `  \`⌞\` *TIPO DE USO:* \`${descTipoUso}\`\n`;
+      mssg += `  \`⌞\` *NÚMERO DE RUEDAS:* \`${numRuedas}\`\n`;
+      mssg += `  \`⌞\` *NÚMERO DE PASAJEROS:* \`${numPasajeros}\`\n`;
+      mssg += `  \`⌞\` *NÚMERO DE ASIENTOS:* \`${numAsientos}\`\n`;
+      mssg += `  \`⌞\` *LONGITUD:* \`${longitud}\`\n`;
+      mssg += `  \`⌞\` *ALTURA:* \`${altura}\`\n`;
+      mssg += `  \`⌞\` *ANCHO:* \`${ancho}\`\n`;
+      mssg += `  \`⌞\` *ESTADO:* \`${estado}\`\n\n`;
+
+      mssg += `*➤ CONSULTADO POR:*\n`;
+      mssg += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+      mssg += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      mssg += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {
-          bot.sendPhoto(chatId, fotoBuffer, {
-            caption: yx,
+          bot.sendMessage(chatId, mssg, {
             reply_to_message_id: msg.message_id,
             parse_mode: "Markdown",
           });
