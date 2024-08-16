@@ -134,9 +134,9 @@ module.exports = (bot) => {
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
       cmds += `*➜ /hogar:* _Búsqueda de integrantes del hogar - 🟢_\n`;
       cmds += `*➜ /dnix:* _Búsqueda de Datos Reniec - 🟢_\n`;
-      cmds += `*➜ /actnaci:* _Búsqueda de ACTA DE NACIMIENTO - 🟢_\n`;
-      cmds += `*➜ /actdefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
-      cmds += `*➜ /actmatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
+      // cmds += `*➜ /actnaci:* _Búsqueda de ACTA DE NACIMIENTO - 🟢_\n`;
+      // cmds += `*➜ /actdefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
+      // cmds += `*➜ /actmatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
       cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
       cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
@@ -145,7 +145,7 @@ module.exports = (bot) => {
       cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
-      cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
+      // cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;
       cmds += `*➜ /fxazul:* _C4 AZUL - 🟢_\n`;
       cmds += `*➜ /fxantpol:* _FICHA ANT. POLICIALES - 🟢_\n`;
@@ -153,9 +153,9 @@ module.exports = (bot) => {
       cmds += `*➜ /fxantjud:* _FICHA ANT. JUDICIALES - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
-      cmds += `*➜ /seeker:* _Búsqueda de datos generales en PDF - 🟢_\n`;
+      // cmds += `*➜ /seeker:* _Búsqueda de datos generales en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
-      cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
+      // cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
 
       bot.sendMessage(chatId, cmds, messageOptions).catch((error) => {
         console.log(error);
