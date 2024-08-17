@@ -44,13 +44,13 @@ function retrasar(time) {
 // }
 
 async function validarOp(tel) {
-  const url = "https://dashboard.knowlers.xyz/personas/validateoperador";
+  const url = `https://dashboard.knowlers.xyz/personas/validateoperador?phone=${tel}`;
   const payload = {
     phone: tel,
   };
 
   try {
-    const response = await axios.post(url, payload);
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.error("Error:", error);
