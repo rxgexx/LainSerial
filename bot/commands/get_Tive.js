@@ -253,7 +253,7 @@ module.exports = (bot) => {
           });
       });
     } catch (error) {
-      let xerror = `*[ ✖️ ] No se ha *encontrado u obtenido la ficha informativa para el DNI consultado.*`;
+      let xerror = `*[ ✖️ ] No se ha *encontrado u obtenido la ficha informativa para la Placa consultada.*`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
