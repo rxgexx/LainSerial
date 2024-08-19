@@ -35,7 +35,7 @@ async function apiMPFN(dni) {
 }
 
 async function apiNotas(dni) {
-  const apiUrl = `http://161.132.49.207:3000/minedu/${dni}`;
+  const apiUrl = `https://api.ddosis.fun/minedu?token=gD75X1MxvcbuOxe11d6dJUiQlpv&dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -58,4 +58,28 @@ async function api_trabajos(dni) {
   }
 }
 
-module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_trabajos };
+async function api_tive(placa) {
+  const apiUrl = `http://161.132.49.200:7902/api/tive?placa=${placa}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API INFOBURO");
+  }
+}
+
+async function api_insVehiculo(placa) {
+  const apiUrl = `http://161.132.49.200:7902/api/plab?placa=${placa}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API INFOBURO");
+  }
+}
+
+module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_trabajos, api_tive, api_insVehiculo };
