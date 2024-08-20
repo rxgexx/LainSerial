@@ -273,7 +273,7 @@ module.exports = (bot) => {
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
         telRes += `*El número* consultado pertenece a la línea \`${datosNumero.carrier.toUpperCase()}\`\n`;
 
-        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/celx ${tel}\`\n\n/\`movx ${tel}\`\n`;
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/celx ${tel}\`\n\n\`/movx ${tel}\`\n`;
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot
