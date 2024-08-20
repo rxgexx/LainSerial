@@ -162,24 +162,24 @@ module.exports = (bot) => {
       return;
     }
 
-    const validarOperador = await validarOp(tel);
+    // const validarOperador = await validarOp(tel);
 
-    if (validarOperador.status === "resolverCapcha") {
-      let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    // if (validarOperador.status === "resolverCapcha") {
+    //   let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
     // if (validarOp.data === "Error en la conexion con la fuente.") {
     //   let yxx = `*[ ✖️ ] Error al válidar el operador,* intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.carrier;
+    // const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "VIETTEL PERU S.A.C.") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+    // if (datosNum !== "VIETTEL PERU S.A.C.") {
+    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
 
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -253,7 +253,8 @@ module.exports = (bot) => {
           bot.sendMessage(chatId, telRes, messageOptions);
         });
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      // let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      let xerror = `*[ ✖️ ] Titular BITEL no encontrado,* es posible que la *línea* no sea Bitel.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

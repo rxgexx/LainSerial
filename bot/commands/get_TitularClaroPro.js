@@ -3,7 +3,6 @@ const { getReniec, titularClaro } = require("../api/apis.js");
 //SE REQUIRE LAS APIS
 const { validarOp } = require("../api/api_Telefonia.js");
 
-
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
@@ -165,25 +164,25 @@ module.exports = (bot) => {
       return;
     }
 
-    const validarOperador = await validarOp(tel);
+    // const validarOperador = await validarOp(tel);
 
-    if (validarOperador.status === "resolverCapcha") {
-      let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    // if (validarOperador.status === "resolverCapcha") {
+    //   let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     // if (validarOp.data === "Error en la conexion con la fuente.") {
     //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.carrier;
+    // const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "Claro (America Movil)") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *CLaro*.`;
+    // if (datosNum !== "Claro (America Movil)") {
+    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *CLaro*.`;
 
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -371,7 +370,8 @@ module.exports = (bot) => {
         }
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      // let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      let xerror = `*[ ✖️ ] Titular CLARO no encontrado,* es posible que la *línea* no sea Claro.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

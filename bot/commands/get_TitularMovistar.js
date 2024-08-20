@@ -162,20 +162,20 @@ module.exports = (bot) => {
       return;
     }
 
-    const validarOperador = await validarOp(tel);
+    // const validarOperador = await validarOp(tel);
 
     // if (validarOp.data === "Error en la conexion con la fuente.") {
     //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.carrier;
+    // const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "Telefonica Moviles (Movistar)") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
+    // if (datosNum !== "Telefonica Moviles (Movistar)") {
+    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
 
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -274,7 +274,8 @@ module.exports = (bot) => {
           });
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      // let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      let xerror = `*[ ✖️ ] Titular MOVISTAR no encontrado,* es posible que la *línea* no sea Movistar.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

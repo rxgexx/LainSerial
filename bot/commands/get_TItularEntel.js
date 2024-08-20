@@ -162,20 +162,20 @@ module.exports = (bot) => {
       return;
     }
 
-    const validarOperador = await validarOp(tel);
+    // const validarOperador = await validarOp(tel);
 
-    if (validarOperador.status === "resolverCapcha") {
-      let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    // if (validarOperador.status === "resolverCapcha") {
+    //   let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
-    const datosNum = validarOperador.carrier;
+    // const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "Entel del Peru (Nextel)") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Entel*.`;
+    // if (datosNum !== "Entel del Peru (Nextel)") {
+    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Entel*.`;
 
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -250,7 +250,7 @@ module.exports = (bot) => {
           bot.sendMessage(chatId, telRes, messageOptions);
         });
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      let xerror = `*[ ✖️ ] Titular ENTEL no encontrado,* es posible que la *línea* no sea Entel.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
