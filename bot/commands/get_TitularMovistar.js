@@ -169,9 +169,9 @@ module.exports = (bot) => {
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.operador;
+    const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "Movistar") {
+    if (datosNum !== "Telefonica Moviles (Movistar)") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);

@@ -1,5 +1,5 @@
-//SE REQUIRE LAS APIS
-const { api_infoburo } = require("../api/api_Variados.js");
+// API TRABAJOS
+const { api_trabajos } = require("../api/api_Variados.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -9,25 +9,12 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-//MOMENTO
-const moment = require("moment");
-
-//SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]fxtrabajos (.+)/, async (msg, match) => {
+  bot.onText(/\/fxtrabajos (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
     });
-
-    // //BOT ANTI - BUG
-    // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
-    // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
-
-    // // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
-    // if (messageTime < botStartTime) {
-    //   return;
-    // }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
     const dni = match[1];
@@ -155,20 +142,21 @@ module.exports = (bot) => {
       }
     }
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxtrabajos\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxtrabajos\`*]* seguido de una serie de *DNI* de \`8 dígitos\`\n\n`;
       replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxtrabajos 44443333\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
     }
 
+    //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
       console.log(`El usuario ${msg.from.first_name} anda haciendo spam`);
       return;
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando* \`TRABAJOS\` del *➜ DNI* \`${dni}\``;
+    let yx = `*[ 💬 ] Consultando data* \`LABORAL\` *del DNI ➜* \`${dni}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -179,132 +167,77 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      const data = await api_trabajos(dni);
+      const laboral = data.laboral;
 
-      bot.sendMessage(
-        chatId,
-        `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
-        messageOptions
-      );
+      if (laboral.lista.length === 0) {
+        let yx = `*[ ✖️ ] No se encontró registros laborales* para el *DNI* \`${dni}\`*.*\n\n`;
 
-      // const responseTrabajos = await api_infoburo(dni);
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-      // const trabajos_Key = responseTrabajos.infoburo[0].trabajos;
+        return bot.sendMessage(chatId, yx, messageOptions);
+      }
+      await bot
+        .deleteMessage(chatId, consultandoMessage.message_id)
+        .then(() => {
+          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+          if (!isDev && !isAdmin && !isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
+          }
+          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+          else if (isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+          }
+        });
 
-      // function trabajos_vacios(trabajos) {
-      //   for (const key in trabajos) {
-      //     if (trabajos[key].length > 0) {
-      //       return { estado: "false" };
-      //     }
-      //   }
-      //   return { estado: "true" };
-      // }
+      send_ResultadosSeparados(chatId, laboral.lista);
+    } catch (error) {
+      bot.sendMessage(chatId, "Hubo un error al obtener los datos.");
+      console.error(error);
+    }
 
-      // const validar = trabajos_vacios(trabajos_Key);
+    function formatDate(date) {
+      const year = date.substring(0, 4);
+      const month = date.substring(4, 6);
+      return `${month}/${year}`;
+    }
 
-      // if (validar.estado === "true") {
-      //   let yxx = `*[ ✖️ ] NO se encontró* ningún \`registro laboral\` para el *DNI* \`${dni}\`*.*`;
-      //   await bot
-      //     .deleteMessage(chatId, consultandoMessage.message_id)
-      //     .then(() => {
-      //       //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-      //       if (!isDev && !isAdmin && !isBuyer) {
-      //         antiSpam[userId] = Math.floor(Date.now() / 1000) + 20;
-      //       }
-      //       //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-      //       else if (isBuyer) {
-      //         antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
-      //       }
+    function send_ResultadosSeparados(chatId, data) {
+      // Ordenar el array por devengue como número
+      data.sort((a, b) => a.devengue.localeCompare(b.devengue));
 
-      //       bot.sendMessage(chatId, yxx, messageOptions);
-      //     });
-      //   return;
-      // }
+      const pageSize = 5;
+      const totalPages = Math.ceil(data.length / pageSize);
 
-      // //MENSAJE
-      // let res = `*[#LAIN-DOX 🌐] ➤ #TRABAJOS*\n\n`;
-      // res += `*[ ☑️ ] TRABAJOS DE* - \`${dni}\` -\n\n`;
-      // res += `*➤ REGISTROS ACTUALIZADOS*\n\n`;
+      for (let i = 0; i < totalPages; i++) {
+        const start = i * pageSize;
+        const end = start + pageSize;
+        const paginatedData = data.slice(start, end);
 
-      // function get_trabajos(trabajos) {
-      //   let registros = [];
-      //   // Obtener claves de meses, ordenar numéricamente basándonos en el número del mes
-      //   const clavesOrdenadas = Object.keys(trabajos).sort((a, b) => {
-      //     return (
-      //       parseInt(a.replace("mes", "")) - parseInt(b.replace("mes", ""))
-      //     );
-      //   });
+        let message = `*[#LAIN-DOX 🌐] ➤ #TRABAJOS*\n\n`;
+        message += `*[ 💼 ] REGISTROS LABORALES DE* \`- ${dni} -\`\n\n`;
+        message += `*• 𝙼𝚘𝚜𝚝𝚛𝚊𝚗𝚍𝚘 𝚛𝚎𝚐𝚒𝚜𝚝𝚛𝚘𝚜* \`${start + 1}\` *𝚊* \`${
+          end > data.length ? data.length : end
+        }\` *𝚍𝚎* \`${data.length}\` *𝚛𝚎𝚜𝚞𝚕𝚝𝚊𝚍𝚘𝚜 ...*\n\n`;
 
-      //   // Iterar sobre cada mes en orden
-      //   clavesOrdenadas.forEach((mes) => {
-      //     trabajos[mes].forEach((trabajo) => {
-      //       let registro = {
-      //         mes: parseInt(mes.replace("mes", "")),
-      //         ...trabajo,
-      //       };
-      //       registros.push(registro);
-      //     });
-      //   });
+        paginatedData.forEach((item, index) => {
+          const formattedDate = formatDate(item.devengue);
+          message += `*➤ RESULTADO* \`${start + index + 1}\`\n`;
+          message += `  \`⌞\` *REGISTRO:* \`${formattedDate}\`\n`;
+          message += `  \`⌞\` *NUM. RUC:* \`${item.ruc}\`\n`;
+          message += `  \`⌞\` *EMPRESA:* \`${item.empresa}\`\n\n`;
+        });
 
-      //   return registros;
-      // }
-      // function formatearFecha(fecha) {
-      //   // Asegura que la entrada es una cadena
-      //   let fechaStr = String(fecha);
-      //   // Extrae el año (primeros cuatro caracteres) y el mes (últimos dos caracteres)
-      //   let ano = fechaStr.substring(0, 4);
-      //   let mes = fechaStr.substring(4, 6);
-      //   // Combina el año y el mes con el formato deseado
-      //   return `${ano} - ${mes}`;
-      // }
-      // const registros = get_trabajos(trabajos_Key);
+        message += `*➤ CONSULTADO POR:*\n`;
+        message += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        message += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        message += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-      // registros.forEach((registros, index) => {
-      //   const registro = index + 1;
-      //   const mes = registros.mes;
-      //   const ruc = registros.ruc;
-      //   const fecha = formatearFecha(registros.fecha);
-      //   const distrito = registros.distrito;
-      //   const provincia = registros.provincia;
-      //   const departamento = registros.departamento;
-      //   const direccion = registros.direccion;
-      //   const nombre_empresa = registros.nombre_empresa;
-
-      //   res += `*➜ N°. REGISTRO:* \`${registro}\`\n`;
-      //   res += `*➜ N°. RUC:* \`${ruc}\`\n`;
-      //   res += `*➜ FECHA. REGISTRO:* \`${fecha}\`\n`;
-      //   res += `*➜ NOMBRE. EMPRESA:* \`${nombre_empresa}\`\n`;
-      //   res += `*➜ DISTRITO:* \`${distrito}\`\n`;
-      //   res += `*➜ PROVINCIA:* \`${provincia}\`\n`;
-      //   res += `*➜ DEPARTAMENTO:* \`${departamento}\`\n`;
-      //   res += `*➜ DIRECCIÓN:* \`${direccion}\`\n\n`;
-      // });
-
-      // res += `*➤ CONSULTADO POR:*\n`;
-      // res += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      // res += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      // res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
-      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      // bot
-      //   .sendMessage(chatId, res, messageOptions)
-      //   .then(() => {
-      //     //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-      //     if (!isDev && !isAdmin && !isBuyer) {
-      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
-      //     }
-      //     //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-      //     else if (isBuyer) {
-      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     console.log(
-      //       "Error al enviar el mensaje en la API TITULAR CLARO: " + error
-      //     );
-      //   });
-    } finally {
-      delete usuariosEnConsulta[userId];
+        bot.sendMessage(chatId, message, {
+          reply_to_message_id: msg.message_id,
+          parse_mode: "Markdown",
+        });
+      }
     }
   });
 };

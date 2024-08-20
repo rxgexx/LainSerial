@@ -177,9 +177,9 @@ module.exports = (bot) => {
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.operador;
+    const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "Claro") {
+    if (datosNum !== "Claro (America Movil)") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *CLaro*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);

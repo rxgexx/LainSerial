@@ -169,9 +169,9 @@ module.exports = (bot) => {
       return bot.sendMessage(chatId, yxx, messageOptions);
     }
 
-    const datosNum = validarOperador.message;
+    const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "no encontrado. puede que sea entel") {
+    if (datosNum !== "Entel del Peru (Nextel)") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Entel*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);

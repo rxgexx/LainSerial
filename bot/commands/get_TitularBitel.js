@@ -173,9 +173,9 @@ module.exports = (bot) => {
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.operador;
+    const datosNum = validarOperador.carrier;
 
-    if (datosNum !== "Bitel") {
+    if (datosNum !== "VIETTEL PERU S.A.C.") {
       let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);

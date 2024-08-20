@@ -183,7 +183,7 @@ module.exports = (bot) => {
 
       const datosNumero = validarResponse;
 
-      if (datosNumero.operador === "Claro") {
+      if (datosNumero.carrier === "Claro (America Movil)") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
@@ -211,7 +211,7 @@ module.exports = (bot) => {
           });
       }
 
-      if (datosNumero.operador === "Bitel") {
+      if (datosNumero.carrier === "VIETTEL PERU S.A.C.") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
@@ -239,7 +239,7 @@ module.exports = (bot) => {
           });
       }
 
-      if (datosNumero.message === "no encontrado. puede que sea entel") {
+      if (datosNumero.carrier === "Entel del Peru (Nextel)") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
@@ -267,7 +267,7 @@ module.exports = (bot) => {
           });
       }
 
-      if (datosNumero.operador === "Movistar") {
+      if (datosNumero.carrier === "Telefonica Moviles (Movistar)") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
@@ -295,7 +295,7 @@ module.exports = (bot) => {
           });
       }
 
-      let telRes = `*No se encontró* operador para el número \`${tel}\`, pueda ser que no exista o la línea esté de baja.`;
+      let telRes = `*[ ✖️ ] No se encontró* operador para el número \`${tel}\`, pueda ser que no exista o la línea esté de baja.`;
 
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
       return bot
