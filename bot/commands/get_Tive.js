@@ -187,6 +187,14 @@ module.exports = (bot) => {
       //SE LLAMAN A LAS APIS
       const res_pdf = await api_tive(placa);
 
+      if (res_pdf.status === false) {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+        let yxx = `*[ ✖️ ] TIVE no encontrado,* puede ser que no esté trámitado o inscrito.`;
+
+        bot.sendMessage(chatId, yxx, messageOptions);
+      }
+
       //MENSAJE DEL BOT
 
       const datos = res_pdf.datos;
