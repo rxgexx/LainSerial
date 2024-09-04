@@ -154,6 +154,7 @@ module.exports = (bot) => {
       cmds += `*➜ /fxantjud:* _FICHA ANT. JUDICIALES - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
+      cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
       // cmds += `*➜ /seeker:* _Búsqueda de datos generales en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
       // cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
