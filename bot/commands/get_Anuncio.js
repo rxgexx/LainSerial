@@ -13,7 +13,7 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*[ ☑️ ] Se han quitado los validadores de operador temporalmente para los comandos de* \`TITULARES EN TIEMPO REAL\`*.* *Por el momento, el comando /entel está en mantenimiento debido a un error de la fuente de este.* Si deseas conocer el operador de una línea móvil puede consultar a esta página https://www.ding.com/es/paises/america-del-sur/peru.\n\n`;
+      let anuncio = `*[ ☑️ ] Nuevo comando agregado: /bienes <dni>* \n\nÚsalo *para tener los registros SUNARP de una persona🚀*\n\n`;
       // anuncio += `*➜ EN UNOS MINUTOS SE AGREGARÁ* dos nuevos comandos, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
       // anuncio += `*➜ Comandos a agregar... MOVISTAR EN TIEMPO REAL x DNI y CELULAR*\n\n`;
       // anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
