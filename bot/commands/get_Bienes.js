@@ -12,6 +12,12 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
+// ALMACENAR LOS MENSAJES ID
+const comandoInvocado = {};
+let messageId;
+
+let buttonId;
+
 // Se define dirBase fuera del módulo para que sea accesible globalmente
 let dirBase = "";
 let dni;
@@ -34,6 +40,12 @@ module.exports = (bot) => {
       reply_to_message_id: msg.message_id,
       parse_mode: "Markdown",
     };
+
+    // BOTON - CFG
+    messageId = msg.message_id; // PRIMER MSG - ID
+    // console.log("PRIMER ID DE MENSAJE...", messageId);
+
+    comandoInvocado[userId] = messageId + 1;
 
     // Verificación de rangos
     const isDev = rangosFilePath.DEVELOPER.includes(userId);
@@ -241,7 +253,7 @@ module.exports = (bot) => {
             console.log(`PDF guardado en: ${pdfPath}`);
           }
 
-          const buttonId = `${index + 1}`; // Identificador único
+          buttonId = `${index + 1}`; // Identificador único
           dataStorage[buttonId] = {
             nombreRubro: item.nombreRubro,
             descActo: item.descActo,
@@ -312,7 +324,10 @@ module.exports = (bot) => {
 
   bot.on("callback_query", async (query) => {
     const buttonId = query.data;
-    
+    const userId = query.from.id;
+    const query_messageId = query.message.message_id;
+    const query_id = query.id;
+
     const data = dataStorage[buttonId];
 
     const pdfPath = path.join(dirBase, `sunarp_${dni}_${buttonId}.pdf`);
@@ -326,21 +341,29 @@ module.exports = (bot) => {
 
     yxx += `_• Estos datos han sido_ *obtenidos* del *sitema SUNARP* en *tiempo real.*\n\n`;
 
-    if (fs.existsSync(pdfPath)) {
-      bot
-        .sendDocument(query.message.chat.id, pdfPath, {
-          caption: `${yxx}`,
-          reply_to_message_id: query.message.reply_to_message.message_id,
-          parse_mode: "Markdown",
-        })
-        .catch((err) => {
-          console.log("Error al enviar el documento:", err.message);
-        });
+    if (comandoInvocado[userId] !== query_messageId) {
+      bot.answerCallbackQuery(query_id, {
+        text: "No has usado este comando, no puedes tener los pdf's.",
+        show_alert: true,
+      });
+
     } else {
-      bot.sendMessage(
-        query.message.chat.id,
-        "El archivo PDF no está disponible."
-      );
+      if (fs.existsSync(pdfPath)) {
+        bot
+          .sendDocument(query.message.chat.id, pdfPath, {
+            caption: `${yxx}`,
+            reply_to_message_id: query.message.reply_to_message.message_id,
+            parse_mode: "Markdown",
+          })
+          .catch((err) => {
+            console.log("Error al enviar el documento:", err.message);
+          });
+      } else {
+        bot.sendMessage(
+          query.message.chat.id,
+          "El archivo PDF no está disponible."
+        );
+      }
     }
   });
 };
