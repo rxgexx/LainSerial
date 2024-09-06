@@ -341,29 +341,21 @@ module.exports = (bot) => {
 
     yxx += `_• Estos datos han sido_ *obtenidos* del *sitema SUNARP* en *tiempo real.*\n\n`;
 
-    if (comandoInvocado[userId] !== query_messageId) {
-      bot.answerCallbackQuery(query_id, {
-        text: "No has usado este comando, no puedes tener los pdf's.",
-        show_alert: true,
-      });
-
+    if (fs.existsSync(pdfPath)) {
+      bot
+        .sendDocument(query.message.chat.id, pdfPath, {
+          caption: `${yxx}`,
+          reply_to_message_id: query.message.reply_to_message.message_id,
+          parse_mode: "Markdown",
+        })
+        .catch((err) => {
+          console.log("Error al enviar el documento:", err.message);
+        });
     } else {
-      if (fs.existsSync(pdfPath)) {
-        bot
-          .sendDocument(query.message.chat.id, pdfPath, {
-            caption: `${yxx}`,
-            reply_to_message_id: query.message.reply_to_message.message_id,
-            parse_mode: "Markdown",
-          })
-          .catch((err) => {
-            console.log("Error al enviar el documento:", err.message);
-          });
-      } else {
-        bot.sendMessage(
-          query.message.chat.id,
-          "El archivo PDF no está disponible."
-        );
-      }
+      bot.sendMessage(
+        query.message.chat.id,
+        "El archivo PDF no está disponible."
+      );
     }
   });
 };
