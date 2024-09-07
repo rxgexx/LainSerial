@@ -162,7 +162,7 @@ module.exports = (bot) => {
       return;
     }
 
-    // const validarOperador = await validarOp(tel);
+    const validarOperador = await validarOp(tel);
 
     // if (validarOperador.status === "resolverCapcha") {
     //   let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
@@ -173,13 +173,13 @@ module.exports = (bot) => {
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    // const datosNum = validarOperador.carrier;
+    const datosNum = validarOperador.datos;
 
-    // if (datosNum !== "VIETTEL PERU S.A.C.") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+    if (datosNum.operador !== "Bitel Peru") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
 
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {

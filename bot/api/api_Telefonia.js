@@ -44,7 +44,7 @@ function retrasar(time) {
 // }
 
 async function validarOp(tel) {
-  const url = `http://161.132.48.228:5123/api/operador/${tel}`;
+  const url = `http://161.132.49.101:4301/api/valnum?num=${tel}`;
   const payload = {
     phone: tel,
   };

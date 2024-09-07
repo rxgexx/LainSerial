@@ -162,20 +162,25 @@ module.exports = (bot) => {
       return;
     }
 
-    // const validarOperador = await validarOp(tel);
+
+    const validarOperador = await validarOp(tel);
 
     // if (validarOperador.status === "resolverCapcha") {
     //   let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
-
-    // const datosNum = validarOperador.carrier;
-
-    // if (datosNum !== "Entel del Peru (Nextel)") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Entel*.`;
-
+    // if (validarOp.data === "Error en la conexion con la fuente.") {
+    //   let yxx = `*[ ✖️ ] Error al válidar el operador,* intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
+
+    const datosNum = validarOperador.datos;
+
+    if (datosNum.operador !== "Entel  Peru") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
