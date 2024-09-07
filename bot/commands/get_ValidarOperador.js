@@ -179,11 +179,10 @@ module.exports = (bot) => {
     try {
       //VALIDAR NÚMERO
       const validarResponse = await validarOp(tel);
-      console.log(validarResponse);
 
-      const datosNumero = validarResponse;
+      const datosNumero = validarResponse.datos;
 
-      if (datosNumero.carrier === "Claro (America Movil)") {
+      if (datosNumero.operador === "Claro Peru") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
@@ -211,7 +210,7 @@ module.exports = (bot) => {
           });
       }
 
-      if (datosNumero.carrier === "VIETTEL PERU S.A.C.") {
+      if (datosNumero.operador === "Bitel Peru") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
@@ -239,7 +238,7 @@ module.exports = (bot) => {
           });
       }
 
-      if (datosNumero.carrier === "Entel del Peru (Nextel)") {
+      if (datosNumero.operador === "Entel  Peru") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
@@ -267,13 +266,13 @@ module.exports = (bot) => {
           });
       }
 
-      if (datosNumero.carrier === "Telefonica Moviles (Movistar)") {
+      if (datosNumero.operador === "Movistar Peru") {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
         telRes += `*El número* consultado pertenece a la línea \`${datosNumero.carrier.toUpperCase()}\`\n`;
 
-        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/celx ${tel}\`\n\n\`/movx ${tel}\`\n`;
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/celx ${tel}\`.`;
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot
