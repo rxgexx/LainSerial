@@ -177,7 +177,7 @@ module.exports = (bot) => {
     const datosNum = validarOperador.datos;
 
     if (datosNum.operador !== "Entel  Peru") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Entel*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);
     }

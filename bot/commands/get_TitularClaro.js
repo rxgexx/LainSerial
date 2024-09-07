@@ -176,7 +176,7 @@ module.exports = (bot) => {
     const datosNum = validarOperador.datos;
 
     if (datosNum.operador !== "Claro Peru") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
 
       return bot.sendMessage(chatId, yxx, messageOptions);
     }
