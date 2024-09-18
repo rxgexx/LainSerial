@@ -143,8 +143,8 @@ module.exports = (bot) => {
       cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
-      cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
-      cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
+      // cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
+      // cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
       // cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;

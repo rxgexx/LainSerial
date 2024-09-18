@@ -19,7 +19,6 @@ async function getReniec(dni) {
   let data;
 
   try {
-    await retrasar(3);
     const response = await axios.get(apiUrl);
     data = response.data;
     return data;
