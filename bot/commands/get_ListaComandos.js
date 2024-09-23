@@ -129,7 +129,8 @@ module.exports = (bot) => {
       cmds += `*➤ LISTA DE COMANDOS DISPONIBLES*\n\n`;
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
-      // cmds += `*➜ /fxmpfn:* _Búsqueda de casos MPFN - 🟢_\n`;
+      cmds += `*➜ /telx2:* _Números por DNI en una 2da base de datos - 🟢_\n`;
+      cmds += `*➜ /fxmpfn:* _Búsqueda de casos MPFN - 🟢_\n`;
       // cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
       cmds += `*➜ /tive:* _TIVE en tiempo real - 🟢_\n`;
@@ -146,7 +147,7 @@ module.exports = (bot) => {
       // cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
       // cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
-      // cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
+      cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;
       cmds += `*➜ /fxazul:* _C4 AZUL - 🟢_\n`;
       cmds += `*➜ /fxantpol:* _FICHA ANT. POLICIALES - 🟢_\n`;
@@ -155,6 +156,7 @@ module.exports = (bot) => {
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
       cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
+      cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
       // cmds += `*➜ /seeker:* _Búsqueda de datos generales en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
       // cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;

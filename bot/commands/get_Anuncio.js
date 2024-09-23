@@ -13,7 +13,15 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*[ ☑️ ] Nuevo comando agregado: /bienes <dni>* \n\nÚsalo *para tener los registros SUNARP de una persona🚀*\n\n`;
+      let anuncio = `*[ ☑️ ] Nuevos comando agregado:*\n\n`;
+      anuncio += `*➜ /telx2:*\n`;
+      anuncio += `*➜ Obtén numeros actualizados* de una *segunda base de datos.*\n\n`;
+     
+      anuncio += `*➜ /sbs:*\n`;
+      anuncio += `*➜ Reporte financiero con DNI*\n\n`;    
+      
+      anuncio += `El comando /fxtrabajos ha sido arreglado, en los próximos días se estará terminando de añadir más comandos como correos, boleta informativa ONLINE de vehículo, etc... by @SinFlowxr`
+      
       // anuncio += `*➜ EN UNOS MINUTOS SE AGREGARÁ* dos nuevos comandos, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
       // anuncio += `*➜ Comandos a agregar... MOVISTAR EN TIEMPO REAL x DNI y CELULAR*\n\n`;
       // anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;

@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 async function apiHogar(dni) {
-  const apiUrl = `http://161.132.49.101:3535/hogar?dni=${dni}`;
+  const apiUrl = `http://161.132.49.200:3535/hogar?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -54,7 +54,7 @@ async function seekerApi(dni) {
 }
 
 async function seekerApi_pdf(dni) {
-  const apiUrl = `http://161.132.49.224:1240/seeker?dni=${dni}`;
+  const apiUrl = `http://161.132.49.224:2210/seeker?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -65,10 +65,23 @@ async function seekerApi_pdf(dni) {
   }
 }
 
+async function seekerdni(dni) {
+  const apiUrl = `http://161.132.48.228:2450/consultar/dni?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la API SEEKER: ", error);
+  }
+}
+
 module.exports = {
   apiHogar,
   apiname_2,
   dniElectronico,
   seekerApi,
   seekerApi_pdf,
+  seekerdni
 };

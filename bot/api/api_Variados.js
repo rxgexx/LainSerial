@@ -47,7 +47,7 @@ async function apiNotas(dni) {
 }
 
 async function api_trabajos(dni) {
-  const apiUrl = `http://161.132.38.231:2175/laboral?dni=${dni}&auth=clay:osiris`;
+  const apiUrl = `http://161.132.48.228:2450/consultar/dni?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -59,7 +59,7 @@ async function api_trabajos(dni) {
 }
 
 async function api_tive(placa) {
-  const apiUrl = `http://161.132.49.101:7209/api/tive?placa=${placa}`;
+  const apiUrl = `http://161.132.49.200:7902/api/tive?placa=${placa}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -94,4 +94,16 @@ async function bienes(dni) {
   }
 }
 
-module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_trabajos, api_tive, api_insVehiculo, bienes };
+async function sbs_img(dni) {
+  const apiUrl = `http://194.26.100.31:3122/sbs?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API INFOBURO");
+  }
+}
+
+module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_trabajos, api_tive, api_insVehiculo, bienes, sbs_img };

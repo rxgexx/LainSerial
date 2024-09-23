@@ -1,5 +1,4 @@
-// API TRABAJOS
-const { api_trabajos } = require("../api/api_Variados.js");
+const { sbs_img } = require("../api/api_Variados.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -9,12 +8,25 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
+//MOMENTO
+const moment = require("moment");
+
+//SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/\/fxtrabajos (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]sbs (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
     });
+
+    //BOT ANTI - BUG
+    // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
+    // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
+
+    // // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
+    // if (messageTime < botStartTime) {
+    //   return;
+    // }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
     const dni = match[1];
@@ -142,8 +154,8 @@ module.exports = (bot) => {
       }
     }
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxtrabajos\`*]* seguido de una serie de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxtrabajos 44443333\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/sbs\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/sbs 44443333\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -156,7 +168,7 @@ module.exports = (bot) => {
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando data* \`LABORAL\` *del DNI ➜* \`${dni}\``;
+    let yx = `*[ 💬 ] Consultando* \`DNI\` *➜* \`${dni}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -167,77 +179,41 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const data = await api_trabajos(dni);
-      const laboral = data.laboral;
+      // const response = await apiPlaca(placa);
+      // const foto = response.base.img64;
 
-      if (laboral.lista.length === 0) {
-        let yx = `*[ ✖️ ] No se encontró registros laborales* para el *DNI* \`${dni}\`*.*\n\n`;
+      // const imgPlaca = foto.replace(/^data:image\/jpeg;base64,/, "");
+      // const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      const res = await sbs_img(dni);
 
-        return bot.sendMessage(chatId, yx, messageOptions);
-      }
+      const fotoData = res.replace(/^data:image\/png;base64,/, "");
+      const fotoBuffer = Buffer.from(fotoData, "base64");
+
+      let mensaje = `*[#LAIN-DOX 🌐] ➤ #REPORTESBS*\n\n`;
+      mensaje += `*Reporte financiero del DNI ${dni}*\n\n`;
+
+      mensaje += `*➤ CONSULTADO POR:*\n`;
+      mensaje += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+      mensaje += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      mensaje += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      await bot.sendPhoto(chatId, fotoBuffer, {
+        caption: mensaje,
+        reply_to_message_id: msg.message_id,
+        parse_mode: "Markdown",
+      });
+    } catch (error) {
+      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {
-          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-          if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
-          }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-          else if (isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-          }
+          bot.sendMessage(chatId, xerror, messageOptions);
         });
-
-      send_ResultadosSeparados(chatId, laboral.lista);
-    } catch (error) {
-      bot.sendMessage(chatId, "Hubo un error al obtener los datos.");
-      console.error(error);
-    }
-
-    function formatDate(date) {
-      const year = date.substring(0, 4);
-      const month = date.substring(4, 6);
-      return `${month}/${year}`;
-    }
-
-    function send_ResultadosSeparados(chatId, data) {
-      // Ordenar el array por devengue como número
-      data.sort((a, b) => a.devengue.localeCompare(b.devengue));
-
-      const pageSize = 5;
-      const totalPages = Math.ceil(data.length / pageSize);
-
-      for (let i = 0; i < totalPages; i++) {
-        const start = i * pageSize;
-        const end = start + pageSize;
-        const paginatedData = data.slice(start, end);
-
-        let message = `*[#LAIN-DOX 🌐] ➤ #TRABAJOS*\n\n`;
-        message += `*[ 💼 ] REGISTROS LABORALES DE* \`- ${dni} -\`\n\n`;
-        message += `*• 𝙼𝚘𝚜𝚝𝚛𝚊𝚗𝚍𝚘 𝚛𝚎𝚐𝚒𝚜𝚝𝚛𝚘𝚜* \`${start + 1}\` *𝚊* \`${
-          end > data.length ? data.length : end
-        }\` *𝚍𝚎* \`${data.length}\` *𝚛𝚎𝚜𝚞𝚕𝚝𝚊𝚍𝚘𝚜 ...*\n\n`;
-
-        paginatedData.forEach((item, index) => {
-          const formattedDate = formatDate(item.devengue);
-          message += `*➤ RESULTADO* \`${start + index + 1}\`\n`;
-          message += `  \`⌞\` *REGISTRO:* \`${formattedDate}\`\n`;
-          message += `  \`⌞\` *NUM. RUC:* \`${item.ruc}\`\n`;
-          message += `  \`⌞\` *EMPRESA:* \`${item.empresa}\`\n\n`;
-        });
-
-        message += `*➤ CONSULTADO POR:*\n`;
-        message += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-        message += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-        message += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
-        bot.sendMessage(chatId, message, {
-          reply_to_message_id: msg.message_id,
-          parse_mode: "Markdown",
-        });
-      }
+    } finally {
+      delete usuariosEnConsulta[userId];
     }
   });
 };
