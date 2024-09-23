@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { titularMov } = require("./api_Telefonia");
 
 async function apiPlaca(placa) {
   const apiUrl = `https://placa-img7.onrender.com/api/imgsun?pla=${placa}`;
@@ -59,7 +60,7 @@ async function api_trabajos(dni) {
 }
 
 async function api_tive(placa) {
-  const apiUrl = `http://161.132.49.200:7902/api/tive?placa=${placa}`;
+  const apiUrl = `http://161.132.49.101:7209/api/tive?placa=${placa}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -71,7 +72,7 @@ async function api_tive(placa) {
 }
 
 async function api_insVehiculo(placa) {
-  const apiUrl = `http://161.132.49.200:7902/api/plab?placa=${placa}`;
+  const apiUrl = `http://161.132.49.101:7902/api/plab?placa=${placa}`;
 
   try {
     const response = await axios.get(apiUrl);
