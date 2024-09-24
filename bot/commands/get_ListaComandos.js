@@ -154,6 +154,7 @@ module.exports = (bot) => {
       cmds += `*➜ /fxantpen:* _FICHA ANT. PENALES - 🟢_\n`;
       cmds += `*➜ /fxantjud:* _FICHA ANT. JUDICIALES - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
+      cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
       cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
       cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
