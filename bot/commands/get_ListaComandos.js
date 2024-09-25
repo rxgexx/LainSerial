@@ -157,6 +157,7 @@ module.exports = (bot) => {
       cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
       cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
+      cmds += `*➜ /insve:* _Ficha Inscripcion Vehicular - 🟢_\n`;
       cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
       // cmds += `*➜ /seeker:* _Búsqueda de datos generales en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
