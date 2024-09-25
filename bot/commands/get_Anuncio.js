@@ -14,8 +14,8 @@ module.exports = (bot) => {
       const buyers = usuarios.BUYER;
 
       let anuncio = `*[ ☑️ ] Nuevos comando agregado:*\n\n`;
-      anuncio += `*➜ /celx2:*\n`;
-      anuncio += `*➜ Obtén titular de número en una segunda base de datos.*\n\n`;
+      anuncio += `*➜ /insve:*\n`;
+      anuncio += `*➜ Obtén ficha informativa de una placa en tiempo real :).*\n\nBy: @SinFlowxr`;
      
       // anuncio += `*➜ /sbs:*\n`;
       // anuncio += `*➜ Reporte financiero con DNI*\n\n`;    

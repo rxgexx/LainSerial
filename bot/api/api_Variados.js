@@ -71,18 +71,6 @@ async function api_tive(placa) {
   }
 }
 
-async function api_insVehiculo(placa) {
-  const apiUrl = `http://161.132.49.101:7902/api/plab?placa=${placa}`;
-
-  try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.log("ERROR EN LA API INFOBURO");
-  }
-}
-
 async function bienes(dni) {
   const apiUrl = `http://161.132.49.101:7209/api/bienesPDf?dni=${dni}`;
 
@@ -107,4 +95,26 @@ async function sbs_img(dni) {
   }
 }
 
-module.exports = { apiPlaca, apiPlaca_2, apiMPFN, apiNotas, api_trabajos, api_tive, api_insVehiculo, bienes, sbs_img };
+async function api_insVehiculo(placa) {
+  const apiUrl = `http://161.132.49.101:7209/api/plab?placa=${placa}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API INFOBURO");
+  }
+}
+
+module.exports = {
+  apiPlaca,
+  apiPlaca_2,
+  apiMPFN,
+  apiNotas,
+  api_trabajos,
+  api_tive,
+  api_insVehiculo,
+  bienes,
+  sbs_img,
+};
