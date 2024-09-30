@@ -171,7 +171,6 @@ module.exports = (bot) => {
       const laboral = data.SeekerData.Trabajos;
       console.log(laboral);
 
-
       if (laboral.data.length === 0) {
         let yx = `*[ ✖️ ] No se encontró registros laborales* para el *DNI* \`${dni}\`*.*\n\n`;
 
@@ -197,6 +196,8 @@ module.exports = (bot) => {
     } catch (error) {
       bot.sendMessage(chatId, "Hubo un error al obtener los datos.");
       console.error(error);
+    } finally {
+      delete usuariosEnConsulta[userId];
     }
 
     function formatDate(date) {
@@ -206,7 +207,6 @@ module.exports = (bot) => {
     }
 
     function send_ResultadosSeparados(chatId, data) {
-
       const pageSize = 5;
       const totalPages = Math.ceil(data.length / pageSize);
 
