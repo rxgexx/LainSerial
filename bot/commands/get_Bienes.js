@@ -244,7 +244,7 @@ module.exports = (bot) => {
       mensaje += `*⮞ REGISTROS INDEXADOS - 🗃️ -*\n\n`;
 
       data.leyendas.forEach((item, index) => {
-        if (item.pdfData) {
+        if (item.BasePdf) {
           const pdfPath = path.join(dirBase, `sunarp_${dni}_${index + 1}.pdf`);
 
           if (!fs.existsSync(pdfPath)) {
