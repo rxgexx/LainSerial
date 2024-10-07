@@ -248,7 +248,7 @@ module.exports = (bot) => {
           const pdfPath = path.join(dirBase, `sunarp_${dni}_${index + 1}.pdf`);
 
           if (!fs.existsSync(pdfPath)) {
-            const pdfBuffer = Buffer.from(item.pdfData, "base64");
+            const pdfBuffer = Buffer.from(item.BasePdf, "base64");
             fs.writeFileSync(pdfPath, pdfBuffer);
             console.log(`PDF guardado en: ${pdfPath}`);
           }
