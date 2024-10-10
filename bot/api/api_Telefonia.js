@@ -138,8 +138,6 @@ async function claroDni(dni) {
   }
 }
 
-
-
 async function seekertel(tel) {
   const apiUrl = `http://161.132.48.228:2450/consultar/numero?num=${tel}`;
 
@@ -152,6 +150,18 @@ async function seekertel(tel) {
   }
 }
 
+async function osiptel(dni) {
+  const apiUrl = `https://api.ddosis.fun/osiptel?token=fbXY00AC9JLJtVlwBfxA563kPK0&dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la API SEEKER: ", error);
+  }
+}
+
 module.exports = {
   validarOp,
   apiBitel,
@@ -159,5 +169,6 @@ module.exports = {
   titularMov,
   apiEntel,
   claroDni,
-  seekertel
+  seekertel,
+  osiptel,
 };
