@@ -1,5 +1,4 @@
 const axios = require("axios");
-const { titularMov } = require("./api_Telefonia");
 
 async function apiPlaca(placa) {
   const apiUrl = `https://placa-img7.onrender.com/api/imgsun?pla=${placa}`;
@@ -119,6 +118,19 @@ async function migraciones(dni) {
   }
 }
 
+async function boletaInformativa(placa) {
+  const apiUrl = `http://161.132.48.228:2215/placa?placa=${placa}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
+
 module.exports = {
   apiPlaca,
   apiPlaca_2,
@@ -130,4 +142,5 @@ module.exports = {
   bienes,
   sbs_img,
   migraciones,
+  boletaInformativa,
 };
