@@ -15,8 +15,8 @@ module.exports = (bot) => {
 
       let anuncio = `*🚀 Nuevos comando agregado:*\n\n`;
 
-      anuncio += `*➜ /migra:*\n`;
-      anuncio += `*➜ Obtén registro migratorio con DNI :).*\n\nBy: @SinFlowxr`;
+      anuncio += `*➜ /bolinf:*\n`;
+      anuncio += `*➜ Obtén BOLETA INFORMATIVA VEHICULAR con PLACA :).*\n\nBy: @SinFlowxr`;
 
       // anuncio += `*➜ /sbs:*\n`;
       // anuncio += `*➜ Reporte financiero con DNI*\n\n`;
