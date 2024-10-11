@@ -330,11 +330,11 @@ module.exports = (bot) => {
                   .then(() => {
                     //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
                     if (!isDev && !isAdmin && !isBuyer) {
-                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 200;
                     }
                     //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
                     else if (isBuyer) {
-                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 50;
                     }
                   })
                   .catch((error) => {

@@ -107,6 +107,18 @@ async function api_insVehiculo(placa) {
   }
 }
 
+async function migraciones(dni) {
+  const apiUrl = `https://api.ddosis.fun/migraciones?token=fbXY00AC9JLJtVlwBfxA563kPK0&dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API INFOBURO");
+  }
+}
+
 module.exports = {
   apiPlaca,
   apiPlaca_2,
@@ -117,4 +129,5 @@ module.exports = {
   api_insVehiculo,
   bienes,
   sbs_img,
+  migraciones,
 };

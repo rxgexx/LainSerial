@@ -130,8 +130,9 @@ module.exports = (bot) => {
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
       cmds += `*➜ /telx2:* _Números por DNI en una 2da base de datos - 🟢_\n`;
+      cmds += `*➜ /osiptel:* _Números por DNI en tiempo real - 🟢_\n`;
       cmds += `*➜ /fxmpfn:* _Búsqueda de casos MPFN - 🟢_\n`;
-      // cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
+      cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
       cmds += `*➜ /tive:* _TIVE en tiempo real - 🟢_\n`;
       cmds += `*➜ /hogar:* _Búsqueda de integrantes del hogar - 🟢_\n`;
@@ -139,7 +140,7 @@ module.exports = (bot) => {
       // cmds += `*➜ /actnaci:* _Búsqueda de ACTA DE NACIMIENTO - 🟢_\n`;
       // cmds += `*➜ /actdefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
       // cmds += `*➜ /actmatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
-      // cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
+      cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
       cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
@@ -161,7 +162,7 @@ module.exports = (bot) => {
       cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
       // cmds += `*➜ /seeker:* _Búsqueda de datos generales en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
-      // cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
+      cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
 
       bot.sendMessage(chatId, cmds, messageOptions).catch((error) => {
         console.log(error);

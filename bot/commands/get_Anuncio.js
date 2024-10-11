@@ -14,11 +14,9 @@ module.exports = (bot) => {
       const buyers = usuarios.BUYER;
 
       let anuncio = `*🚀 Nuevos comando agregado:*\n\n`;
-      anuncio += `*➜ /osiptel:*\n`;
-      anuncio += `*➜ Obtén números con DNI en tiempo real :).*\n`;
 
-      anuncio += `*➜ /fxnotas:*\n`;
-      anuncio += `*➜ Obtén registro de notas escolares con DNI :).*\n\nBy: @SinFlowxr`;
+      anuncio += `*➜ /migra:*\n`;
+      anuncio += `*➜ Obtén registro migratorio con DNI :).*\n\nBy: @SinFlowxr`;
 
       // anuncio += `*➜ /sbs:*\n`;
       // anuncio += `*➜ Reporte financiero con DNI*\n\n`;
