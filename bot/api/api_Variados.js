@@ -83,7 +83,7 @@ async function bienes(dni) {
 }
 
 async function sbs_img(dni) {
-  const apiUrl = `http://194.26.100.31:3122/sbs?dni=${dni}`;
+  const apiUrl = `http://194.26.100.31:2450/sbs?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
