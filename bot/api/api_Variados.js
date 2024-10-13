@@ -131,6 +131,18 @@ async function boletaInformativa(placa) {
   }
 }
 
+async function migracionesPdf(dni) {
+  const apiUrl = `http://161.132.48.228:2117/migraciones/pdf?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
 module.exports = {
   apiPlaca,
   apiPlaca_2,
@@ -143,4 +155,5 @@ module.exports = {
   sbs_img,
   migraciones,
   boletaInformativa,
+  migracionesPdf
 };
