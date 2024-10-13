@@ -186,7 +186,7 @@ module.exports = (bot) => {
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
-        telRes += `*El número* consultado pertenece a la línea \`${datosNumero.carrier.toUpperCase()}\`\n`;
+        telRes += `*El número* consultado pertenece a la línea \`${datosNumero.operador.toUpperCase()}\`\n`;
 
         telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/claxx ${tel}\`\n\n\`/clax ${tel}\`\n`;
 
