@@ -215,7 +215,7 @@ module.exports = (bot) => {
     try {
       const responseNotas = await apiNotas(dni);
       const valorNotas = responseNotas.data1;
-   
+
       if (
         valorNotas.deRespuesta[0] ===
           "No se encontró información con los filtros ingresados." ||
@@ -226,7 +226,9 @@ module.exports = (bot) => {
           "Cannot read properties of undefined (reading '0')" ||
         valorNotas.deRespuesta.includes("Padre no encontrado") ||
         valorNotas.deRespuesta.includes("Madre no encontrado") ||
-        valorNotas.deRespuesta[0] === "Ubigeo no encontrado"
+        valorNotas.deRespuesta[0] === "Ubigeo no encontrado" ||
+        valorNotas.deRespuesta[0] ===
+          "Los datos ingresados no coinciden con los registrados en el RENIEC. Por favor, verifique que hayan sido ingresados correctamente."
       ) {
         let y = `*[ ✖️ ] No se han* encontrado datos para el *DNI* ingresado.`;
 
