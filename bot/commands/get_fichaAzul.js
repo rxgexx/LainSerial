@@ -200,7 +200,7 @@ module.exports = (bot) => {
     }
 
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/certazul\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxazul\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
       replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxazul 07768359\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
