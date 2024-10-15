@@ -2,6 +2,8 @@
 const iconv = require("iconv-lite");
 const { mpfnDni } = require("../api/api_Legales.js");
 
+const path = require("path");
+
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
@@ -10,12 +12,15 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
+const img = path.join(__dirname, "../img/mpfn.jpg");
+const dirDoc = path.join(__dirname, "../../fichasDocuments/mpfnDoc");
+
 //FS
 const fs = require("fs");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]fxmpfn (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]mpfn (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -181,76 +186,103 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
-
-      // return bot.sendMessage(
-      //   chatId,
-      //   `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
-      //   messageOptions
-      // );
-
       //CORREGIR RESPONSE
       // Función para normalizar la cadena JSON
 
       const response_api = await mpfnDni(dni);
-      const response = response_api.response;
 
-      if (
-        response.respuesta === "No se encontraro registros para su busqueda"
-      ) {
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        bot.sendMessage(
-          chatId,
-          `*[ ✖️ ] No se encontraron* casos para el *DNI* \`${dni}\`.`,
-          messageOptions
-        );
-      } else {
-        const casos = response.respuesta;
+      const response = response_api.respuesta;
 
+      // if (
+      //   response.respuesta === "No se encontraro registros para su busqueda"
+      // ) {
+      //   await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      //   bot.sendMessage(
+      //     chatId,
+      //     `*[ ✖️ ] No se encontraron* casos para el *DNI* \`${dni}\`.`,
+      //     messageOptions
+      //   );
+      // } else {}
+      const casos = response;
+
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+      casos.forEach((dato, index) => {
+        const numero = index + 1;
+        const caso = dato.caso;
+        const codigoDet = dato.codigoDet;
+        const delito = dato.delito;
+        const fechDetencion = dato.fechDetencion;
+        const genero = dato.genero;
+        const nombres = dato.nombres;
+        const oficinaRegistro = dato.oficinaRegistro;
+        const pdf = dato.pdf;
+
+        const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
+        const pdfbuffer = Buffer.from(pdfdata, "base64");
+
+        // Define la ruta del archivo
+        const filePath = path.join(dirDoc, `reporteMPFN_${dni}_${numero}.pdf`);
+
+        // Guarda el PDF en el sistema de archivos
+        fs.writeFileSync(filePath, pdfbuffer);
+
+        // Construir el mensaje/caption
         let res = `*[#LAIN-DOX 🌐] ➤ #CASOSMPFN*\n\n`;
-        res += `*[ ☑️ ] REGISTROS:*\n\n`;
-
-        casos.forEach((dato, index) => {
-          const numero = index + 1;
-          const caso = dato.caso;
-          const codigoDet = dato.codigoDet;
-          const delito = dato.delito;
-          const fechDetencion = dato.fechDetencion;
-          const genero = dato.genero;
-          const nombres = dato.nombres;
-          const oficinaRegistro = dato.oficinaRegistro;
-
-          res += `*➜ REGISTRO ${numero}*\n`;
-          res += `  \`⌞\` *CASO:* \`${caso}\`\n`;
-          res += `  \`⌞\` *DELITO:* \`${delito}\`\n`;
-          res += `  \`⌞\` *GÉNERO:* \`${genero}\`\n`;
-          res += `  \`⌞\` *NOMBRES:* \`${nombres}\`\n`;
-          res += `  \`⌞\` *CÓDIGO. DETENCIÓN:* \`${codigoDet}\`\n`;
-          res += `  \`⌞\` *FECHA. DETENCIÓN:* \`${fechDetencion}\`\n`;
-          res += `  \`⌞\` *OFICINA. REGISTRO:* \`${oficinaRegistro}\`\n\n`;
-
-          res += `*NOTA:* Para saber más detalles sobre su *consulta*, puede utilizar el *comando* \`/fxcaso ${caso}\`*.*\n\n`;
-        });
-
+        res += `*[ ☑️ ] REGISTRO ${numero}:*\n\n`;
+        res += `➜ *CASO:* \`${caso}\`\n`;
+        res += `  \`⌞\` *DELITO:* \`${delito}\`\n`;
+        res += `  \`⌞\` *GÉNERO:* \`${genero}\`\n`;
+        res += `  \`⌞\` *NOMBRES:* \`${nombres}\`\n`;
+        res += `  \`⌞\` *CÓDIGO. DETENCIÓN:* \`${codigoDet}\`\n`;
+        res += `  \`⌞\` *FECHA. DETENCIÓN:* \`${fechDetencion}\`\n`;
+        res += `  \`⌞\` *OFICINA. REGISTRO:* \`${oficinaRegistro}\`\n\n`;
+        res += `*NOTA:* Para saber más detalles sobre su *consulta*, puede utilizar el *comando* \`/fxcaso ${caso}\`*.*\n\n`;
+  
+        res += `*➤ CONSULTADO POR:*\n`;
+        res += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+        res += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
         res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(() => {
-            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
-            if (!isDev && !isAdmin && !isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
-            }
-            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
-            else if (isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-            }
+  
+        // Asegurarse de que la longitud del mensaje esté dentro del límite
+        if (res.length > 1024) {
+          console.error("Error: El mensaje es demasiado largo.");
+          return; // O manejarlo de otra manera (dividir mensaje, etc.)
+        }
 
-            bot.sendMessage(chatId, res, messageOptions);
+        bot
+          .sendDocument(chatId, filePath, {
+            caption: res,
+            reply_to_message_id: msg.message_id,
+            parse_mode: "Markdown",
+            thumb: img,
+          })
+          .then(() => {
+            fs.unlink(filePath, (err) => {
+              if (err) {
+                console.error("Error al eliminar el archivo:", err);
+                return;
+              }
+              console.log(`Archivo ${filePath} eliminado exitosamente`);
+            });
+          })
+          .catch((error) => {
+            console.log("Error al enviar el documento:", error.message);
           });
+      });
+
+      //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
+      if (!isDev && !isAdmin && !isBuyer) {
+        antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
+      }
+      //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+      else if (isBuyer) {
+        antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
-      console.log(error);
+      // let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      `*[ ✖️ ] No se encontraron* casos para el *DNI* \`${dni}\`.`,
+        console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {
