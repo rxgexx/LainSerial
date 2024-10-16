@@ -13,10 +13,10 @@ module.exports = (bot) => {
       // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
       const buyers = usuarios.BUYER;
 
-      let anuncio = `*🚀 ACTUALIZACION DE COMANDO:*\n\n`;
+      let anuncio = `*🚀 ACTAS AGREGADAS - FASE DE PRUEBA -:*\n\n`;
 
-      anuncio += `*➜ /mpfn:*\n`;
-      anuncio += `*➜ EL COMANDO /fxmpfn ha sido cambiado a /mpfn que ahora agregará un pdf detallado del caso :)*\n\nBy: @SinFlowxr`;
+      anuncio += `*➜ /actanaci - /actamatri - /actadefu:*\n`;
+      anuncio += `*➜ RECORDAR QUE ESTÁ EN FASE DE PRUEBAS*\n\nBy: @SinFlowxr`;
 
       // anuncio += `*➜ /sbs:*\n`;
       // anuncio += `*➜ Reporte financiero con DNI*\n\n`;

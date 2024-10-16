@@ -4,8 +4,8 @@ const fs = require("fs");
 //SE REQUIERE "pdfkit"
 const PDFDocument = require("pdfkit");
 
-//SE REQUIERE LA FUNCIÓN "getActaMatrimonio"
-const { getActaMatrimonio } = require("../api/apis.js");
+//APIS
+const { getActaNacimiento } = require("../api/apis.js");
 
 //SE REQUIERE "path"
 const path = require("path");
@@ -20,7 +20,7 @@ const antiSpam = {};
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]actmatri (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]actanaci (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -65,16 +65,14 @@ module.exports = (bot) => {
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
         console.log(
-          "Error al obtener la información del Bot en el comando Acta Defunción: ",
+          "Error al obtener la información del Bot en el comando Acta Nacimiento: ",
           err
         );
       });
-
-    //Si el Bot es administrador
     const botIsAdmin = botMember.status === "administrator";
 
     //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev && !isAdmin && !isBuyer) {
+    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
       let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
       bot
         .sendMessage(chatId, x, messageOptions)
@@ -150,6 +148,8 @@ module.exports = (bot) => {
         tiempoEspera - Math.floor(Date.now() / 1000)
       );
       if (tiempoRestante > 0) {
+        //Se elimina el mensaje de "consultando"
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
         //Se envía el mensaje indicado cuanto tiempo tiene
         bot.sendMessage(
           chatId,
@@ -162,8 +162,8 @@ module.exports = (bot) => {
     }
 
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/actmatri\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/actmatri 07768359\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/actnaci\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/actnaci 07768359\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -178,7 +178,7 @@ module.exports = (bot) => {
     //Si todo se cumple, se iniciará con la consulta...
     const consultandoMessage = await bot.sendMessage(
       chatId,
-      `*[ ⌛ ] Buscando* el \`Acta de Matrimonio\` del *➜ DNI* \`${dni}\``,
+      `*[ ⌛ ] Buscando* el \`acta de nacimiento\` del *➜ DNI* \`${dni}\``,
       {
         reply_to_message_id: msg.message_id,
         parse_mode: "Markdown",
@@ -188,21 +188,13 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
-      // bot.sendMessage(
-      //   chatId,
-      //   `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
-      //   messageOptions
-      // );
-
-      // return;
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
-      const res = await getActaMatrimonio(dni);
-      const validarRes = res.status;
+      const res = await getActaNacimiento(dni);
 
-      if (validarRes === false) {
-        const y = `*[ ✖️ ] No se encontró* el acta de defunción del *DNI* \`${dni}\`.`;
+      if (res.length === 0) {
+        const y = `*[ ✖️ ] No se encontró* el acta de nacimiento del *DNI* \`${dni}\`.`;
 
         await bot
           .deleteMessage(chatId, consultandoMessage.message_id)
@@ -210,29 +202,78 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const datos = res.datos;
-
+        const {
+          coTipo,
+          nuActa,
+          apePaterno,
+          apeMaterno,
+          preNombres,
+          coLocal,
+          deProceso,
+          deEstado,
+          feEvento,
+          daActa: {
+            nacido: {
+              nombre: nombreNacido,
+              apaterno: apaternoNacido,
+              amaterno: amaternoNacido
+            },
+            papa: {
+              nombre: nombrePapa,
+              apaterno: apaternoPapa,
+              amaterno: amaternoPapa,
+              nacionalidad: nacionalidadPapa,
+              documento: documentoPapa
+            },
+            mama: {
+              nombre: nombreMama,
+              apaterno: apaternoMama,
+              amaterno: amaternoMama,
+              nacionalidad: nacionalidadMama,
+              documento: documentoMama
+            },
+            tipo,
+            numero,
+            estado,
+            cui,
+            cnv,
+            fevento,
+            uevento,
+            levento,
+            sexo,
+            imgAnverso,
+            imgReverso
+          }
+        } = res[0];
         //Construimos el mensaje adicional que irá con el acta
-        let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-        reply += `*[ ☑️ ] ACTA ENCONTRADA*\n\n`;
-        reply += `*- 🗂 - INF. PERSONA:*\n\n`;
-        reply += `*[+] N° DE ACTA:* \`${datos["nu_ACTA"]}\`\n`;
-        reply += `*[+] ESTADO DE ACTA:* \`${datos["de_ESTADO_ACTA"]}\`\n`;
-        reply += `*[+] NOMBRES:* \`${datos["de_PRE_NOMBRES"]}\`\n`;
-        reply += `*[+] APELLIDOS:* \`${datos["de_PRIMER_APELLIDO"]} ${datos["de_SEGUNDO_APELLIDO"]}\`\n`;
-        reply += `*[+] FECHA. MATRIMONIO:* \`${datos["fe_EVENTO"]}\`\n\n`;
+        let reply = `*[#LAIN-DOX 🌐] ➤ #ACTANACIMEINTO*\n\n`;
+        reply += `*[ ☑️ ] ACTA ENCONTRADA - ${dni} - 🗂*\n\n`;
+        reply += `*➤ INF. PERSONA:*\n`;
+        reply += `  \`⌞\` *N° DE ACTA:* \`${nuActa}\`\n`;
+        reply += `  \`⌞\` *DES. PROCESO:* \`${deProceso}\`\n`;
+        reply += `  \`⌞\` *ESTADO DE ACTA:* \`${deEstado}\`\n`;
+        reply += `  \`⌞\` *DIFUNTO. NOMBRES:* \`${nombreNacido}\`\n`;
+        reply += `  \`⌞\` *DIFUNTO. APELLIDOS:* \`${apaternoNacido} ${amaternoNacido}\`\n`;
+        reply += `  \`⌞\` *FECHA DE DEFUNCIÓN:* \`${feEvento}\`\n\n`;
 
-        reply += `*- 💬 - TEST CONSULTA:*\n\n`;
-        reply += `*[+]* \`${firstName}\`\n`;
-        reply += `*[+]* \`${userId}\`\n`;
+        reply += `*➤ INF. EVENTO:*\n`;
+        reply += `  \`⌞\` *MOMENTO. EVENTO:* \`${fevento}\`\n`;
+        reply += `  \`⌞\` *UBICACION. EVENTO:* \`${uevento}\`\n`;
+        reply += `  \`⌞\` *LUGAR. EVENTO:* \`${levento}\`\n\n`;
+
+        reply += `*➤ CONSULTADO POR:*\n`;
+        reply += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        reply += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        reply += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = datos.foto;
-        // const selloActa = datos.imagenActaReverso;
+        const caraActa = imgAnverso;
+        const selloActa = imgReverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
         const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
-        const pdfPath = path.join(pdfsFolder, `${dni}_acta_Matrimonio.pdf`); // Ruta al archivo PDF
+        const pdfPath = path.join(pdfsFolder, `${dni}_acta_Nacimiento.pdf`); // Ruta al archivo PDF
+        console.log(pdfPath);
 
         //Si no encuentra esa carpta, la crea
         if (!fs.existsSync(pdfsFolder)) {
@@ -277,14 +318,14 @@ module.exports = (bot) => {
             agregarImagenAPDF(fotoBuffer, imageDimensions);
           }
 
-          // if (selloActa) {
-          //   const foto2Data = selloActa.replace(
-          //     /^data:image\/jpeg;base64,/,
-          //     ""
-          //   );
-          //   const foto2Buffer = Buffer.from(foto2Data, "base64");
-          //   agregarImagenAPDF(foto2Buffer, imageDimensions);
-          // }
+          if (selloActa) {
+            const foto2Data = selloActa.replace(
+              /^data:image\/jpeg;base64,/,
+              ""
+            );
+            const foto2Buffer = Buffer.from(foto2Data, "base64");
+            agregarImagenAPDF(foto2Buffer, imageDimensions);
+          }
 
           // Guarda el PDF en el sistema de archivos
           const writeStream = fs.createWriteStream(pdfPath);
@@ -325,7 +366,9 @@ module.exports = (bot) => {
         });
       }
     } catch (error) {
-      console.error(error)
+      
+      console.log(error);
+
       if (error.response && error.response.status === 500) {
         let xerror = `*[ 💤 ] Los servidores de actas* andan apagados, no se ha *completado* la _búsqueda._`;
 
@@ -334,8 +377,16 @@ module.exports = (bot) => {
           .then(() => {
             bot.sendMessage(chatId, xerror, messageOptions);
           });
+      } else if (error.response && error.response.status === 524) {
+        let yerror = `*[ ✖️ ] La búsqueda ha tardado mucho,* probablemente haya un _error interno del servidor,_ *intente más tarde*.`;
+
+        await bot
+          .deleteMessage(chatId, consultandoMessage.message_id)
+          .then(() => {
+            bot.sendMessage(chatId, yerror, messageOptions);
+          });
       } else {
-        let yerror = `*[ 🚨 ] Error del servidor:* No se pudo obtener el *acta de Defunción* debido a un problema ,\`- no reconocido -\`, *interno del servidor.*`;
+        let yerror = `*[ 🚨 ] Error en el servidor:* No se pudo obtener el *acta de nacimiento* debido a un problema ,\`- no reconocido -\`, *interno del servidor.*`;
 
         await bot
           .deleteMessage(chatId, consultandoMessage.message_id)
@@ -343,7 +394,7 @@ module.exports = (bot) => {
             bot.sendDocument(chatId, yerror, messageOptions);
             bot.sendMessage(
               5478452007,
-              `*Error DESCONOCIDO* al intentar obtener el acta de Defunción para el DNI ${dni}: ${error.message} | *Usuario que consultó:* ${userId}`,
+              `*Error DESCONOCIDO* al intentar obtener el acta de nacimiento para el DNI ${dni}: ${error.message} | *Usuario que consultó:* ${userId}`,
               messageOptions
             );
           });
@@ -353,3 +404,31 @@ module.exports = (bot) => {
     }
   });
 };
+
+/*const { getActaNacimiento } = require("../api/apis");
+
+const fs = require('fs');
+const PDFDocument = require('pdfkit');
+
+module.exports = (bot) => {
+  bot.onText(/\/x (.+)/, async (msg, match) => {
+    const dni = match[1];
+    const chatId = msg.chat.id;
+
+    try {
+      const res = await getActaNacimiento(dni);
+
+      const data1 = res.data1;
+
+      const datos = data1.datos[0];
+
+      const foto64 = datos.Foto
+
+      console.log("foto: ", foto64);
+
+      // console.log(res.data1.datos.foto);
+      //console.log(res.data1.datos.Foto_reverso);
+    } catch (error) {}
+  });
+};
+*/

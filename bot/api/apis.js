@@ -78,9 +78,10 @@ async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
 }
 
 //API ACTA NACIMIENTO
+//API ACTA NACIMIENTO
 async function getActaNacimiento(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.48.228:1422/api/actna?dni=${dni}`;
+  const apiUrl = `http://161.132.55.224:7831/api/acta/nacimiento/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -100,7 +101,7 @@ async function getActaNacimiento(dni) {
 //API ACTA NACIMIENTO
 async function getActaMatrimonio(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.48.228:1422/api/actma?dni=${dni}`;
+  const apiUrl = `http://161.132.55.224:7831/api/acta/matrimonio/${dni}`
 
   try {
     const response = await axios.get(apiUrl);
@@ -120,7 +121,7 @@ async function getActaMatrimonio(dni) {
 //API ACTA DEFUNCIÓN
 async function getActaDefuncion(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.48.228:1422/api/actde?dni=${dni}`;
+  const apiUrl = `http://161.132.55.224:7831/api/acta/defuncion/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -137,6 +138,7 @@ async function getActaDefuncion(dni) {
     throw error;
   }
 }
+
 
 //API DNI VIRTUAL
 async function getDNIVirtual(dni) {

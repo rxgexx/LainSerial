@@ -20,7 +20,7 @@ const antiSpam = {};
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]actdefu (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]actadefu (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -187,21 +187,10 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
-
-      // bot.sendMessage(
-      //   chatId,
-      //   `*[ 🏗️ ] Comando en mantenimiento,* disculpe las molestias.`,
-      //   messageOptions
-      // );
-
-      // return;
-
       // Usar Promise.race para ver si la API responde antes del tiempo de espera
       const res = await getActaDefuncion(dni);
-      const validarRes = res.status;
 
-      if (validarRes === false) {
+      if (res.length === 0) {
         const y = `*[ ✖️ ] No se encontró* el acta de defunción del *DNI* \`${dni}\`.`;
 
         await bot
@@ -210,25 +199,68 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, y, messageOptions);
           });
       } else {
-        const datos = res.datos;
+        const {
+          coTipo,
+          nuActa,
+          apePaterno,
+          apeMaterno,
+          preNombres,
+          coLocal,
+          deProceso,
+          deEstado,
+          feEvento,
+          daActa: {
+            persona: {
+              nombre,
+              apaterno,
+              amaterno,
+              edad,
+              nacionalidad,
+              documento,
+              nacimiento,
+              regcivil,
+              regdocumento,
+            },
+            tipo,
+            numero,
+            estado,
+            cui,
+            fevento,
+            uevento,
+            levento,
+            sexo,
+            imgAnverso,
+            imgReverso,
+          },
+        } = res[0];
 
         //Construimos el mensaje adicional que irá con el acta
-        let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-        reply += `*[ ☑️ ] ACTA ENCONTRADA*\n\n`;
-        reply += `*- 🗂 - INF. PERSONA:*\n\n`;
-        reply += `*[+] N° DE ACTA:* \`${datos["nu_ACTA"]}\`\n`;
-        reply += `*[+] ESTADO DE ACTA:* \`${datos["de_ESTADO_ACTA"]}\`\n`;
-        reply += `*[+] NOMBRES:* \`${datos["de_PRE_NOMBRES"]}\`\n`;
-        reply += `*[+] APELLIDOS:* \`${datos["de_PRIMER_APELLIDO"]} ${datos["de_SEGUNDO_APELLIDO"]}\`\n`;
-        reply += `*[+] FECHA. DEFUNCIÓN:* \`${datos["fe_EVENTO"]}\`\n\n`;
+        let reply = `*[#LAIN-DOX 🌐] ➤ #ACTADEFUNCIÓN*\n\n`;
+        reply += `*[ ☑️ ] ACTA ENCONTRADA - ${dni} - 🗂*\n\n`;
+        reply += `*➤ INF. PERSONA:*\n`;
+        reply += `  \`⌞\` *N° DE ACTA:* \`${nuActa}\`\n`;
+        reply += `  \`⌞\` *DES. PROCESO:* \`${deProceso}\`\n`;
+        reply += `  \`⌞\` *ESTADO DE ACTA:* \`${deEstado}\`\n`;
+        reply += `  \`⌞\` *DIFUNTO. NOMBRES:* \`${nombre}\`\n`;
+        reply += `  \`⌞\` *DIFUNTO. APELLIDOS:* \`${apePaterno} ${apaterno}\`\n`;
+        reply += `  \`⌞\` *FECHA DE DEFUNCIÓN:* \`${feEvento}\`\n\n`;
 
-        reply += `*- 💬 - TEST CONSULTA:*\n\n`;
-        reply += `*[+]* \`${firstName}\`\n`;
-        reply += `*[+]* \`${userId}\`\n`;
+        reply += `*➤ INF. EVENTO:*\n`;
+        reply += `  \`⌞\` *REG. CIVIL:* \`${regcivil}\`\n`;
+        reply += `  \`⌞\` *REG. DOCUMENTO:* \`${regdocumento}\`\n`;
+        reply += `  \`⌞\` *MOMENTO. EVENTO:* \`${fevento}\`\n`;
+        reply += `  \`⌞\` *UBICACION. EVENTO:* \`${uevento}\`\n`;
+        reply += `  \`⌞\` *LUGAR. EVENTO:* \`${levento}\`\n\n`;
+
+        reply += `*➤ CONSULTADO POR:*\n`;
+        reply += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        reply += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        reply += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
 
         //Se inicia transformando la imagen en b64 a una imagen...
-        const caraActa = res.foto;
-        // const selloActa = datos.imagenActaReverso;
+        const caraActa = imgAnverso;
+        const selloActa = imgReverso;
 
         //Declaramos la ruta donde se guardarán las actas en PDF
         const pdfsFolder = path.join(__dirname, "../docs"); // Ruta a la carpeta "docs"
@@ -277,14 +309,14 @@ module.exports = (bot) => {
             agregarImagenAPDF(fotoBuffer, imageDimensions);
           }
 
-          // if (selloActa) {
-          //   const foto2Data = selloActa.replace(
-          //     /^data:image\/jpeg;base64,/,
-          //     ""
-          //   );
-          //   const foto2Buffer = Buffer.from(foto2Data, "base64");
-          //   agregarImagenAPDF(foto2Buffer, imageDimensions);
-          // }
+          if (selloActa) {
+            const foto2Data = selloActa.replace(
+              /^data:image\/jpeg;base64,/,
+              ""
+            );
+            const foto2Buffer = Buffer.from(foto2Data, "base64");
+            agregarImagenAPDF(foto2Buffer, imageDimensions);
+          }
 
           // Guarda el PDF en el sistema de archivos
           const writeStream = fs.createWriteStream(pdfPath);
