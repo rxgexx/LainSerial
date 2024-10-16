@@ -137,9 +137,9 @@ module.exports = (bot) => {
       cmds += `*➜ /tive:* _TIVE en tiempo real - 🟢_\n`;
       cmds += `*➜ /hogar:* _Búsqueda de integrantes del hogar - 🟢_\n`;
       cmds += `*➜ /dnix:* _Búsqueda de Datos Reniec - 🟢_\n`;
-      // cmds += `*➜ /actnaci:* _Búsqueda de ACTA DE NACIMIENTO - 🟢_\n`;
-      // cmds += `*➜ /actdefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
-      // cmds += `*➜ /actmatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
+      cmds += `*➜ /actanaci:* _Búsqueda de ACTA DE NACIMIENTO - 🟢_\n`;
+      cmds += `*➜ /actadefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
+      cmds += `*➜ /actamatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
       cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
       cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
       // cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
