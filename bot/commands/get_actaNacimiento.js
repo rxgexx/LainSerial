@@ -216,21 +216,21 @@ module.exports = (bot) => {
             nacido: {
               nombre: nombreNacido,
               apaterno: apaternoNacido,
-              amaterno: amaternoNacido
+              amaterno: amaternoNacido,
             },
             papa: {
               nombre: nombrePapa,
               apaterno: apaternoPapa,
               amaterno: amaternoPapa,
               nacionalidad: nacionalidadPapa,
-              documento: documentoPapa
+              documento: documentoPapa,
             },
             mama: {
               nombre: nombreMama,
               apaterno: apaternoMama,
               amaterno: amaternoMama,
               nacionalidad: nacionalidadMama,
-              documento: documentoMama
+              documento: documentoMama,
             },
             tipo,
             numero,
@@ -242,8 +242,8 @@ module.exports = (bot) => {
             levento,
             sexo,
             imgAnverso,
-            imgReverso
-          }
+            imgReverso,
+          },
         } = res[0];
         //Construimos el mensaje adicional que irá con el acta
         let reply = `*[#LAIN-DOX 🌐] ➤ #ACTANACIMEINTO*\n\n`;
@@ -343,15 +343,6 @@ module.exports = (bot) => {
                 thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
               })
               .then(() => {
-                //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
-                if (!isDev && !isAdmin && !isBuyer) {
-                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
-                }
-                //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
-                else if (isBuyer) {
-                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-                }
-
                 // Elimina el archivo después de enviarlo
                 fs.unlinkSync(pdfPath);
                 resolve();
@@ -364,9 +355,16 @@ module.exports = (bot) => {
         }).catch((error) => {
           console.error(error);
         });
+        //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
+        if (!isDev && !isAdmin && !isBuyer) {
+          antiSpam[userId] = Math.floor(Date.now() / 1000) + 500;
+        }
+        //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+        else if (isBuyer) {
+          antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+        }
       }
     } catch (error) {
-      
       console.log(error);
 
       if (error.response && error.response.status === 500) {

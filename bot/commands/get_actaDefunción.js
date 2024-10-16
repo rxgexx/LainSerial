@@ -257,7 +257,6 @@ module.exports = (bot) => {
         reply += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
         reply += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-
         //Se inicia transformando la imagen en b64 a una imagen...
         const caraActa = imgAnverso;
         const selloActa = imgReverso;
@@ -334,15 +333,6 @@ module.exports = (bot) => {
                 thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
               })
               .then(() => {
-                //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
-                if (!isDev && !isAdmin && !isBuyer) {
-                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 1000;
-                }
-                //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
-                else if (isBuyer) {
-                  antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-                }
-
                 // Elimina el archivo después de enviarlo
                 fs.unlinkSync(pdfPath);
                 resolve();
@@ -355,6 +345,14 @@ module.exports = (bot) => {
         }).catch((error) => {
           console.error(error);
         });
+        //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
+        if (!isDev && !isAdmin && !isBuyer) {
+          antiSpam[userId] = Math.floor(Date.now() / 1000) + 500;
+        }
+        //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+        else if (isBuyer) {
+          antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+        }
       }
     } catch (error) {
       console.log(error);
