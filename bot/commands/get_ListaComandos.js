@@ -163,7 +163,7 @@ module.exports = (bot) => {
       cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
       cmds += `*➜ /migra:* _Reporte migratorio textual- 🟢_\n`;
       cmds += `*➜ /migrapdf:* _Reporte migratorio en PDF- 🟢_\n`;
-      // cmds += `*➜ /seeker:* _Búsqueda de datos generales en PDF - 🟢_\n`;
+      cmds += `*➜ /seeker:* _Búsqueda de datos generales en tiempo real por SEEKER en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
       cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
 
