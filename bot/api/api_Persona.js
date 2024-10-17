@@ -77,7 +77,21 @@ async function seekerdni(dni) {
   }
 }
 
+async function seekerpdf(dni) {
+  const apiUrl = `http://161.132.55.58:8510/seeker?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la API SEEKER PDF: ", error);
+  }
+}
+
+
 module.exports = {
+  seekerpdf,
   apiHogar,
   apiname_2,
   dniElectronico,
