@@ -239,8 +239,12 @@ module.exports = (bot) => {
       caption += `  \`⌞\` *DOCUMENTO:* \`${nuDni}\`\n`;
       caption += `  \`⌞\` *NOMBRE. PADRE:* \`${padre}\`\n`;
       caption += `  \`⌞\` *NOMBRE. MADRE:* \`${madre}\`\n`;
-      caption += `  \`⌞\` *DETALLE UBIGEO:* \`${ubicacion.replace("Ubicación:", "").trim()}\`\n`;
-      caption += `  \`⌞\` *DIRECCION EXACTA:* \`${direccion.replace("Dirección:", "").trim()}\`\n\n`;
+      caption += `  \`⌞\` *DETALLE UBIGEO:* \`${ubicacion
+        .replace("Ubicación:", "")
+        .trim()}\`\n`;
+      caption += `  \`⌞\` *DIRECCION EXACTA:* \`${direccion
+        .replace("Dirección:", "")
+        .trim()}\`\n\n`;
 
       caption += `*➤ CONSULTADO POR:*\n`;
       caption += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
@@ -252,15 +256,20 @@ module.exports = (bot) => {
         fs.mkdirSync(dirDoc, { recursive: true });
       }
 
-      // Define la ruta del archivo
-      const filePath = path.join(dirDoc, `seekerData_${dni}.pdf`);
+      // Define la ruta del archivo de forma única usando el message_id o un timestamp
+      const timestamp = Date.now();
+      const uniqueFilePath = path.join(
+        dirDoc,
+        `seekerData_${dni}_${timestamp}.pdf`
+      );
 
       // Guarda el PDF en el sistema de archivos
-      fs.writeFileSync(filePath, pdfbuffer);
+      fs.writeFileSync(uniqueFilePath, pdfbuffer);
 
+      // Envía el documento con la ruta única
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
       bot
-        .sendDocument(chatId, filePath, {
+        .sendDocument(chatId, uniqueFilePath, {
           caption: caption,
           reply_to_message_id: msg.message_id,
           parse_mode: "Markdown",
@@ -269,14 +278,11 @@ module.exports = (bot) => {
         .then(() => {
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 150;
-          }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
-          else if (isBuyer) {
+          } else if (isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 100;
           }
         });
     } catch (error) {
-
       let xerror = `*[ ✖️ ] No se ha encontrado* DATA para el DNI.`;
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
