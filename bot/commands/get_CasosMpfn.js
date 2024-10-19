@@ -192,17 +192,17 @@ module.exports = (bot) => {
       const response_api = await mpfnDni(dni);
 
       const response = response_api.respuesta;
-
+      
       if (
-        response.respuesta === "No se encontraron registros para su búsqueda"
+        response === "No se encontraron registros para su búsqueda"
       ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        bot.sendMessage(
+        return bot.sendMessage(
           chatId,
           `*[ ✖️ ] No se encontraron* casos para el *DNI* \`${dni}\`.`,
           messageOptions
         );
-      }
+      } 
       const casos = response;
 
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
