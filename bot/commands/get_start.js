@@ -37,17 +37,17 @@ module.exports = (bot) => {
     try {
       const textoStart = messages.startMessages(firstName);
 
-      //BOTÓN
-      const firstKeyBoards = {
-        inline_keyboard: [
-          [
-            {
-              text: "𝘾𝙊𝙈𝙋𝙍𝘼 𝙏𝙐 𝘼𝘾𝘾𝙀𝙎𝙊 🛒",
-              url: "https://t.me/SinFlowxr",
-            },
-          ],
-        ],
-      };
+      // //BOTÓN
+      // const firstKeyBoards = {
+      //   inline_keyboard: [
+      //     [
+      //       {
+      //         text: "𝘾𝙊𝙈𝙋𝙍𝘼 𝙏𝙐 𝘼𝘾𝘾𝙀𝙎𝙊 🛒",
+      //         url: "https://t.me/SinFlowxr",
+      //       },
+      //     ],
+      //   ],
+      // };
 
       bot
         .sendPhoto(chatId, imageStart, {
