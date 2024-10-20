@@ -53,8 +53,10 @@ module.exports = (bot) => {
     // Verificación de rangos
     const isDev = rangosFilePath.DEVELOPER.includes(userId);
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
-    const isBuyer =
-      rangosFilePath.BUYER && rangosFilePath.BUYER.includes(userId);
+    const { checkIsBuyer } = require("../../sql/checkbuyer");
+    //Rango Comprador
+    const isBuyer = await checkIsBuyer(userId);
+
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const gruposBloqueados = require("../config/gruposManager/gruposBloqueados.js");

@@ -56,8 +56,9 @@ module.exports = (bot) => {
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
     //Rango Comprador
-    const isBuyer =
-      rangosFilePath.BUYER && rangosFilePath.BUYER.includes(userId);
+    const { checkIsBuyer } = require("../../sql/checkbuyer");
+    //Rango Comprador
+    const isBuyer = await checkIsBuyer(userId);
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
