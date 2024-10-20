@@ -54,7 +54,6 @@ module.exports = (bot) => {
           caption: textoStart,
           reply_to_message_id: msg.message_id,
           parse_mode: "Markdown",
-          reply_markup: JSON.stringify(firstKeyBoards),
         })
         .catch((error) => {
           console.log("Error al envíar el mensaje de bienvenida: ", error);
