@@ -23,4 +23,37 @@ async function mpfnCaso(caso) {
   }
 }
 
-module.exports = { mpfnDni, mpfnCaso };
+async function antPersona(dni) {
+  const apiUrl = `http://161.132.38.83:3142/ant/persona?dni=${dni}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR API MPFN x DNI: " + error);
+  }
+}
+
+async function rqPla(placa) {
+  const apiUrl = `http://161.132.38.83:3142/rq/vehi?placa=${placa}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR API MPFN x DNI: " + error);
+  }
+}
+
+async function rqPer(dni) {
+  const apiUrl = `http://161.132.38.83:3142/rq/persona?dni=${dni}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR API MPFN x DNI: " + error);
+  }
+}
+
+module.exports = { mpfnDni, mpfnCaso, antPersona, rqPla, rqPer };

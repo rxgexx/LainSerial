@@ -1,59 +1,33 @@
-const fs = require("fs");
 const path = require("path");
-const img = path.join(__dirname, "../img/anuncio__4.jpg");
+const img = path.join(__dirname, "../img/anuncioSidpol.jpg");
+
+// FUNCION OBTENER BUYERS
+const { obtenerBuyers } = require("../../sql/obtenerbuyers.js");
 
 module.exports = (bot) => {
   bot.onText(/\/anuncio/, async (msg) => {
-    console.log(msg);
     try {
-      // Leer el archivo JSON que contiene los IDs de usuarios y grupos permitidos
-      const usuarios = require("../config/rangos/rangos.json");
+      // Obtener lista de compradores (buyers) y grupos permitidos
+      const buyers = obtenerBuyers();
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
-      // Filtrar solo los IDs de usuarios que están en la categoría "BUYER"
-      const buyers = usuarios.BUYER;
+      let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE -:*\n\n`;
+      anuncio += `*¡El BOT MEJORA 🚀!*\n\n`;
+      anuncio += `Queridos usuarios, *se les comunica que se han agregado nuevos comandos para su disposición:*\n\n`;
+      anuncio += `  \`⌞\` */rq:* Consulta RQ de una persona con *su DNI.*\n`;
+      anuncio += `  \`⌞\` */rqpla:* Consulta RQ Vehícular con el *número de PLACA.*\n`;
+      anuncio += `  \`⌞\` */anteper:* Consulta antecedentes de una persona con *su DNI*\n\n`;
+      anuncio += `\`-\` Gracias por pertenecer a este proyecto. *Atte: Valeria - @SinFlowxr - Programadora y desarrolladora del Bot.*\n\n`;
 
-      let anuncio = `*🚀 COMANDO SEEKER AGREGADO -:*\n\n`;
-
-      anuncio += `*➜ /seeker:*\n`;
-      anuncio += `*➜ Obtén datos generales por seeker online*\n\nBy: @SinFlowxr`;
-
-      // anuncio += `*➜ /sbs:*\n`;
-      // anuncio += `*➜ Reporte financiero con DNI*\n\n`;
-
-      // anuncio += `El comando /fxtrabajos ha sido arreglado, en los próximos días se estará terminando de añadir más comandos como correos, boleta informativa ONLINE de vehículo, etc... by @SinFlowxr`
-
-      // anuncio += `*➜ EN UNOS MINUTOS SE AGREGARÁ* dos nuevos comandos, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
-      // anuncio += `*➜ Comandos a agregar... MOVISTAR EN TIEMPO REAL x DNI y CELULAR*\n\n`;
-      // anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
-      // anuncio += `*𝗖𝗢𝗠𝗔𝗡𝗗𝗢𝗦 𝗔𝗚𝗥𝗘𝗚𝗔𝗗𝗢𝗦 - 🚀 -*\n\n`;
-      // anuncio += `*[ ☑️ ] COMANDO MOVISTAR ONLINE agregado* - \`/movx\` y \`/movdni\` - *:*\n`;
-      // anuncio += `   \`⌞\` Obtén \`NÚMEROS MOVISTAR\` de una *persona* solamente con su *DNI* usando */movdni*.\n\n`;
-      // anuncio += `   \`⌞\` Obtén \`TITULAR MOVISTAR\` de un *número movistar* solamente con su *NÚMERO* usando */movx*.\n\n`;
-      // anuncio += `➜ *@SinFlowxr* | *@LainDox_Info*\n\n`;
-
-      // anuncio += `*➜ Si tiene alguna duda* con el Bot *comunicarse* con la [desarrolladora](https://t.me/SinFlowxr)*.*\n\n`;
-      // anuncio += `*También se agregó el comando /movdni para buscar línea de teléfonos de un CLIENTE MOVISTAR.*\n\n`;
-
-      // let msg = `*✅ ÙNETE AL CANAL OFICIAL DEL BOT :)*\n\n`;
-      // msg += `*➜ EN UNOS MINUTOS SE AGREGARÁ* un nuevo comando, ve al *canal oficial del Bot para votar por el nuevo nombre de este comando https://t.me/LainDox_Info.*\n\n`;
-      // msg += `*➜ NUEVO COMANDO AGREGADO 🚀* \`/seeker < dni >\`, *úsalo ya!*\n\n`;
-
-      // let msg = `*[ ⚠️ ] BOT EN MANTENIMIENTO UNOS MINUTOS...,* se está agregando nueva fuente RENIEC`
-
-      // Iterar sobre los usuarios "BUYER"
       for (const usuarioId of buyers) {
         try {
-          // Verificar si el usuario es accesible para el bot
           const chatInfo = await bot.getChat(usuarioId);
-          // Si el usuario es accesible, enviar el mensaje con la foto
 
-          // await bot.sendPhoto(usuarioId, img, {
-          //   caption: anuncio,
-          //   parse_mode: "Markdown",
-          // });
-
-          bot.sendMessage(usuarioId, anuncio, { parse_mode: "Markdown" });
+          const sentMessage = await bot.sendPhoto(usuarioId, img, {
+            caption: anuncio,
+            parse_mode: "Markdown",
+          });
+          await bot.pinChatMessage(usuarioId, sentMessage.message_id); // Fija el mensaje en el chat
         } catch (error) {
           console.error(
             `No se pudo enviar mensaje a usuario ${usuarioId}:`,
@@ -62,25 +36,20 @@ module.exports = (bot) => {
         }
       }
 
-      // Iterar sobre los grupos permitidos
       for (const grupoId of gruposPermitidos) {
         try {
-          // Verificar si el grupo es accesible para el bot
           const chatInfo = await bot.getChat(grupoId);
-          // Si el grupo es accesible, enviar el mensaje con la foto
 
-          // await bot.sendPhoto(grupoId, img, {
-          //   caption: anuncio,
-          //   parse_mode: "Markdown",
-          // });
-
-          bot.sendMessage(grupoId, anuncio, { parse_mode: "Markdown" });
+          const sentMessage = await bot.sendPhoto(grupoId, img, {
+            caption: anuncio,
+            parse_mode: "Markdown",
+          });
+          await bot.pinChatMessage(grupoId, sentMessage.message_id); // Fija el mensaje en el grupo
         } catch (error) {
           console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
         }
       }
 
-      // Enviar un mensaje de confirmación al usuario que inició el comando
       bot.sendMessage(
         msg.chat.id,
         "Mensaje con foto enviado a todos los usuarios 'BUYER' y grupos permitidos."

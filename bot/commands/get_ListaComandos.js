@@ -141,7 +141,7 @@ module.exports = (bot) => {
       cmds += `*➜ /actadefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
       cmds += `*➜ /actamatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
       cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
-      cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
+      // cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
       // cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
@@ -154,6 +154,9 @@ module.exports = (bot) => {
       cmds += `*➜ /fxantpol:* _FICHA ANT. POLICIALES - 🟢_\n`;
       cmds += `*➜ /fxantpen:* _FICHA ANT. PENALES - 🟢_\n`;
       cmds += `*➜ /fxantjud:* _FICHA ANT. JUDICIALES - 🟢 _\n`;
+      cmds += `*➜ /rq:* _Consulta RQ de una persona - 🟢 _\n`;
+      cmds += `*➜ /rqpla:* _Consulta RQ de un vehículo - 🟢 _\n`;
+      cmds += `*➜ /anteper:* _Consulta Antecdentes de una persona - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
