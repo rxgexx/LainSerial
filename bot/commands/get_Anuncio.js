@@ -8,7 +8,7 @@ module.exports = (bot) => {
   bot.onText(/\/anuncio/, async (msg) => {
     try {
       // Obtener lista de compradores (buyers) y grupos permitidos
-      const buyers = obtenerBuyers();
+      const buyers = await obtenerBuyers();
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
       let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE -:*\n\n`;
