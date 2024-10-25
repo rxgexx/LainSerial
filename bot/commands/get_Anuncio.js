@@ -11,7 +11,7 @@ module.exports = (bot) => {
       const buyers = await obtenerBuyers();
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
-      let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE -:*\n\n`;
+      let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE *-:*\n\n`;
       anuncio += `*¡El BOT MEJORA 🚀!*\n\n`;
       anuncio += `Queridos usuarios, *se les comunica que se han agregado nuevos comandos para su disposición:*\n\n`;
       anuncio += `  \`⌞\` */rq:* Consulta RQ de una persona con *su DNI.*\n`;
