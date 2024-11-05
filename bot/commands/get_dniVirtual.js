@@ -209,7 +209,7 @@ module.exports = (bot) => {
       const atrasDni = responseDniVirtual.posterior_base64;
 
       //TEXTO QUE ACOMPAÑARÁ AL DNI VIRTUAL
-      let replyDni = `*[#LAIN-V.1-BETA 🌐]*\n\n`;
+      let replyDni = `*[#LAIN-V.1-BETA 🌐] ➤ #DNIVIRTUAL*\n\n`;
       replyDni += `*[ ☑️ ] DNI VIRTUAL*\n\n`;
       replyDni += `*➤ INF. PERSONA:*\n`;
       replyDni += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;

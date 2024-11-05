@@ -147,7 +147,7 @@ module.exports = (bot) => {
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
       // cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
       // cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
-      cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
+      // cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
       cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;
       cmds += `*➜ /fxazul:* _C4 AZUL - 🟢_\n`;
