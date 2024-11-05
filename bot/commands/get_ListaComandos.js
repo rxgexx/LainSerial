@@ -131,8 +131,8 @@ module.exports = (bot) => {
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
       cmds += `*➜ /telx2:* _Números por DNI en una 2da base de datos - 🟢_\n`;
       cmds += `*➜ /osiptel:* _Números por DNI en tiempo real - 🟢_\n`;
-      cmds += `*➜ /mpfn:* _Búsqueda de casos MPFN + PDF - 🟢_\n`;
-      cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
+      // cmds += `*➜ /mpfn:* _Búsqueda de casos MPFN + PDF - 🟢_\n`;
+      // cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
       cmds += `*➜ /tive:* _TIVE en tiempo real - 🟢_\n`;
       cmds += `*➜ /hogar:* _Búsqueda de integrantes del hogar - 🟢_\n`;
@@ -158,7 +158,7 @@ module.exports = (bot) => {
       cmds += `*➜ /rqpla:* _Consulta RQ de un vehículo - 🟢 _\n`;
       cmds += `*➜ /anteper:* _Consulta Antecdentes de una persona - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
-      cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
+      // cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
       cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
       cmds += `*➜ /insve:* _Ficha Inscripcion Vehicular - 🟢_\n`;
