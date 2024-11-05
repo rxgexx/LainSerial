@@ -477,9 +477,9 @@ module.exports = (bot) => {
           message += `*➤ RESULTADO* \`${start + index + 1}\`\n`;
           message += `  \`⌞\` *REGISTRO:* \`${formattedDate}\`\n`;
           message += `  \`⌞\` *NUM. RUC:* \`${item.ruc}\`\n`;
-          message += `  \`⌞\` *EMPRESA:* \`${item.nomEmpresa}\`\n`;
-          message += `  \`⌞\` *SUELDO:* \`${item.sueldo}\`\n`;
-          message += `  \`⌞\` *ESTADO:* \`${item.estado}\`\n\n`;
+          message += `  \`⌞\` *EMPRESA:* \`${item.denominacion}\`\n`;
+          message += `  \`⌞\` *SUELDO:* \`${item.variable}\`\n`;
+          message += `  \`⌞\` *ESTADO:* \`${item.situacion}\`\n\n`;
         });
 
         message += `*➤ CONSULTADO POR:*\n`;
