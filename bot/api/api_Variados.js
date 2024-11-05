@@ -47,7 +47,9 @@ async function apiNotas(dni) {
 }
 
 async function api_trabajos(dni) {
-  const apiUrl = `http://161.132.55.58:2000/consultar/dni?dni=${dni}`;
+  // const apiUrl = `http://161.132.55.58:2000/consultar/dni?dni=${dni}`;
+  const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
+
 
   try {
     const response = await axios.get(apiUrl);

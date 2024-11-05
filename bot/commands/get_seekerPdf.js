@@ -518,9 +518,9 @@ module.exports = (bot) => {
       //PROPIETARIO
 
       const dataPersona = datos.daSource;
-      
+
       const direccion = dataPersona.desDireccion;
-      const nombreCompleto = dataPersona.nombreCompleto;
+      const nombreCompleto = dataPersona.nomCompleto;
       const nuDni = dataPersona.nuDni;
       const padre = dataPersona.nomPadre;
       const ubicacion = dataPersona.ubiDireccion;
