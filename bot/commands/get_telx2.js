@@ -540,7 +540,7 @@ module.exports = (bot) => {
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
-        const persona = responseTitular.SeekerData.datosPersona.data;
+        const persona = responseTitular.daSource;
 
         //RESPONSE TITULAR
         // const titular = responseTitular.datos.surname + responseTitular.datos.name;
@@ -550,9 +550,9 @@ module.exports = (bot) => {
         telRes += `*[ ☑️ ] NUMEROS DE* - \`${dni}\` -\n\n`;
         telRes += `*➤ INF. PERSONA:*\n`;
         telRes += `  \`⌞\` *DNI:* \`${persona.nuDni}\`\n`;
-        telRes += `  \`⌞\` *TITULAR:* \`${persona.nombreCompleto}\`\n`;
-        telRes += `  \`⌞\` *UBICACION:* \`${persona.ubicacion}\`\n`;
-        telRes += `  \`⌞\` *NACIMIENTO:* \`${persona.fechaNacimiento}\`\n\n`;
+        telRes += `  \`⌞\` *TITULAR:* \`${persona.nomCompleto}\`\n`;
+        telRes += `  \`⌞\` *UBICACION:* \`${persona.ubiNacimiento}\`\n`;
+        telRes += `  \`⌞\` *NACIMIENTO:* \`${persona.feNacimiento}\`\n\n`;
 
         telRes += `*➤ BASE DE DATOS:*\n\n`;
 
