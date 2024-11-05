@@ -443,7 +443,7 @@ module.exports = (bot) => {
           }
         });
 
-      send_ResultadosSeparados(chatId, laboral.data);
+      send_ResultadosSeparados(chatId, laboral);
     } catch (error) {
       bot.sendMessage(chatId, "Hubo un error al obtener los datos.");
       console.error(error);
