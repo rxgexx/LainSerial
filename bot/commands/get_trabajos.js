@@ -420,9 +420,9 @@ module.exports = (bot) => {
     try {
       const data = await api_trabajos(dni);
       const laboral = data.daSource.listaTrabajo;
-      console.log(laboral);
+      // console.log(laboral);
 
-      if (laboral.data.length === 0) {
+      if (laboral.length === 0) {
         let yx = `*[ ✖️ ] No se encontró registros laborales* para el *DNI* \`${dni}\`*.*\n\n`;
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
