@@ -165,7 +165,7 @@ const fichaEndPoint = "http://161.132.48.228:4045";
 async function fichaAzul(dni) {
   //END - POINT FICHA AZUL - API
   const extencionFicha = "consulta/fichaAzul";
-  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
+  const apiUrl = `http://161.132.48.228:9933/api/c4?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
