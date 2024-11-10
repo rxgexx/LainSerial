@@ -202,7 +202,7 @@ module.exports = (bot) => {
           messageOptions
         );
       }
-      const casos = response_api.data;
+      const casos = response_api.data[0];
 
       // const numero = index + 1;
       const caso = casos.caso;
