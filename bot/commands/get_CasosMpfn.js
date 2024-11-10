@@ -225,7 +225,7 @@ module.exports = (bot) => {
 
       // Construir el mensaje/caption
       let res = `*[#LAIN-DOX 🌐] ➤ #RENADES*\n\n`;
-      res += `*[ ☑️ ] REGISTRO ${numero}:*\n\n`;
+      // res += `*[ ☑️ ] REGISTRO ${numero}:*\n\n`;
       res += `➜ *CASO:* \`${caso}\`\n`;
       res += `  \`⌞\` *DELITO:* \`${delito}\`\n`;
       res += `  \`⌞\` *GÉNERO:* \`${genero}\`\n`;
