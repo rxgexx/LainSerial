@@ -193,7 +193,7 @@ module.exports = (bot) => {
       // Función para normalizar la cadena JSON
 
       const response_api = await mpfnCaso(caso);
-      const response = response_api.response;
+      const response = response_api;
 
       if (
         response.respuesta.infPersona === "No hay datos" &&
