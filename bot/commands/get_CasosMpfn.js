@@ -192,85 +192,120 @@ module.exports = (bot) => {
 
       const response_api = await mpfnDni(dni);
 
-      const response = response_api.respuesta;
-      
-      if (
-        response === "No se encontraron registros para su búsqueda"
-      ) {
+      const response = response_api.msg;
+
+      if (response === "No se encontraron registros para su búsqueda") {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot.sendMessage(
           chatId,
           `*[ ✖️ ] No se encontraron* casos para el *DNI* \`${dni}\`.`,
           messageOptions
         );
-      } 
-      const casos = response;
+      }
+      const casos = response_api.data;
+
+      // const numero = index + 1;
+      const caso = dato.caso;
+      const codigoDet = dato.codigoDet;
+      const delito = dato.delito;
+      const fechDetencion = dato.fechDetencion;
+      const genero = dato.genero;
+      const nombres = dato.nombres;
+      const oficinaRegistro = dato.oficinaRegistro;
+      // // const pdf = dato.pdf;
+
+      // const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
+      // const pdfbuffer = Buffer.from(pdfdata, "base64");
+
+      // // Define la ruta del archivo
+      // const filePath = path.join(dirDoc, `reporteMPFN_${dni}_${numero}.pdf`);
+
+      // Guarda el PDF en el sistema de archivos
+      // fs.writeFileSync(filePath, pdfbuffer);
+
+      // Construir el mensaje/caption
+      let res = `*[#LAIN-DOX 🌐] ➤ #RENADES*\n\n`;
+      res += `*[ ☑️ ] REGISTRO ${numero}:*\n\n`;
+      res += `➜ *CASO:* \`${caso}\`\n`;
+      res += `  \`⌞\` *DELITO:* \`${delito}\`\n`;
+      res += `  \`⌞\` *GÉNERO:* \`${genero}\`\n`;
+      res += `  \`⌞\` *NOMBRES:* \`${nombres}\`\n`;
+      res += `  \`⌞\` *CÓDIGO. DETENCIÓN:* \`${codigoDet}\`\n`;
+      res += `  \`⌞\` *FECHA. DETENCIÓN:* \`${fechDetencion}\`\n`;
+      res += `  \`⌞\` *OFICINA. REGISTRO:* \`${oficinaRegistro}\`\n\n`;
+      res += `*NOTA:* Para saber más detalles sobre su *consulta*, puede utilizar el *comando* \`/fxcaso ${caso}\`*.*\n\n`;
+
+      res += `*➤ CONSULTADO POR:*\n`;
+      res += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+      res += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      bot.sendMessage(chatId, res, messageOptions)
 
-      casos.forEach((dato, index) => {
-        const numero = index + 1;
-        const caso = dato.caso;
-        const codigoDet = dato.codigoDet;
-        const delito = dato.delito;
-        const fechDetencion = dato.fechDetencion;
-        const genero = dato.genero;
-        const nombres = dato.nombres;
-        const oficinaRegistro = dato.oficinaRegistro;
-        const pdf = dato.pdf;
+      // casos.forEach((dato, index) => {
+      //   const numero = index + 1;
+      //   const caso = dato.caso;
+      //   const codigoDet = dato.codigoDet;
+      //   const delito = dato.delito;
+      //   const fechDetencion = dato.fechDetencion;
+      //   const genero = dato.genero;
+      //   const nombres = dato.nombres;
+      //   const oficinaRegistro = dato.oficinaRegistro;
+      //   const pdf = dato.pdf;
 
-        const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
-        const pdfbuffer = Buffer.from(pdfdata, "base64");
+      //   const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
+      //   const pdfbuffer = Buffer.from(pdfdata, "base64");
 
-        // Define la ruta del archivo
-        const filePath = path.join(dirDoc, `reporteMPFN_${dni}_${numero}.pdf`);
+      //   // Define la ruta del archivo
+      //   const filePath = path.join(dirDoc, `reporteMPFN_${dni}_${numero}.pdf`);
 
-        // Guarda el PDF en el sistema de archivos
-        fs.writeFileSync(filePath, pdfbuffer);
+      //   // Guarda el PDF en el sistema de archivos
+      //   fs.writeFileSync(filePath, pdfbuffer);
 
-        // Construir el mensaje/caption
-        let res = `*[#LAIN-DOX 🌐] ➤ #CASOSMPFN*\n\n`;
-        res += `*[ ☑️ ] REGISTRO ${numero}:*\n\n`;
-        res += `➜ *CASO:* \`${caso}\`\n`;
-        res += `  \`⌞\` *DELITO:* \`${delito}\`\n`;
-        res += `  \`⌞\` *GÉNERO:* \`${genero}\`\n`;
-        res += `  \`⌞\` *NOMBRES:* \`${nombres}\`\n`;
-        res += `  \`⌞\` *CÓDIGO. DETENCIÓN:* \`${codigoDet}\`\n`;
-        res += `  \`⌞\` *FECHA. DETENCIÓN:* \`${fechDetencion}\`\n`;
-        res += `  \`⌞\` *OFICINA. REGISTRO:* \`${oficinaRegistro}\`\n\n`;
-        res += `*NOTA:* Para saber más detalles sobre su *consulta*, puede utilizar el *comando* \`/fxcaso ${caso}\`*.*\n\n`;
-  
-        res += `*➤ CONSULTADO POR:*\n`;
-        res += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-        res += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-        res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-  
-        // Asegurarse de que la longitud del mensaje esté dentro del límite
-        if (res.length > 1024) {
-          console.error("Error: El mensaje es demasiado largo.");
-          return; // O manejarlo de otra manera (dividir mensaje, etc.)
-        }
+      //   // Construir el mensaje/caption
+      //   let res = `*[#LAIN-DOX 🌐] ➤ #CASOSMPFN*\n\n`;
+      //   res += `*[ ☑️ ] REGISTRO ${numero}:*\n\n`;
+      //   res += `➜ *CASO:* \`${caso}\`\n`;
+      //   res += `  \`⌞\` *DELITO:* \`${delito}\`\n`;
+      //   res += `  \`⌞\` *GÉNERO:* \`${genero}\`\n`;
+      //   res += `  \`⌞\` *NOMBRES:* \`${nombres}\`\n`;
+      //   res += `  \`⌞\` *CÓDIGO. DETENCIÓN:* \`${codigoDet}\`\n`;
+      //   res += `  \`⌞\` *FECHA. DETENCIÓN:* \`${fechDetencion}\`\n`;
+      //   res += `  \`⌞\` *OFICINA. REGISTRO:* \`${oficinaRegistro}\`\n\n`;
+      //   res += `*NOTA:* Para saber más detalles sobre su *consulta*, puede utilizar el *comando* \`/fxcaso ${caso}\`*.*\n\n`;
 
-        bot
-          .sendDocument(chatId, filePath, {
-            caption: res,
-            reply_to_message_id: msg.message_id,
-            parse_mode: "Markdown",
-            thumb: img,
-          })
-          .then(() => {
-            fs.unlink(filePath, (err) => {
-              if (err) {
-                console.error("Error al eliminar el archivo:", err);
-                return;
-              }
-              console.log(`Archivo ${filePath} eliminado exitosamente`);
-            });
-          })
-          .catch((error) => {
-            console.log("Error al enviar el documento:", error.message);
-          });
-      });
+      //   res += `*➤ CONSULTADO POR:*\n`;
+      //   res += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
+      //   res += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      //   res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+      //   // Asegurarse de que la longitud del mensaje esté dentro del límite
+      //   if (res.length > 1024) {
+      //     console.error("Error: El mensaje es demasiado largo.");
+      //     return; // O manejarlo de otra manera (dividir mensaje, etc.)
+      //   }
+
+      //   bot
+      //     .sendDocument(chatId, filePath, {
+      //       caption: res,
+      //       reply_to_message_id: msg.message_id,
+      //       parse_mode: "Markdown",
+      //       thumb: img,
+      //     })
+      //     .then(() => {
+      //       fs.unlink(filePath, (err) => {
+      //         if (err) {
+      //           console.error("Error al eliminar el archivo:", err);
+      //           return;
+      //         }
+      //         console.log(`Archivo ${filePath} eliminado exitosamente`);
+      //       });
+      //     })
+      //     .catch((error) => {
+      //       console.log("Error al enviar el documento:", error.message);
+      //     });
+      // });
 
       //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
       if (!isDev && !isAdmin && !isBuyer) {
