@@ -205,13 +205,13 @@ module.exports = (bot) => {
       const casos = response_api.data;
 
       // const numero = index + 1;
-      const caso = dato.caso;
-      const codigoDet = dato.codigoDet;
-      const delito = dato.delito;
-      const fechDetencion = dato.fechDetencion;
-      const genero = dato.genero;
-      const nombres = dato.nombres;
-      const oficinaRegistro = dato.oficinaRegistro;
+      const caso = casos.caso;
+      const codigoDet = casos.codigoDet;
+      const delito = casos.delito;
+      const fechDetencion = casos.fechDetencion;
+      const genero = casos.genero;
+      const nombres = casos.nombres;
+      const oficinaRegistro = casos.oficinaRegistro;
       // // const pdf = dato.pdf;
 
       // const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
