@@ -65,7 +65,7 @@ async function apiBitel(tel) {
   const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
 
   try {
-    const responseApi = await axios.post(apiUrl);
+    const responseApi = await axios.get(apiUrl);
     const data = responseApi.data;
     return data;
   } catch (error) {
