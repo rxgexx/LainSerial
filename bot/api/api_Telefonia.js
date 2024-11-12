@@ -61,11 +61,11 @@ async function validarOp(tel) {
 //API BITEL
 async function apiBitel(tel) {
   //URL API
-  const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
   // const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
+  const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
 
   try {
-    const responseApi = await axios.get(apiUrl);
+    const responseApi = await axios.post(apiUrl);
     const data = responseApi.data;
     return data;
   } catch (error) {
