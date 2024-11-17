@@ -67,7 +67,7 @@ async function seekerApi_pdf(dni) {
 
 async function seekerdni(dni) {
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
-  const apiUrl = `http://161.132.55.58:2000/consultar/dni?dni=${dni}`;
+  const apiUrl = `http://161.132.56.205:2000/consultar/dni?dni=${dni}`;
 
 
   try {
@@ -80,7 +80,7 @@ async function seekerdni(dni) {
 }
 
 async function seekerpdf(dni) {
-  const apiUrl = `http://161.132.55.58:8510/seeker?dni=${dni}`;
+  const apiUrl = `http://161.132.56.205:8510/seeker?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
   try {
