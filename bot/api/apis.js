@@ -490,6 +490,35 @@ async function arbolGen(dni) {
   }
 }
 
+//ÁRBOL GENEALÓGICO 2
+async function arbolGen2(dni) {
+  //END - POINT
+
+  try {
+    const url = "https://www.fakersys.com/api/v2/arbol";
+    const data = {
+      userID: "SinBFlowxr",
+      dni: dni,
+    };
+    const headers = {
+      Origin: "https://www.fakersys.com/",
+    };
+
+    try {
+      const response = await axios.post(url, data, { headers });
+      return response.data;
+    } catch (error) {
+      console.error(
+        "Error en la solicitud:",
+        error.response ? error.response.data : error.message
+      );
+    }
+  } catch (error) {
+    console.error("Error al obtener la información desde la API ARBOL");
+    throw error;
+  }
+}
+
 //API CUIT ARGENTINO
 async function argentinaData(cuit) {
   //END - PONIT CUIT - API
@@ -532,6 +561,7 @@ module.exports = {
   titularBasic,
   titularPlaca,
   arbolGen,
+  arbolGen2,
   argentinaData,
   datosNum,
 };
