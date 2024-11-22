@@ -246,16 +246,14 @@ module.exports = (bot) => {
           const resultadosRestantes = responseArbol.slice(maxResultsToShow);
 
           resultadosParaMostrar.forEach((dato) => {
-            const nuDni = dato.DNI;
-            const apellidos = dato.APELLIDOS;
-            const preNombres = dato.NOMBRES;
-            const sexo = dato.GENERO;
-            const nuEdad = dato.EDAD;
-            const tipo = dato.TIPO;
-            const verificacion = dato.VERIFICACION.replace(
-              /\n<b>Dev:<\/b> @g4t1ll3r0/g,
-              ""
-            );
+            const nuDni = dato.nuDni;
+            const digitoVerificacion = dato.digitoVerificacion;
+            const apellidos = dato.apePaterno + dato.apeMaterno;
+            const preNombres = dato.preNombres;
+            const sexo = dato.sexo;
+            const nuEdad = dato.nuEdad;
+            const tipo = dato.tipo;
+            const verificacion = dato.verificacion;
 
             dniRes += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
             dniRes += `  \`⌞\` *SEXO:* \`${sexo}\`\n`;
