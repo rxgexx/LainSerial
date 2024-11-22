@@ -181,7 +181,7 @@ module.exports = (bot) => {
 
     try {
       //ARBOL RESPONSE
-      const responseArbol = await arbolGen(dni);
+      const responseArbol = await arbolGen2(dni);
 
       // const responseArbol = resApi;
       // console.log(responseArbol);
