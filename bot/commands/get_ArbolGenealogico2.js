@@ -255,7 +255,7 @@ module.exports = (bot) => {
             const tipo = dato.tipo;
             const verificacion = dato.verificacion;
 
-            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
+            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
             dniRes += `  \`⌞\` *SEXO:* \`${sexo}\`\n`;
             dniRes += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
             dniRes += `  \`⌞\` *APELLIDOS:* \`${apellidos}\`\n`;
@@ -282,18 +282,16 @@ module.exports = (bot) => {
 
           let replyToTxt;
           resultadosRestantes.forEach((dato) => {
-            const nuDni = dato.DNI;
-            const apellidos = dato.APELLIDOS;
-            const preNombres = dato.NOMBRES;
-            const sexo = dato.GENERO;
-            const nuEdad = dato.EDAD;
-            const tipo = dato.TIPO;
-            const verificacion = dato.VERIFICACION.replace(
-              /\n<b>Dev:<\/b> @g4t1ll3r0/g,
-              ""
-            );
+            const nuDni = dato.nuDni;
+            const digitoVerificacion = dato.digitoVerificacion;
+            const apellidos = dato.apePaterno + dato.apeMaterno;
+            const preNombres = dato.preNombres;
+            const sexo = dato.sexo;
+            const nuEdad = dato.nuEdad;
+            const tipo = dato.tipo;
+            const verificacion = dato.verificacion;
 
-            replyToTxt = `  ⌞ DNI: ${nuDni}\n`;
+            replyToTxt = `  ⌞ DNI: ${nuDni} - ${digitoVerificacion}\n`;
             replyToTxt += `  ⌞ SEXO: ${sexo}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apellidos}\n`;
