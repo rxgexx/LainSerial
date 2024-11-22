@@ -128,6 +128,7 @@ module.exports = (bot) => {
       let cmds = `*[#LAIN-DOX 🌐]*\n\n`;
       cmds += `*➤ LISTA DE COMANDOS DISPONIBLES*\n\n`;
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
+      cmds += `*➜ /nm2:* _Búsqueda de nombres RESPALDO - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
       cmds += `*➜ /telx2:* _Números por DNI en una 2da base de datos - 🟢_\n`;
       cmds += `*➜ /osiptel:* _Números por DNI en tiempo real - 🟢_\n`;
@@ -168,6 +169,7 @@ module.exports = (bot) => {
       cmds += `*➜ /migrapdf:* _Reporte migratorio en PDF- 🟢_\n`;
       cmds += `*➜ /seeker:* _Búsqueda de datos generales en tiempo real por SEEKER en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
+      cmds += `*➜ /arbg2:* _ARBOL GENEALÓGICO RESPALDO- 🟢_\n`;
       cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
 
       bot.sendMessage(chatId, cmds, messageOptions).catch((error) => {

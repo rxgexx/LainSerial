@@ -12,11 +12,10 @@ module.exports = (bot) => {
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
       let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE *-:*\n\n`;
-      anuncio += `*¡El BOT MEJORA 🚀!*\n\n`;
-      anuncio += `Queridos usuarios, *se les comunica que se han agregado nuevos comandos para su disposición:*\n\n`;
-      anuncio += `  \`⌞\` */rq:* Consulta RQ de una persona con *su DNI.*\n`;
-      anuncio += `  \`⌞\` */rqpla:* Consulta RQ Vehícular con el *número de PLACA.*\n`;
-      anuncio += `  \`⌞\` */anteper:* Consulta antecedentes de una persona con *su DNI*\n\n`;
+      anuncio += `*Se agregaron respaldos.*\n\n`;
+      anuncio += `Queridos usuarios, *ante mano* disculpas por las constantes fallas que ha tenido el Bot estas semanas, se está mejorando lo más posible el rendimento y la estabilidad de este. *Para eso* se ha agregado 2 nuevos comandos - respaldo:\n\n`;
+      anuncio += `  \`⌞\` */nm2:* Consulta de Nombres - Respaldo\n`;
+      anuncio += `  \`⌞\` */arbg2:* Árbol genealógico - Respaldo\n`;
       anuncio += `\`-\` Gracias por pertenecer a este proyecto. *Atte: Valeria - @SinFlowxr - Programadora y desarrolladora del Bot.*\n\n`;
 
       for (const usuarioId of buyers) {
