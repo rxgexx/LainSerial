@@ -181,7 +181,8 @@ module.exports = (bot) => {
 
     try {
       //ARBOL RESPONSE
-      const responseArbol = await arbolGen2(dni);
+      const dataArbol = await arbolGen2(dni);
+      const responseArbol = dataArbol.listaAni;
 
       // const responseArbol = resApi;
       // console.log(responseArbol);
@@ -194,7 +195,7 @@ module.exports = (bot) => {
       // console.log(responseArbol.error);
 
       //SI NO ENCUENTRA RESULTADOS...
-      if (responseArbol.listaAni.length === 0) {
+      if (responseArbol.length === 0) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
         const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
@@ -207,7 +208,7 @@ module.exports = (bot) => {
         dniRes += `*➤ RESULTADOS:*\n\n`;
 
         //SI LOS RESULTADOS SON MENOS O IGUAL A 8
-        if (responseArbol.listaAni.length <= 5) {
+        if (responseArbol.length <= 5) {
           responseArbol.forEach((dato) => {
             const nuDni = dato.nuDni;
             const digitoVerificacion = dato.digitoVerificacion;
