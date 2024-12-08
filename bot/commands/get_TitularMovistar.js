@@ -156,27 +156,27 @@ module.exports = (bot) => {
       }
     }
     if (tel.length !== 9) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/movxx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/movx\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
       replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/movx 957908908\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
     }
 
-    // const validarOperador = await validarOp(tel);
+    const validarOperador = await validarOp(tel);
 
-    // if (validarOp.data === "Error en la conexion con la fuente.") {
-    //   let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+    if (validarOperador.data === "Error en la conexion con la fuente.") {
+      let yxx = `*[ ✖️ ] Error al válidar el operdaor,* intente más tarde.`;
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
-    // const datosNum = validarOperador.carrier;
+    const datosNum = validarOperador.datos;
 
-    // if (datosNum !== "Telefonica Moviles (Movistar)") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Movistar*.`;
+    if (datosNum.operador !== "Movistar Peru") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *MOVISTAR*.`;
 
-    //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // }
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -196,9 +196,11 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      //RESPONSE BITEL
+      //RESPONSE MOVISTAR
       const responseMov = await titularMov(tel);
-      if (responseMov[0].length === 0) {
+      console.log(responseMov);
+      
+      if (responseMov.error === "No se encontro datos.") {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Movistar.\n\n`;
         yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
@@ -217,38 +219,39 @@ module.exports = (bot) => {
       } else {
         //RESPONSE BITEL
         //RESPONSE MOVISTAR
-        const dataMovistar = responseMov[0];
+        const dataMovistar = responseMov;
+        
         console.log(dataMovistar);
 
         //DATOS MOVISTAR
         const tipoProducto = dataMovistar.tipoProducto;
         const modo = dataMovistar.modo;
         const plan = dataMovistar.plan;
-        // const tipoDoc = dataMovistar.tipoDoc;
-        const imei = dataMovistar.numImei;
-        const titular = dataMovistar.nomTitular;
-        const tecnologia = dataMovistar.desTecnologia;
-        const tipProducto = dataMovistar.tipProducto;
-        const feCompra = dataMovistar.celInfo.feCompra;
-        // const documento = dataMovistar.documento;
-        // const fechaActivacion = dataMovistar.fechaActivacion;
+        const tipoDoc = dataMovistar.tipoDoc;
+        const imei = dataMovistar.celIfno.numImei;
+        const titular = dataMovistar.titular;
+        const tecnologia = dataMovistar.tegnologia;
+        const tipProducto = dataMovistar.tipoProducto;
+        const feCompra = dataMovistar.celIfno.fecCompra;
+        const documento = dataMovistar.documento;
+        const fechaActivacion = dataMovistar.fechaActivacion;
         //PONER FORMATO CORRECTO LA FECHA
-        // const fecha = moment(fechaActivacion);
-        // const fechaPeru = fecha.utcOffset(-5).format("YYYY-MM-DD HH:mm:ss");
+        const fecha = moment(fechaActivacion);
+        const fechaPeru = fecha.utcOffset(-5).format("YYYY-MM-DD HH:mm:ss");
 
         //MENSAJE DEL BOT
-        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        let telRes = `*[#LAIN-DOX 🌐] ➤ #MOVISTAR*\n\n`;
         telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
         telRes += `*➤ MOVISTAR EN TIEMPO REAL*\n`;
-        // telRes += `  \`⌞\` *TIPO. DOC:* \`${tipoDoc}\`\n`;
-        // telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
+        telRes += `  \`⌞\` *TIPO. DOC:* \`${tipoDoc}\`\n`;  
+        telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
         telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
         telRes += `  \`⌞\` *IMEI:* \`${imei}\`\n`;
         telRes += `  \`⌞\` *TECONOLOGÍA:* \`${tecnologia}\`\n`;
-        // telRes += `  \`⌞\` *TIPO:* \`${tecnologia}\`\n`;
-        // telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan.toUpperCase()}\`\n`;
-        // telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo.toUpperCase()}\`\n`;
-        // telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${fechaPeru}\`\n`;
+        telRes += `  \`⌞\` *TIPO:* \`${tipProducto.toUpperCase()}\`\n`;
+        telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan.toUpperCase()}\`\n`;
+        telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo.toUpperCase()}\`\n`;
+        telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${fechaPeru}\`\n`;
         telRes += `  \`⌞\` *FECHA. COMPRA:* \`${feCompra}\`\n`;
         telRes += `  \`⌞\` *TIPO. PRODUCTO:* \`${tipProducto.toUpperCase()}\`\n\n`;
         telRes += `*➤ CONSULTADO POR:*\n`;

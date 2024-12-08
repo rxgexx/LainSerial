@@ -49,10 +49,9 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
-    const isBuyer = await checkIsBuyer(userId);
-
+    const isBuyer =
+      rangosFilePath.BUYER && rangosFilePath.BUYER.includes(userId);
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -163,24 +162,24 @@ module.exports = (bot) => {
       return;
     }
 
-    // const validarOperador = await validarOp(tel);
+    const validarOperador = await validarOp(tel);
 
-    // // if (validarOperador.status === "resolverCapcha") {
-    // //   let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
-    // //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // // }
-    // // if (validarOp.data === "Error en la conexion con la fuente.") {
-    // //   let yxx = `*[ ✖️ ] Error al válidar el operador,* intente más tarde.`;
-    // //   return bot.sendMessage(chatId, yxx, messageOptions);
-    // // }
-
-    // const datosNum = validarOperador.datos;
-
-    // if (datosNum.operador !== "Bitel Peru") {
-    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
-
+    // if (validarOperador.status === "resolverCapcha") {
+    //   let yxx = `*[ ✖️ ] Error en el Bypass* a la hora de validar el operador, intente más tarde.`;
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
+    // if (validarOp.data === "Error en la conexion con la fuente.") {
+    //   let yxx = `*[ ✖️ ] Error al válidar el operador,* intente más tarde.`;
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
+
+    const datosNum = validarOperador.datos;
+
+    if (datosNum.operador !== "Bitel Peru") {
+      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Bitel*.`;
+
+      return bot.sendMessage(chatId, yxx, messageOptions);
+    }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {
@@ -202,21 +201,17 @@ module.exports = (bot) => {
     try {
       const responseBitel = await apiBitel(tel);
 
-      // let esTitular = true;
+      if (
+        responseBitel.status === "False" &&
+        responseBitel.response ===
+          "No se encontraron resultados que satisfagan las condiciones."
+      ) {
+        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es BITEL.\n\n`;
+        yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-      // for (const [clave, valor] of Object.entries(responseBitel.Respuesta)) {
-      //   if (valor !== "SIN DATOS") {
-      //     break;
-      //   }
-      // }
-
-      // if (!esTitular) {
-      //   let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es BITEL.\n\n`;
-      //   yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
-      //   await bot.deleteMessage(chatId, consultandoMessage.message_id);
-
-      //   return bot.sendMessage(chatId, yx, messageOptions);
-      // }
+        return bot.sendMessage(chatId, yx, messageOptions);
+      }
 
       const data = responseBitel.response;
       const documento = data.nuDni;
@@ -224,16 +219,18 @@ module.exports = (bot) => {
       const nacionalidad = data.infTitular.Nacionalidad;
       const Fecha_Activacion = data.fechActivacion;
       const Hora_Activacion = data.hrActivacion;
-      const Tipo_Plan = data.tipPlan;
+      const Tipo_Plan = data.tipModo;
+      const Tipo_Modo = data.tipPlan;
 
       let telRes = `*[#LAIN-DOX 🌐] ➤ #BITELONLINE*\n\n`;
       telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
       telRes += `*➤ BITEL EN TIEMPO REAL*\n`;
       telRes += `  \`⌞\` *TITULAR:* \`${nombre}\`\n`;
-      telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
-      telRes += `  \`⌞\` *NACIONALIDAD:* \`${nacionalidad}\`\n`;
-      telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${Hora_Activacion}\`\n`;
-      telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${Fecha_Activacion}\`\n`;
+      // telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
+      // telRes += `  \`⌞\` *NACIONALIDAD:* \`${nacionalidad}\`\n`;
+      // telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${Hora_Activacion}\`\n`;
+      // telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${Fecha_Activacion}\`\n`;
+      telRes += `  \`⌞\` *TIPO. MODO:* \`${Tipo_Modo}\`\n`;
       telRes += `  \`⌞\` *TIPO. PLAN:* \`${Tipo_Plan}\`\n\n`;
       telRes += `*➤ CONSULTADO POR:*\n`;
       telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
@@ -254,7 +251,6 @@ module.exports = (bot) => {
           bot.sendMessage(chatId, telRes, messageOptions);
         });
     } catch (error) {
-      // let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       let xerror = `*[ ✖️ ] Titular BITEL no encontrado,* es posible que la *línea* no sea Bitel.`;
       console.log(error);
       await bot

@@ -12,10 +12,11 @@ module.exports = (bot) => {
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
       let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE *-:*\n\n`;
-      anuncio += `*Se agregaron respaldos.*\n\n`;
-      anuncio += `Queridos usuarios, *ante mano* disculpas por las constantes fallas que ha tenido el Bot estas semanas, se está mejorando lo más posible el rendimento y la estabilidad de este. *Para eso* se ha agregado 2 nuevos comandos - respaldo:\n\n`;
-      anuncio += `  \`⌞\` */nm2:* Consulta de Nombres - Respaldo\n`;
-      anuncio += `  \`⌞\` */arbg2:* Árbol genealógico - Respaldo\n`;
+      anuncio += `*Se agregaron comandos.*\n\n`;
+      anuncio += `Queridos usuarios, *se les comunica que se ha agregado* el nuevo comando Movistar, el comando *bitel* también ha sido corregido:\n\n`;
+      anuncio += `  \`⌞\` */movx:* Consulta de número Movistar - Tiempo Real\n`;
+      anuncio += `  \`⌞\` */bitx:* Consulta de número Bitel - Tiempo Real\n`;
+      // anuncio += `  \`⌞\` */arbg2:* Árbol genealógico - Respaldo\n`;
       anuncio += `\`-\` Gracias por pertenecer a este proyecto. *Atte: Valeria - @SinFlowxr - Programadora y desarrolladora del Bot.*\n\n`;
 
       for (const usuarioId of buyers) {

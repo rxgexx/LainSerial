@@ -60,19 +60,48 @@ async function validarOp(tel) {
 
 //API BITEL
 async function apiBitel(tel) {
-  //URL API
-  // const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
-  const apiUrl = `http://161.132.48.228:8040/bitlive?num=${tel}`;
+  // URL API
+  const apiUrl = `http://161.132.49.101:1010/bitlive?num=${tel}`;
 
-  try {
-    const responseApi = await axios.get(apiUrl);
-    const data = responseApi.data;
-    return data;
-  } catch (error) {
-    console.log("Error en la Api Bitel: " + error);
-    throw error;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const responseApi = await axios.get(apiUrl);
+      const data = responseApi.data;
+
+      if (data && data.status) {
+        return data; // Retorna los datos si la consulta fue exitosa
+      } else {
+        throw new Error("Respuesta inválida de la API Bitel");
+      }
+    } catch (error) {
+      console.log(
+        `Intento ${attempt} - Error en la Api Bitel: ${error.message}`
+      );
+      if (attempt === 2) {
+        // Si falla el segundo intento, retorna el mensaje de error
+        return {
+          response: "Error en la consulta Bitel",
+          status: false,
+        };
+      }
+    }
   }
 }
+
+// async function apiBitel(tel) {
+//   //URL API
+//   const apiUrl = `http://161.132.49.101:1010/bitlive?num=${tel}`;
+
+//   try {
+//     const responseApi = await axios.get(apiUrl);
+//     const data = responseApi.data;
+//     return data;
+//   } catch (error) {
+//     console.log("Error en la Api Bitel: " + error);
+//     throw error;
+//   }
+// }
+
 
 //API MOVISTAR x DNI
 async function apiMovDni(dni) {
@@ -92,7 +121,7 @@ async function apiMovDni(dni) {
 //API MOVISTAR
 async function titularMov(tel) {
   //END - POINT
-  const apiUrl = `http://161.132.55.243:4010/numero/${tel}`;
+  const apiUrl = `http://161.132.49.101:8015/movistar/numero?num=${tel}`;
 
   try {
     const responseMovistar = await axios.get(apiUrl);
