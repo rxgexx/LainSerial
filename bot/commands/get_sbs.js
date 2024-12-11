@@ -186,8 +186,8 @@ module.exports = (bot) => {
       // const imgPlaca = foto.replace(/^data:image\/jpeg;base64,/, "");
       // const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
-      const res = await sbs_img(dni);
-
+      const response = await sbs_img(dni);
+      const res = response.base64_image
       const fotoData = res.replace(/^data:image\/png;base64,/, "");
       const fotoBuffer = Buffer.from(fotoData, "base64");
 
