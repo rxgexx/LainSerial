@@ -121,7 +121,7 @@ async function apiMovDni(dni) {
 //API MOVISTAR
 async function titularMov(tel) {
   //END - POINT
-  const apiUrl = `http://161.132.49.101:8015/movistar/numero?num=${tel}`;
+  const apiUrl = `http://161.132.55.199:4010/numero/${tel}`;
 
   try {
     const responseMovistar = await axios.get(apiUrl);
