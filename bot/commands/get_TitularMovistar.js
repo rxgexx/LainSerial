@@ -217,28 +217,25 @@ module.exports = (bot) => {
         });
         return;
       } else {
-        //RESPONSE BITEL
         //RESPONSE MOVISTAR
-        const dataMovistar = responseMov;
+        const dataMovistar = responseMov[0];
         
-        console.log(dataMovistar);
-
+        
         //DATOS MOVISTAR
         const tipoProducto = dataMovistar.tipoProducto;
-        const modo = dataMovistar.modo;
-        const plan = dataMovistar.plan;
-        const tipoDoc = dataMovistar.tipoDoc;
-        const imei = dataMovistar.celIfno.numImei;
-        const titular = dataMovistar.titular;
-        const tecnologia = dataMovistar.tegnologia;
-        const tipProducto = dataMovistar.tipoProducto;
-        const feCompra = dataMovistar.celIfno.fecCompra;
-        const documento = dataMovistar.documento;
-        const fechaActivacion = dataMovistar.fechaActivacion;
+        const modo = dataMovistar.desProducto;
+        const plan = dataMovistar.nomProducto;
+        const tipoDoc = dataMovistar.tipDocumento;
+        const imei = dataMovistar.celInfo.numImei;
+        const titular = dataMovistar.nomTitular;
+        const tecnologia = dataMovistar.desTecnologia;
+        const tipProducto = dataMovistar.tipProducto;
+        const feCompra = dataMovistar.celInfo.feCompra;
+        const documento = dataMovistar.numDocumento;
+        const fechaActivacion = dataMovistar.feActivacion;
         //PONER FORMATO CORRECTO LA FECHA
         const fecha = moment(fechaActivacion);
         const fechaPeru = fecha.utcOffset(-5).format("YYYY-MM-DD HH:mm:ss");
-
         //MENSAJE DEL BOT
         let telRes = `*[#LAIN-DOX 🌐] ➤ #MOVISTAR*\n\n`;
         telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
