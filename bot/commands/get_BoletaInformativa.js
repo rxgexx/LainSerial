@@ -217,7 +217,7 @@ module.exports = (bot) => {
       //PROPIETARIO
 
       const dataPropietario =
-        datos.data.datosVehiculares.Informacion.listProp[0];
+        datos.data.datosVehiculares.dataSunarp.listProp[0];
 
       const tipoPartic = dataPropietario.tipoPartic;
       const tipDocumento = dataPropietario.tipDocumento;
