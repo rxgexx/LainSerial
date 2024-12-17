@@ -13,9 +13,9 @@ module.exports = (bot) => {
 
       let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE *-:*\n\n`;
       anuncio += `*Se agregaron comandos.*\n\n`;
-      anuncio += `Queridos usuarios, *se les comunica que se ha agregado* el nuevo comando Movistar, el comando *bitel* también ha sido corregido:\n\n`;
-      anuncio += `  \`⌞\` */movx:* Consulta de número Movistar - Tiempo Real\n`;
-      anuncio += `  \`⌞\` */bitx:* Consulta de número Bitel - Tiempo Real\n`;
+      anuncio += `Queridos usuarios, *se les comunica que se ha agregado* los nuevos comando movdni y cladni:\n\n`;
+      anuncio += `  \`⌞\` */movdni:* Consulta de números Movistar por DNI - Tiempo Real\n`;
+      anuncio += `  \`⌞\` */cladni:* Consulta de números Claro por DNI - Tiempo Real\n`;
       // anuncio += `  \`⌞\` */arbg2:* Árbol genealógico - Respaldo\n`;
       anuncio += `\`-\` Gracias por pertenecer a este proyecto. *Atte: Valeria - @SinFlowxr - Programadora y desarrolladora del Bot.*\n\n`;
 

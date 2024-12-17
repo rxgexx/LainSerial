@@ -184,8 +184,7 @@ module.exports = (bot) => {
 
     try {
       const responseClaro = await claroDni(dni);
-      console.log(responseClaro);
-
+      
       if (
         responseClaro.status === "False" &&
         responseClaro.mensaje === "No se encontro datos."
@@ -197,12 +196,15 @@ module.exports = (bot) => {
       }
 
       const data = responseClaro.ListNum;
-      console.log(data);
 
       let telRes = `*[#LAIN-DOX 🌐] ➤ #CLAROPORDNI*\n\n`;
       telRes += `*[ ☑️ ] NÚMEROS DE* - \`${dni}\` -\n\n`;
+      telRes += `*➤ DATA. PERSONA*\n\n`;
+      telRes += `  \`⌞\` *DNI:* \`${responseClaro.nuDni}\`\n`;
+      telRes += `  \`⌞\` *EMAIL:* \`${responseClaro.email}\`\n`;
+      telRes += `  \`⌞\` *TITULAR:* \`${responseClaro.nombre}\`\n`;
+      telRes += `  \`⌞\` *PRIMER REGISTRO:* \`${responseClaro.fechaCreacion}\`\n\n`;
       telRes += `*➤ NÚMEROS CLARO EN TIEMPO REAL*\n\n`;
-      //   telRes += `  \`⌞\` *TITULAR:* \`${nombre}\`\n`;
       //   telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
       //   telRes += `  \`⌞\` *NACIONALIDAD:* \`${nacionalidad}\`\n`;
       //   telRes += `  \`⌞\` *HORA. ACTIVACIÓN:* \`${Hora_Activacion}\`\n`;
@@ -215,15 +217,15 @@ module.exports = (bot) => {
 
       data.forEach((data, index) => {
         const numero = data.nuCel;
-        const señalTegnologia = data.señalTegnologia;
+        const señalTegnologia = data["señalTegnologia"];
         const modo = data.modo;
         const tipoLinea = data.tipoLinea;
         const indice = index + 1;
 
         telRes += `  \`⌞\` *REGISTRO:* \`${indice}\`\n`;
         telRes += `  \`⌞\` *NUMERO:* \`${numero}\`\n`;
-        telRes += `  \`⌞\` *MODO:* \`${modo}\`\n`;
-        telRes += `  \`⌞\` *TIPO. LÍNEA:* \`${tipoLinea}\`\n`;
+        telRes += `  \`⌞\` *MODO:* \`${modo.toUpperCase()}\`\n`;
+        telRes += `  \`⌞\` *TIPO. LÍNEA:* \`${tipoLinea.toUpperCase()}\`\n`;
         telRes += `  \`⌞\` *TIPO. SEÑAL:* \`${señalTegnologia}\`\n\n`;
       });
 

@@ -202,7 +202,7 @@ module.exports = (bot) => {
       //RESPONSE TITULAR
       const responseTitular = await apiMovDni(dni);
 
-      if (responseTitular[0].length === 0) {
+      if (responseTitular.error === "Sin datos encontrados.") {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] El cliente* \`${dni}\` *no es* \`MOVISTAR\` o no tiene líneas a su nombre.`;
 
@@ -210,12 +210,11 @@ module.exports = (bot) => {
       } else {
         //RESPONSE TITULAR
         const baseNumeros = responseTitular;
-        console.log(baseNumeros);
 
         //CONSTRUCCIÓN DEL MENSAJE
         let telRes = `*[#LAIN-DOX 🌐] ➤ #MOVISTARONLINE*\n\n`;
         telRes += `*[ ☑️ ] NUMEROS MOVISTAR DE* - \`${dni}\` -\n\n`;
-        // telRes += `*➤ INF. PERSONA:*\n`;
+        telRes += `*➤ NÚMEROS MOV. EN TIEMPO REAL:*\n\n`;
         // telRes += `  \`⌞\` *TITULAR:* \`${responseTitular.titular}\`\n\n`;
 
         baseNumeros.forEach((dato, index) => {
@@ -225,32 +224,28 @@ module.exports = (bot) => {
           const productoTipo = dato.tipProducto;
           const titular = dato.nomTitular;
 
-          telRes += `*➜ NÚMERO ${lista}:* \`${numero}\`\n`;
+          telRes += `  \`⌞\` *REGISTRO:* \`${lista}\`\n`;
+          telRes += `  \`⌞\` *NÚMERO:* \`${numero}\`\n`;
           telRes += `  \`⌞\` *TITULAR:* \`${titular.toUpperCase()}\`\n`;
           telRes += `  \`⌞\` *TIPO. EQUIPO:* \`${productoTipo.toUpperCase()}\`\n`;
-          // const plan = dato.plan;
-          const correo = dato.deEmail;
           telRes += `  \`⌞\` *IMEI:* \`${imei}\`\n`;
-          telRes += `  \`⌞\` *CORREO:* \`${correo}\`\n`;
 
-          // if (dato.fechaActivacion) {
-          //   const fechaActivacion = dato.fechaActivacion;
-          //   telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${convertirFechaLocal(
-          //     fechaActivacion
-          //   )}\`\n`;
-          // }
+          if (dato.feActivacion) {
+            const feActivacion = dato.feActivacion;
+            telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${convertirFechaLocal(
+              feActivacion
+            )}\`\n`;
+          }
 
-          // if (dato.tegnologia !== null) {
-          //   const tecnologia = dato.tegnologia;
-          //   telRes += `  \`⌞\` *TECNOLOGÍA:* \`${tecnologia}\`\n`;
-          // }
-          // if (dato.celInfo !== null) {
-          //   const fecCompra = dato.celInfo.fecCompra;
-          //   const numImei = dato.celInfo.numImei;
+          if (dato.desTecnologia !== null) {
+            const tecnologia = dato.desTecnologia;
+            telRes += `  \`⌞\` *TECNOLOGÍA:* \`${tecnologia}\`\n`;
+          }
+          if (dato.celInfo !== null) {
+            const feCompra = dato.celInfo.feCompra;
 
-          //   telRes += `  \`⌞\` *FECHA. COMPRA:* \`${fecCompra}\`\n`;
-          //   telRes += `  \`⌞\` *NUM° IMEI:* \`${numImei}\`\n`;
-          // }
+            telRes += `  \`⌞\` *FECHA. COMPRA:* \`${feCompra}\`\n`;
+          }
           const status = dato.estProducto;
           telRes += `  \`⌞\` *ESTADO:* \`${status.toUpperCase()}\`\n\n`;
         });
