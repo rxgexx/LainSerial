@@ -30,7 +30,7 @@ async function apiname_2(prinombre, apPaterno = " ", apMaterno = " ") {
 }
 
 async function dniElectronico(dni) {
-  const apiUrl = `http://161.132.38.83:2010/consulta?dni=${dni}`;
+  const apiUrl = `http://161.132.40.251:2010/consulta?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
