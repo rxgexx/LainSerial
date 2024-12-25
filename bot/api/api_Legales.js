@@ -24,7 +24,7 @@ async function mpfnCaso(caso) {
 }
 
 async function antPersona(dni) {
-  const apiUrl = `http://161.132.38.83:3142/ant/persona?dni=${dni}`;
+  const apiUrl = `http://161.132.40.251:3142/ant/persona?dni=${dni}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -35,7 +35,7 @@ async function antPersona(dni) {
 }
 
 async function rqPla(placa) {
-  const apiUrl = `http://161.132.38.83:3142/rq/vehi?placa=${placa}`;
+  const apiUrl = `http://161.132.40.251:3142/rq/vehi?placa=${placa}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -46,7 +46,7 @@ async function rqPla(placa) {
 }
 
 async function rqPer(dni) {
-  const apiUrl = `http://161.132.38.83:3142/rq/persona?dni=${dni}`;
+  const apiUrl = `http://161.132.40.251:3142/rq/persona?dni=${dni}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;

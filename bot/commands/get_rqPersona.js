@@ -186,7 +186,7 @@ module.exports = (bot) => {
 
     if (dni.length !== 8) {
       let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/anteper\`*]* seguido de un número de *dni* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/anteper 27427864\`*]*\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/rq 42390159\`*]*\n\n`;
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
     }
