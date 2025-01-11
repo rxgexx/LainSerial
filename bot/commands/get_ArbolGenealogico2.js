@@ -345,12 +345,12 @@ module.exports = (bot) => {
         }
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {
-          bot.sendMessage(chatId, xerror, messageOptions);
+          bot.sendMessage(chatId, yx, messageOptions);
         });
     } finally {
       delete usuariosEnConsulta[userId];
