@@ -5,7 +5,7 @@ const img = path.join(__dirname, "../img/anuncioSidpol.jpg");
 const { obtenerBuyers } = require("../../sql/obtenerbuyers.js");
 
 module.exports = (bot) => {
-  bot.onText(/\/anuncio/, async (msg) => {
+  bot.onText(/\/aaaddxx1/, async (msg) => {
     try {
       // Obtener lista de compradores (buyers) y grupos permitidos
       const buyers = await obtenerBuyers();
