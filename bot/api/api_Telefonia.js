@@ -106,7 +106,7 @@ async function apiBitel(tel) {
 //API MOVISTAR x DNI
 async function apiMovDni(dni) {
   //URL API
-  const apiUrl = `http://161.132.55.199:4010/dni/${dni}`;
+  const apiUrl = `http://161.132.56.129:4010/dni/${dni}`;
 
   try {
     const responseApi = await axios.get(apiUrl);
@@ -121,7 +121,7 @@ async function apiMovDni(dni) {
 //API MOVISTAR
 async function titularMov(tel) {
   //END - POINT
-  const apiUrl = `http://161.132.55.199:4010/numero/${tel}`;
+  const apiUrl = `http://161.132.56.129:4010/numero/${tel}`;
 
   try {
     const responseMovistar = await axios.get(apiUrl);
