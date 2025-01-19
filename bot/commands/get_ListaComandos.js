@@ -143,7 +143,7 @@ module.exports = (bot) => {
       // cmds += `*➜ /actamatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
       cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
       // cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
-      // cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
+      cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
       cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
@@ -170,6 +170,7 @@ module.exports = (bot) => {
       cmds += `*➜ /seeker:* _Búsqueda de datos generales en tiempo real por SEEKER en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
       cmds += `*➜ /arbg2:* _ARBOL GENEALÓGICO RESPALDO- 🟢_\n`;
+      cmds += `*➜ /arbgv:* _ARBOL GENEALÓGICO VISUAL- 🟢_\n`;
       cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
 
       bot.sendMessage(chatId, cmds, messageOptions).catch((error) => {

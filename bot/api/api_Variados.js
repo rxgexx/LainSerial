@@ -145,6 +145,20 @@ async function migracionesPdf(dni) {
     console.log("ERROR EN LA API PLACA");
   }
 }
+
+async function arbolVisual(dni) {
+  const apiUrl = `http://161.132.50.110:42991/plant/${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
+
 module.exports = {
   apiPlaca,
   apiPlaca_2,
@@ -157,5 +171,6 @@ module.exports = {
   sbs_img,
   migraciones,
   boletaInformativa,
-  migracionesPdf
+  migracionesPdf,
+  arbolVisual
 };
