@@ -28,7 +28,8 @@ module.exports = (bot) => {
         try {
           const chatInfo = await bot.getChat(usuarioId);
 
-          const sentMessage = await bot.sendMessage(usuarioId, anuncio, {
+          const sentMessage = await bot.sendPhoto(usuarioId, img, {
+            caption: anuncio,
             parse_mode: "Markdown",
           });
           await bot.pinChatMessage(usuarioId, sentMessage.message_id); // Fija el mensaje en el chat
