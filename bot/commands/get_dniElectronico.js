@@ -262,7 +262,7 @@ module.exports = (bot) => {
           console.log("Error al envíar las imágenes: ", err.message);
         });
     } catch (error) {
-      let xerror = `*[ 💤 ] Los servidores de RENIEC* andan apagados, no se ha *completado* la _búsqueda._`;
+      let xerror = `*[ ✖️ ] Sin datos suficientes para construir la ficha.*`;
       console.log(error)
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

@@ -330,6 +330,9 @@ module.exports = (bot) => {
 
     const data = dataStorage[buttonId];
 
+    console.log(query);
+    
+
     const pdfPath = path.join(dirBase, `sunarp_${dni}_${buttonId}.pdf`);
 
     let yxx = `\`⌞\` *N° INDEXADO:* \`${buttonId}\`\n`;
