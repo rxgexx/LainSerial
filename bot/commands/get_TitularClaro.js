@@ -174,13 +174,13 @@ module.exports = (bot) => {
     //   return bot.sendMessage(chatId, yxx, messageOptions);
     // }
 
-    const datosNum = validarOperador.datos;
+    // const datosNum = validarOperador.datos;
 
-    if (datosNum.operador !== "Claro Peru") {
-      let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
+    // if (datosNum.operador !== "Claro Peru") {
+    //   let yxx = `*[ ✖️ ] EL NÚMERO* no es *Claro*.`;
 
-      return bot.sendMessage(chatId, yxx, messageOptions);
-    }
+    //   return bot.sendMessage(chatId, yxx, messageOptions);
+    // }
 
     //Agregar a los usuarios en un anti-spam temporal hasta que se cumpla la consulta
     if (usuariosEnConsulta[userId] && !isDev && !isAdmin) {

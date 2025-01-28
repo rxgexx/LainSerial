@@ -202,17 +202,17 @@ module.exports = (bot) => {
     try {
       const responseBitel = await apiBitel(tel);
 
-      if (
-        responseBitel.status === "False" &&
-        responseBitel.response ===
-          "No se encontraron resultados que satisfagan las condiciones."
-      ) {
-        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es BITEL.\n\n`;
-        yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      // if (
+      //   responseBitel.status === "False" &&
+      //   responseBitel.response ===
+      //     "No se encontraron resultados que satisfagan las condiciones."
+      // ) {
+      //   let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es BITEL.\n\n`;
+      //   yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
+      //   await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-        return bot.sendMessage(chatId, yx, messageOptions);
-      }
+      //   return bot.sendMessage(chatId, yx, messageOptions);
+      // }
 
       const data = responseBitel.response;
       const documento = data.nuDni;

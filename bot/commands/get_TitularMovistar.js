@@ -198,25 +198,25 @@ module.exports = (bot) => {
     try {
       //RESPONSE MOVISTAR
       const responseMov = await titularMov(tel);
-      console.log(responseMov);
+      // console.log(responseMov);
       
-      if (responseMov.error === "No se encontro datos.") {
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Movistar.\n\n`;
-        yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
+      // if (responseMov.error === "No se encontro datos.") {
+      //   await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      //   let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Movistar.\n\n`;
+      //   yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
 
-        bot.sendMessage(chatId, yx, messageOptions).then(() => {
-          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-          if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 15;
-          }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-          else if (isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
-          }
-        });
-        return;
-      } else {
+      //   bot.sendMessage(chatId, yx, messageOptions).then(() => {
+      //     //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+      //     if (!isDev && !isAdmin && !isBuyer) {
+      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 15;
+      //     }
+      //     //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+      //     else if (isBuyer) {
+      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+      //     }
+      //   });
+      //   return;
+      // } else {
         //RESPONSE MOVISTAR
         const dataMovistar = responseMov[0];
         
@@ -273,7 +273,7 @@ module.exports = (bot) => {
               "Error al enviar el mensaje en la API TITULAR MOVISTAR: " + error
             );
           });
-      }
+     // }
     } catch (error) {
       // let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       let xerror = `*[ ✖️ ] Titular MOVISTAR no encontrado,* es posible que la *línea* no sea Movistar.`;
