@@ -142,7 +142,7 @@ module.exports = (bot) => {
       // cmds += `*➜ /actadefu:* _Búsqueda de ACTA DE DEFUNCIÓN - 🟢_\n`;
       // cmds += `*➜ /actamatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
       cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
-      // cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
+      cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
@@ -161,6 +161,7 @@ module.exports = (bot) => {
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       // cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
+      cmds += `*➜ /dnie:* _DNI VIRTUAL ELECTRÓNICO- 🟢_\n`;
       cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
       cmds += `*➜ /insve:* _Ficha Inscripcion Vehicular - 🟢_\n`;
       cmds += `*➜ /bolinf:* _Boleta Informativa Vehicular - 🟢_\n`;
@@ -171,6 +172,10 @@ module.exports = (bot) => {
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
       cmds += `*➜ /arbg2:* _ARBOL GENEALÓGICO RESPALDO- 🟢_\n`;
       cmds += `*➜ /arbgv:* _ARBOL GENEALÓGICO VISUAL- 🟢_\n`;
+      cmds += `*➜ /ruc:* _DATOS RUC- 🟢_\n`;
+      cmds += `*➜ /reve:* _Estado RECORD de Brevete- 🟢_\n`;
+      cmds += `*➜ /pap:* _PAPELETAS por el SAT- 🟢_\n`;
+      cmds += `*➜ /revitec:* _Detallado de revisiones ténicas con placa.- 🟢_\n`;
       cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
 
       bot.sendMessage(chatId, cmds, messageOptions).catch((error) => {

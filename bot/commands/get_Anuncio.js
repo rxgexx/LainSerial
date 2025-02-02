@@ -14,7 +14,10 @@ module.exports = (bot) => {
       let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE *-:*\n\n`;
       anuncio += `*Se agregaron comandos.*\n\n`;
       anuncio += `Queridos usuarios, *se les comunica que se ha agregado* los nuevos comando: *Arbol Genalógico Visual*\n\n`;
-      anuncio += `  \`⌞\` */arbgv:* Obtén el A.G. Visual de una persona con su DNI.\n\n`;
+      anuncio += `  \`⌞\` */ruc:* Obtén DATOS RUC por el número *RUC de una persona.*\n\n`;
+      anuncio += `  \`⌞\` */reve:* Obtén el estado de *Licencia con un DNI.*\n\n`;
+      anuncio += `  \`⌞\` */pap:* Obtén *PAPELETAS por el SAT con un número de placa.*\n\n`;
+      anuncio += `  \`⌞\` */revitec:* Obtén el *DETALLADO de revisiones técnicas* con la *placa vehícular.*\n\n`;
       // anuncio += `  \`⌞\` */arbg2:* Árbol genealógico - Respaldo\n`;
       anuncio += `\`-\` Gracias por pertenecer a este proyecto. *Atte: Valeria - @SinFlowxr - Programadora y desarrolladora del Bot.*\n\n`;
       anuncio += `*𝐋𝐄𝐓𝐒 𝐀𝐋𝐋 𝐋𝐎𝐕𝐄 𝐋𝐀𝐈𝐍 ✨*\n\n`;

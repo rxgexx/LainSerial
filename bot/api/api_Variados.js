@@ -159,6 +159,62 @@ async function arbolVisual(dni) {
   }
 }
 
+async function detalleLicencia(dni) {
+  const apiUrl = `http://161.132.50.110:49012/api/record?dni=${dni}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
+
+async function reviTec(pla) {
+  const apiUrl = `http://161.132.50.110:49012/api/citv?placa=${pla}`;
+
+  try {
+    let response = await axios.get(apiUrl);
+    let data = response.data;
+
+    if (data.msg === "El código de chaptcha ingresado no es correcto.") {
+      response = await axios.get(apiUrl); // Hacer un solo reintento
+      data = response.data;
+    }
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+async function infRUC(ruc) {
+  const apiUrl = `http://161.132.50.110:3584/api/sunat?ruc=${ruc}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
+
+async function satApi(pla) {
+  const apiUrl = `http://161.132.50.110:49012/api/sat?placa=${pla}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
+
+
 module.exports = {
   apiPlaca,
   apiPlaca_2,
@@ -172,5 +228,9 @@ module.exports = {
   migraciones,
   boletaInformativa,
   migracionesPdf,
-  arbolVisual
+  arbolVisual,
+  detalleLicencia,
+  reviTec,
+  infRUC,
+  satApi
 };
