@@ -13,7 +13,7 @@ module.exports = (bot) => {
 
       let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #UPDATE *-:*\n\n`;
       anuncio += `*Se agregaron comandos.*\n\n`;
-      anuncio += `Queridos usuarios, *se les comunica que se ha agregado* los nuevos comando: *Arbol Genalógico Visual*\n\n`;
+      anuncio += `Queridos usuarios, *se les comunica que se ha agregado* los nuevos comandos:\n\n`;
       anuncio += `  \`⌞\` */ruc:* Obtén DATOS RUC por el número *RUC de una persona.*\n\n`;
       anuncio += `  \`⌞\` */reve:* Obtén el estado de *Licencia con un DNI.*\n\n`;
       anuncio += `  \`⌞\` */pap:* Obtén *PAPELETAS por el SAT con un número de placa.*\n\n`;
