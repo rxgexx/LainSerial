@@ -1,5 +1,5 @@
 const path = require("path");
-const img = path.join(__dirname, "../img/lain.jpg");
+const img = path.join(__dirname, "../img/anuncio10.jpg");
 
 // FUNCION OBTENER BUYERS
 const { obtenerBuyers } = require("../../sql/obtenerbuyers.js");
@@ -11,22 +11,10 @@ module.exports = (bot) => {
       const buyers = await obtenerBuyers();
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
-      let anuncio = `*- 🌐 𝐋𝐀𝐈𝐍 𝐃𝐎𝐗* ➤ #NOTICIAS *-:*\n\n`;
-      anuncio += `*Oye tu Niko se que te va a llegar este mensaje, por ti el bot será limitado a 5 consultas por día. Nadie te mandó a borrar chat, atraparé tu cuenta puente y te quitaré acceso a ti, a los que lo usan y al reevendedor, tienes hasta las 11 de la noche para volver a escribirme uwu*\n\n`;
-      anuncio += `_Si no eres Niko Us, ignora este mensaje._`
-      // anuncio += `Queridos usuarios, *se les comunica que se ha agregado* los nuevos comandos:\n\n`;
-      // anuncio += `  \`⌞\` */ruc:* Obtén DATOS RUC por el número *RUC de una persona.*\n\n`;
-      // anuncio += `  \`⌞\` */reve:* Obtén el estado de *Licencia con un DNI.*\n\n`;
-      // anuncio += `  \`⌞\` */pap:* Obtén *PAPELETAS por el SAT con un número de placa.*\n\n`;
-      // anuncio += `  \`⌞\` */revitec:* Obtén el *DETALLADO de revisiones técnicas* con la *placa vehícular.*\n\n`;
-      // // anuncio += `  \`⌞\` */arbg2:* Árbol genealógico - Respaldo\n`;
-      // anuncio += `\`-\` Gracias por pertenecer a este proyecto. *Atte: Valeria - @SinFlowxr - Programadora y desarrolladora del Bot.*\n\n`;
-      // anuncio += `*𝐋𝐄𝐓𝐒 𝐀𝐋𝐋 𝐋𝐎𝐕𝐄 𝐋𝐀𝐈𝐍 ✨*\n\n`;
-
-      // let anuncio = `*ATENCION CLIENTES OFICIALES!!*\n\n`;
-      // anuncio += `SI TU COMPRASTE ACCESO AL BOT LAIN A ALGUNO QUE NO SEA LA PROGRAMADORA - @sinflowxr - o algún vendedor oficial ([véase la lista de vendedores oficiales acá](https://t.me/LainDox_Info/434)) ESTÁS A TIEMPO DE REPORTAR A LA PERSONA * QUE TE REEVENDIO LA CUENTA*, YA QUE ESTÁ TAJANTEMENTE PROHIBIDO HACERLO. SI REPORTAS TE LLEVARÁS UN DESCUENTO AL COMPRAR EL BOT CONMIGO, @sinflowxr - programadora y unica developer del bot -. SI TU ERES UN REEVENDEDOR, NO IMPORTA SI TIENES 1 DIA EL BOT SE TE QUITARA EL ACCESO SIN DERECHO A RECLAMO. SI TU ERES UN PUENTERO TAMBIEN SE QUITARA EL ACCESO.\n\n`;
-      // anuncio += `RECUERDA QUE SI COMPRASTE ACCESO A UN VENDEDOR NO OFICIAL, Y LO REPORTAS, TE LLEVARÁS DESCUENTO CONMIGO @sinflowxr.\n\n`;
-      // anuncio += `SI VES ESTO Y PERTENECES A ALGÚN GRUPO AUTORIZADO DEL BOT, QUEDATE TRANQUILO PORQUE CONTIGO NO ES, SOLO CON LOS REEVENDORES DE ACCESO PRIVADO. E IGUAL SI ALGUIEN TE QUISO VENDER ACCESO PRIVADO Y NO ES VENDEDOR OFICIAL IGUALMENTE ME LO REPORTAS @sinflowxr`;
+      let anuncio = `*Estimado Usuario, se han agregado nuevos comandos 🚀!*\n\n`
+      anuncio += `*Como medida de actualización para este año,* se está cumpliendo con agregar nuevos comandos al +sistema.+\n\n`
+      anuncio += `  \`➜\` */fiscalia:* Obtén los casos y detallado fiscales de un *DNI.*\n\n`
+      anuncio += `*Cualquier duda, contáctame: @SinFlowxr - Programadora y creadora del Bot.*`
 
       for (const usuarioId of buyers) {
         try {

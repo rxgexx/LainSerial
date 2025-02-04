@@ -56,4 +56,16 @@ async function rqPer(dni) {
   }
 }
 
-module.exports = { mpfnDni, mpfnCaso, antPersona, rqPla, rqPer };
+async function fiscalia(dni) {
+  const apiUrl = `http://161.132.56.135:9911/api/fiscalia/original?dni=${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("ERROR API MPFN x DNI: " + error);
+  }
+}
+
+module.exports = { mpfnDni, mpfnCaso, antPersona, rqPla, rqPer, fiscalia };
