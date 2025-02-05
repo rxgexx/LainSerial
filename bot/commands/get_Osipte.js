@@ -335,7 +335,7 @@ module.exports = (bot) => {
                     }
                     //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
                     else if (isBuyer) {
-                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 50;
+                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 150;
                     }
                   })
                   .catch((error) => {
