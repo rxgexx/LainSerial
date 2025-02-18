@@ -190,7 +190,7 @@ module.exports = (bot) => {
       // const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
       const res = await apiPlaca_2(placa);
-      const response_2 = res.Informacion;
+      const response_2 = res.data;
 
       //Propietario
       const datos_propietario = response_2.LPropietario[0];

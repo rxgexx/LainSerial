@@ -12,7 +12,7 @@ async function apiPlaca(placa) {
 }
 
 async function apiPlaca_2(placa) {
-  const apiUrl = `https://api.ddosis.fun/placav2?token=fbXY00AC9JLJtVlwBfxA563kPK0&placa=${placa}`;
+  const apiUrl = `http://161.132.48.228:2215/placa?placa=${placa}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -47,7 +47,7 @@ async function apiNotas(dni) {
 }
 
 async function api_trabajos(dni) {
-  const apiUrl = `http://161.132.56.135:2000/consultar/dni?dni=${dni}`;
+  const apiUrl = `http://161.132.56.135:2005/consultar/dni?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
 
