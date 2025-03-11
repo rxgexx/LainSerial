@@ -144,10 +144,10 @@ module.exports = (bot) => {
       // cmds += `*➜ /actamatri:* _Búsqueda de ACTA DE MATRIMONIO - 🟢_\n`;
       cmds += `*➜ /valnum:* _Buscar operador de número - 🟢_\n`;
       cmds += `*➜ /bitx:* _Titular Bitel -TIEMPO REAL- - 🟢_\n`;
-      cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
+      // cmds += `*➜ /movx:* _Titular Movistar -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /clax:* _Titular claro - 🟢_\n`;
       cmds += `*➜ /claxx:* _Titular Claro + Foto - 🟢_\n`;
-      cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
+      // cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
       // cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
       cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
@@ -167,11 +167,11 @@ module.exports = (bot) => {
       cmds += `*➜ /insve:* _Ficha Inscripcion Vehicular - 🟢_\n`;
       cmds += `*➜ /bolinf:* _Boleta Informativa Vehicular - 🟢_\n`;
       cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
-      cmds += `*➜ /migra:* _Reporte migratorio textual- 🟢_\n`;
-      cmds += `*➜ /migrapdf:* _Reporte migratorio en PDF- 🟢_\n`;
+      // cmds += `*➜ /migra:* _Reporte migratorio textual- 🟢_\n`;
+      // cmds += `*➜ /migrapdf:* _Reporte migratorio en PDF- 🟢_\n`;
       cmds += `*➜ /seeker:* _Búsqueda de datos generales en tiempo real por SEEKER en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
-      cmds += `*➜ /arbg2:* _ARBOL GENEALÓGICO RESPALDO- 🟢_\n`;
+      // cmds += `*➜ /arbg2:* _ARBOL GENEALÓGICO RESPALDO- 🟢_\n`;
       cmds += `*➜ /arbgv:* _ARBOL GENEALÓGICO VISUAL- 🟢_\n`;
       cmds += `*➜ /ruc:* _DATOS RUC- 🟢_\n`;
       cmds += `*➜ /reve:* _Estado RECORD de Brevete- 🟢_\n`;
