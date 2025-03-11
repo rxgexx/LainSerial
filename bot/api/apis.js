@@ -14,8 +14,8 @@ function retrasar(seconds) {
 
 //API RENIEC
 async function getReniec(dni) {
-  const apiUrl = `http://161.132.48.228:8811/reniec?dni=${dni}`;
-
+//  const apiUrl = `http://161.132.48.228:8811/reniec?dni=${dni}`;
+	const apiUrl = `http://161.132.56.143:2500/api/reniec?dni=${dni}`
   let data;
 
   try {
@@ -143,7 +143,7 @@ async function getActaDefuncion(dni) {
 //API DNI VIRTUAL
 async function getDNIVirtual(dni) {
   //END - POINT DNIVirtual - API
-  const apiUrl = `http://161.132.56.135:4000/procesar_dni?dni=${dni}`;
+  const apiUrl = `http://161.132.56.149:4000/procesar_dni?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);

@@ -30,7 +30,7 @@ async function apiname_2(prinombre, apPaterno = " ", apMaterno = " ") {
 }
 
 async function dniElectronico(dni) {
-  const apiUrl = `http://161.132.56.135:2010/consulta?dni=${dni}`;
+  const apiUrl = `http://161.132.56.149:5020/consulta?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -67,7 +67,7 @@ async function seekerApi_pdf(dni) {
 
 async function seekerdni(dni) {
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
-  const apiUrl = `http://161.132.56.135:2005/consultar/dni?dni=${dni}`;
+  const apiUrl = `http://161.132.56.149:2005/consultar/dni?dni=${dni}`;
 
 
   try {
@@ -80,7 +80,7 @@ async function seekerdni(dni) {
 }
 
 async function seekerpdf(dni) {
-  const apiUrl = `http://161.132.56.135:8511/seeker?dni=${dni}`;
+  const apiUrl = `http://161.132.56.149:8511/seeker?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
   try {

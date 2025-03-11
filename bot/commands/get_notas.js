@@ -215,7 +215,7 @@ module.exports = (bot) => {
 
     try {
       const responseNotas = await apiNotas(dni);
-      const valorNotas = responseNotas.data1;
+      const valorNotas = responseNotas;
 
       if (
         valorNotas.deRespuesta[0] ===

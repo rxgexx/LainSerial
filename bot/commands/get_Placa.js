@@ -190,11 +190,12 @@ module.exports = (bot) => {
       // const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
       const res = await apiPlaca_2(placa);
-      const response_2 = res.data;
-
+      const response_2 = res.dataSunarp;
+//console.log(response_2)
+//console.log(res.data.datosVehiculares.LPropietario[0])
       //Propietario
       const datos_propietario = response_2.LPropietario[0];
-
+//      console.log("datos vehiculares:", datos_propietario)
       const NombrePropietario = datos_propietario.NombrePropietario;
       const TipoPartic = datos_propietario.TipoPartic;
       const TipoDocumento = datos_propietario.TipoDocumento;
