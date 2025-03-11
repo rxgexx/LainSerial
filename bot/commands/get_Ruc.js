@@ -206,13 +206,18 @@ module.exports = (bot) => {
           ? datosRuc["Actividad(es) Económica(s)"]
           : [datosRuc["Actividad(es) Económica(s)"]];
 
-        const represetantes = dataRuc.represetantes[0];
+        let representantes =
+          dataRuc.represetantes &&
+          Array.isArray(dataRuc.represetantes) &&
+          dataRuc.represetantes.length > 0
+            ? dataRuc.represetantes[0]
+            : null;
 
-        const cargo = represetantes.cargo;
-        const fechaDesde = represetantes.fechaDesde;
-        const nombre = represetantes.nombre;
-        const numDocumento = represetantes.numDocumento;
-        const tipDocumento = represetantes.tipDocumento;
+        let cargo = representantes?.cargo || null;
+        let fechaDesde = representantes?.fechaDesde || null;
+        let nombre = representantes?.nombre || null;
+        let numDocumento = representantes?.numDocumento || null;
+        let tipDocumento = representantes?.tipDocumento || null;
 
         // CONSTRUCCION DEL MENSAJE
 
@@ -231,7 +236,7 @@ module.exports = (bot) => {
 
         mensaje += `<b>➤ REPRESENTANTE LEGAL 👨‍⚖️:</b>\n\n`;
 
-        if (!represetantes) {
+        if (!representantes) {
           mensaje += `  <code>⌞</code> <b>No se encontró REPRENSENTANTE LEGAL</b>\n\n`;
         } else {
           mensaje += `  <code>⌞</code> <b>CARGO:</b> <code>${cargo}</code>\n`;

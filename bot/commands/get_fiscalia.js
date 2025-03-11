@@ -196,7 +196,7 @@ module.exports = (bot) => {
         resultados.forEach((dato) => {
           const apMatPart = dato.apMatPart;
           const apPatPart = dato.apPatPart;
-          const deDepeMpub = dato.apPatPart;
+          const deDepeMpub = dato.deDepeMpub;
           const deDistJudi = dato.deDistJudi;
           const deEdad = dato.deEdad;
           const deEsp = dato.deEsp;
@@ -218,6 +218,7 @@ module.exports = (bot) => {
           mensaje += `  <code>⌞</code> <b>AP. MATERNO:</b> <code>${apMatPart}</code>\n`;
           mensaje += `  <code>⌞</code> <b>FECHA. DENUNCIA:</b> <code>${feDenuncia}</code>\n`;
           mensaje += `  <code>⌞</code> <b>DEPENDENCIA. MP:</b> <code>${deDepeMpub}</code>\n`;
+          mensaje += `  <code>⌞</code> <b>ESTADO. CASO:</b> <code>${deEstado}</code>\n`;
           mensaje += `  <code>⌞</code> <b>DISRITO JURÍDICO:</b> <code>${deDistJudi}</code>\n`;
           mensaje += `  <code>⌞</code> <b>ESPECIALIDAD CASO:</b> <code>${deEsp}</code>\n`;
           mensaje += `  <code>⌞</code> <b>ID ÚNICO DEL CASO:</b> <code>${idUnico}</code>\n`;
