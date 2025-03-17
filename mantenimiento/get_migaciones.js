@@ -1,9 +1,9 @@
 //SE REQUIRE LAS APIS
-const { migraciones } = require("../api/api_Variados.js");
+const { migraciones } = require("../bot/api/api_Variados.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../config/rangos/rangos.json");
+const rangosFilePath = require("../bot/config/rangos/rangos.json");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -49,12 +49,12 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../../sql/checkbuyer");
+    const { checkIsBuyer } = require("../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
 
-    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
+    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
       .getChatMember(chatId, botInfo.id)

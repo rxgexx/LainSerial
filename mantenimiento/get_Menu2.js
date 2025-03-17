@@ -8,7 +8,7 @@ const path = require("path");
 const imagenCommands = path.join(__dirname, "../img/commandList.jpg");
 
 //MENSAJES
-const { messages } = require("../config/messages.js");
+const { messages } = require("../bot/config/messages.js");
 
 //KEYBOARD
 let firstKeyBoards;
