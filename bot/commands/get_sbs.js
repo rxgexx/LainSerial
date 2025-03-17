@@ -1,3 +1,4 @@
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { sbs_img } = require("../api/api_Variados.js");
 
 //RANGOS
@@ -51,7 +52,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -187,7 +187,7 @@ module.exports = (bot) => {
       // const fotoBuffer = Buffer.from(imgPlaca, "base64");
 
       const response = await sbs_img(dni);
-      const res = response.base64_image
+      const res = response.base64_image;
       const fotoData = res.replace(/^data:image\/png;base64,/, "");
       const fotoBuffer = Buffer.from(fotoData, "base64");
 
@@ -200,11 +200,15 @@ module.exports = (bot) => {
       mensaje += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      await bot.sendPhoto(chatId, fotoBuffer, {
-        caption: mensaje,
-        reply_to_message_id: msg.message_id,
-        parse_mode: "Markdown",
-      });
+      await bot
+        .sendPhoto(chatId, fotoBuffer, {
+          caption: mensaje,
+          reply_to_message_id: msg.message_id,
+          parse_mode: "Markdown",
+        })
+        .then(async () => {
+          await registrarConsulta(userId, firstName, "SBS", dni, true);
+        });
     } catch (error) {
       let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);

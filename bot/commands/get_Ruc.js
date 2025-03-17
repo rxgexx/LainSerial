@@ -1,8 +1,10 @@
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { infRUC } = require("../api/api_Variados");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
+
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -257,7 +259,8 @@ module.exports = (bot) => {
             reply_to_message_id: msg.message_id,
             parse_mode: "HTML",
           })
-          .then(() => {
+          .then(async() => {
+            await registrarConsulta(userId, firstName, `RUC`, ruc, true);
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;

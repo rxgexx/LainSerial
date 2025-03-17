@@ -4,9 +4,11 @@ const { titularClaro } = require("../api/apis.js");
 const { validarOp } = require("../api/api_Telefonia.js");
 
 
+
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -253,7 +255,8 @@ module.exports = (bot) => {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         bot
           .sendMessage(chatId, telRes, messageOptions)
-          .then(() => {
+          .then(async() => {
+            await registrarConsulta(userId, firstName, "CLARO", tel, true);
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;

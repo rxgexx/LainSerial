@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { seekertel } = require("../api/api_Telefonia.js");
 
 //RANGOS
@@ -188,7 +189,7 @@ module.exports = (bot) => {
       // bot.sendMessage(chatId, yx, messageOptions);
       // } else {
       //RESPONSE TITULAR
-      const dataTitular = responseTitular.SeekerData.datosPersona.data
+      const dataTitular = responseTitular.SeekerData.datosPersona.data;
 
       //DATOS TITULAR
       const dni = dataTitular.nuDni;
@@ -214,7 +215,9 @@ module.exports = (bot) => {
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
       bot
         .sendMessage(chatId, telRes, messageOptions)
-        .then(() => {
+        .then(async () => {
+          await registrarConsulta(userId, firstName, `CELX 2`, tel, true);
+
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;

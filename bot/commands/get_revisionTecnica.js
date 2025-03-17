@@ -1,5 +1,6 @@
 //SE REQUIRE LAS APIS
 
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { reviTec } = require("../api/api_Variados.js");
 
 //RANGOS
@@ -183,7 +184,7 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await reviTec(pla);
-      
+
       if (
         responseTitular.msg === "Mensaje: No se encontraron resultados." &&
         responseTitular.status === false
@@ -195,8 +196,6 @@ module.exports = (bot) => {
       } else {
         const data = responseTitular.data;
         console.log(data);
-        
-
 
         //CONSTRUCCIÓN DEL MENSAJE
         let telRes = `*[#LAIN-DOX 🌐] ➤ #REVI. TECNICA*\n\n`;
@@ -237,7 +236,14 @@ module.exports = (bot) => {
           telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
-          bot.sendMessage(chatId, telRes, messageOptions).then(() => {
+          bot.sendMessage(chatId, telRes, messageOptions).then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              "REVISION TECNICA",
+              pla,
+              true
+            );
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;

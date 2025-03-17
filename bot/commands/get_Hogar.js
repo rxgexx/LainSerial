@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { apiHogar } = require("../api/api_Persona.js");
 
 //RANGOS
@@ -52,7 +53,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -247,7 +247,9 @@ module.exports = (bot) => {
           res += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
           res += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-          bot.sendMessage(chatId, res, messageOptions);
+          bot.sendMessage(chatId, res, messageOptions).then(async () => {
+            await registrarConsulta(userId, firstName, `HOGAR`, dni, true);
+          });
 
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
           if (!isDev && !isAdmin && !isBuyer) {

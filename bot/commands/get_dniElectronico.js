@@ -7,6 +7,7 @@ const path = require("path");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -248,7 +249,14 @@ module.exports = (bot) => {
         .sendMediaGroup(chatId, mediaGroup, {
           reply_to_message_id: msg.message_id,
         })
-        .then(() => {
+        .then(async () => {
+          await registrarConsulta(
+            userId,
+            firstName,
+            `DNI ELECTRÓNICO`,
+            dni,
+            true
+          );
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 200;
@@ -263,7 +271,7 @@ module.exports = (bot) => {
         });
     } catch (error) {
       let xerror = `*[ ✖️ ] Sin datos suficientes para construir la ficha.*`;
-      console.log(error)
+      console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
         .then(() => {

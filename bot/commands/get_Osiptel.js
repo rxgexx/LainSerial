@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { osiptel } = require("../api/api_Telefonia.js");
 
 //RANGOS
@@ -49,10 +50,9 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../../sql/checkbuyer");
+    const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -228,7 +228,9 @@ module.exports = (bot) => {
           telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
-          bot.sendMessage(chatId, telRes, messageOptions).then(() => {
+          bot.sendMessage(chatId, telRes, messageOptions).then(async () => {
+            await registrarConsulta(userId, firstName, `OSIPTEL`, dni, true);
+
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
@@ -320,7 +322,14 @@ module.exports = (bot) => {
                 reply_to_message_id: msg.message_id,
                 parse_mode: "Markdown",
               })
-              .then(() => {
+              .then(async () => {
+                await registrarConsulta(
+                  userId,
+                  firstName,
+                  `OSIPTEL`,
+                  dni,
+                  true
+                );
                 fs.unlink(telxFile, (err) => {
                   if (err) {
                     console.error("Error al borrar el archivo:", err);

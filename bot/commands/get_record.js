@@ -4,7 +4,9 @@ const fs = require("fs");
 const path = require("path");
 
 
+
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -275,7 +277,8 @@ module.exports = (bot) => {
           parse_mode: "Markdown",
           thumb: img,
         })
-        .then(() => {
+        .then(async() => {
+          await registrarConsulta(userId, firstName, dni, "Record Vehicular", true);
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error("Error al eliminar el archivo:", err);

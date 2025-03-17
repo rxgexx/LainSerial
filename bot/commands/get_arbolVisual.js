@@ -7,6 +7,7 @@ const dataStorage = {};
 // Rutas y datos
 const rangosFilePath = require("../config/rangos/rangos.json");
 const { arbolVisual } = require("../api/api_Variados.js");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -53,11 +54,10 @@ module.exports = (bot) => {
     // Verificación de rangos
     const isDev = rangosFilePath.DEVELOPER.includes(userId);
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
-    
+
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const gruposBloqueados = require("../config/gruposManager/gruposBloqueados.js");
@@ -210,9 +210,7 @@ module.exports = (bot) => {
     try {
       const datos = await arbolVisual(dni);
 
-      if (
-        datos.status === false
-      ) {
+      if (datos.status === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yyx = `*[ ✖️ ] No se encontraron datos* para el *DNI proporcionado.*`;
         return bot.sendMessage(chatId, yyx, messageOptions);
@@ -271,7 +269,8 @@ module.exports = (bot) => {
           parse_mode: "Markdown",
           thumb: img,
         })
-        .then(() => {
+        .then(async () => {
+          await registrarConsulta(userId, firstName, "ARBOL VISUAL", dni, true);
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error("Error al eliminar el archivo:", err);

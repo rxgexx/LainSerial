@@ -4,9 +4,12 @@ const path = require("path");
 
 const dataStorage = {};
 
+
+
 // Rutas y datos
 const { seekerpdf } = require("../api/api_Persona.js");
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -277,7 +280,8 @@ module.exports = (bot) => {
           parse_mode: "Markdown",
           thumb: img,
         })
-        .then(() => {
+        .then(async() => {
+          await registrarConsulta(userId, firstName, `SEEKERPDF`, dni, true);
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 150;
           } else if (isBuyer) {

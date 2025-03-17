@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { validarOp } = require("../api/api_Telefonia.js");
 
 //RANGOS
@@ -193,7 +194,14 @@ module.exports = (bot) => {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot
           .sendMessage(chatId, telRes, messageOptions)
-          .then(() => {
+          .then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              "validar operador",
+              tel,
+              true
+            );
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
@@ -221,7 +229,15 @@ module.exports = (bot) => {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot
           .sendMessage(chatId, telRes, messageOptions)
-          .then(() => {
+          .then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              "validar operador",
+              tel,
+              true
+            );
+
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
@@ -249,7 +265,15 @@ module.exports = (bot) => {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot
           .sendMessage(chatId, telRes, messageOptions)
-          .then(() => {
+          .then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              "validar operador",
+              tel,
+              true
+            );
+
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
@@ -277,7 +301,15 @@ module.exports = (bot) => {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot
           .sendMessage(chatId, telRes, messageOptions)
-          .then(() => {
+          .then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              "validar operador",
+              tel,
+              true
+            );
+
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
@@ -299,7 +331,15 @@ module.exports = (bot) => {
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
       return bot
         .sendMessage(chatId, telRes, messageOptions)
-        .then(() => {
+        .then(async () => {
+          await registrarConsulta(
+            userId,
+            firstName,
+            "validar operador",
+            tel,
+            true
+          );
+
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 40 segundos
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;

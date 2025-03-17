@@ -7,8 +7,11 @@ const path = require("path");
 //IMAGEN BUSCANDO
 const imagenCommands = path.join(__dirname, "../img/commandList.jpg");
 
+
+
 //MENSAJES
-const { messages } = require("../config/messages.js");
+const { messages } = require("../bot/config/messages.js");
+const { registrarConsulta } = require("../sql/consultas.js");
 
 //KEYBOARD
 let firstKeyBoards;

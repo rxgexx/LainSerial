@@ -13,10 +13,13 @@ const path = require("path");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
 const antiSpam = {};
+
+
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
@@ -354,7 +357,8 @@ module.exports = (bot) => {
               reply_to_message_id: msg.message_id,
               thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
             })
-            .then(() => {
+            .then(async() => {
+              await registrarConsulta(userId, firstName, `fxantjud`, dni, true);
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
               if (!isDev && !isAdmin && !isBuyer) {
                 antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;

@@ -5,6 +5,8 @@ const { arbolGen } = require("../api/apis.js");
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
 
+const { registrarConsulta } = require("../../sql/consultas.js");
+
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
 const antiSpam = {};
@@ -235,7 +237,15 @@ module.exports = (bot) => {
           dniRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
-          bot.sendMessage(chatId, dniRes, messageOptions);
+          bot.sendMessage(chatId, dniRes, messageOptions).then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              "Árbol Genealógico",
+              dni,
+              1
+            );
+          });
         } else {
           //TXT
           const maxResultsToShow = 5;
@@ -327,7 +337,15 @@ module.exports = (bot) => {
                 reply_to_message_id: msg.message_id,
                 parse_mode: "Markdown",
               })
-              .then(() => {
+              .then(async () => {
+                registrarConsulta(
+                  userId,
+                  firstName,
+                  "Árbol Genealógico",
+                  dni,
+                  1
+                );
+
                 fs.unlink(arbgFile, (err) => {
                   if (err) {
                     console.error("Error al borrar el archivo:", err);

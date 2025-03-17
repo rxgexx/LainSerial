@@ -13,6 +13,7 @@ const antiSpam = {};
 
 //MOMENTO
 const moment = require("moment");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
@@ -54,7 +55,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -191,11 +191,11 @@ module.exports = (bot) => {
 
       const res = await apiPlaca_2(placa);
       const response_2 = res.dataSunarp;
-//console.log(response_2)
-//console.log(res.data.datosVehiculares.LPropietario[0])
+      //console.log(response_2)
+      //console.log(res.data.datosVehiculares.LPropietario[0])
       //Propietario
       const datos_propietario = response_2.LPropietario[0];
-//      console.log("datos vehiculares:", datos_propietario)
+      //      console.log("datos vehiculares:", datos_propietario)
       const NombrePropietario = datos_propietario.NombrePropietario;
       const TipoPartic = datos_propietario.TipoPartic;
       const TipoDocumento = datos_propietario.TipoDocumento;
@@ -265,11 +265,13 @@ module.exports = (bot) => {
 
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
-        .then(() => {
+        .then(async () => {
           bot.sendMessage(chatId, mssg, {
             reply_to_message_id: msg.message_id,
             parse_mode: "Markdown",
           });
+
+          await registrarConsulta(userId, firstName, `PLACA`, placa, true);
         });
     } catch (error) {
       let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;

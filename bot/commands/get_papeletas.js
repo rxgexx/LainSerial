@@ -1,6 +1,9 @@
 //SE REQUIRE LAS APIS
 
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { satApi } = require("../api/api_Variados");
+
+
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -260,6 +263,8 @@ module.exports = (bot) => {
             });
           });
         }
+
+        await registrarConsulta(userId, firstName, `PAPELETAS`, pla, true);
 
         //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
         if (!isDev && !isAdmin && !isBuyer) {

@@ -4,6 +4,8 @@ const { api_tive } = require("../api/api_Variados.js");
 const path = require("path");
 const fs = require("fs");
 
+
+
 const { Readable } = require("stream");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -15,6 +17,7 @@ const antiSpam = {};
 
 //MOMENTO
 const moment = require("moment");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
@@ -237,7 +240,8 @@ module.exports = (bot) => {
             reply_to_message_id: msg.message_id,
             parse_mode: "Markdown",
           })
-          .then(() => {
+          .then(async() => {
+            await registrarConsulta(userId, firstName, "TIVE", placa, true);
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 120;

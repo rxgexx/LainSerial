@@ -13,6 +13,7 @@ const antiSpam = {};
 
 //MOMENTO
 const moment = require("moment");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
@@ -54,7 +55,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -293,7 +293,15 @@ module.exports = (bot) => {
                 reply_to_message_id: msg.message_id,
                 parse_mode: "Markdown",
               })
-              .then(() => {
+              .then(async () => {
+                await registrarConsulta(
+                  userId,
+                  firstName,
+                  "CLAXX",
+                  documento,
+                  true
+                );
+
                 //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
                 if (!isDev && !isAdmin && !isBuyer) {
                   antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
@@ -312,7 +320,15 @@ module.exports = (bot) => {
             await bot.deleteMessage(chatId, consultandoMessage.message_id);
             bot
               .sendMessage(chatId, telRes, messageOptions)
-              .then(() => {
+              .then(async () => {
+                await registrarConsulta(
+                  userId,
+                  firstName,
+                  "CLAXX",
+                  documento,
+                  true
+                );
+
                 //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
                 if (!isDev && !isAdmin && !isBuyer) {
                   antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;
@@ -352,7 +368,14 @@ module.exports = (bot) => {
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
           bot
             .sendMessage(chatId, telRes, messageOptions)
-            .then(() => {
+            .then(async () => {
+              await registrarConsulta(
+                userId,
+                firstName,
+                "CLAXX",
+                documento,
+                true
+              );
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
               if (!isDev && !isAdmin && !isBuyer) {
                 antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;

@@ -1,4 +1,5 @@
 // API TRABAJOS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { api_trabajos } = require("../api/api_Variados.js");
 
 //RANGOS
@@ -39,7 +40,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -194,6 +194,7 @@ module.exports = (bot) => {
         });
 
       send_ResultadosSeparados(chatId, laboral.data);
+      await registrarConsulta(userId, firstName, "Trabajos", dni, true);
     } catch (error) {
       bot.sendMessage(chatId, "Hubo un error al obtener los datos.");
       console.error(error);
@@ -289,7 +290,6 @@ module.exports = (bot) => {
 //     const { checkIsBuyer } = require("../../sql/checkbuyer");
 //     //Rango Comprador
 //     const isBuyer = await checkIsBuyer(userId);
-
 
 //     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 //     const botInfo = await bot.getMe();

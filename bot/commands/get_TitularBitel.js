@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
 
 //RANGOS
@@ -8,6 +9,8 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
 const antiSpam = {};
+
+
 
 //MOMENTO
 const moment = require("moment");
@@ -239,7 +242,8 @@ module.exports = (bot) => {
       telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
-        .then(() => {
+        .then(async() => {
+          await registrarConsulta(userId, firstName, "BITEL", tel, true);
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;

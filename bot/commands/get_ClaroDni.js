@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { claroDni } = require("../api/api_Telefonia.js");
 
 //RANGOS
@@ -236,7 +237,9 @@ module.exports = (bot) => {
 
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
-        .then(() => {
+        .then(async () => {
+          
+          await registrarConsulta(userId, firstName, `CLARO POR DNI`, dni, true);
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 80;

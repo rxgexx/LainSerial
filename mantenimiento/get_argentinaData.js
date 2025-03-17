@@ -1,9 +1,9 @@
 //APIS
-const { argentinaData } = require("../api/apis");
+const { argentinaData } = require("../bot/api/apis.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../config/rangos/rangos.json");
+const rangosFilePath = require("../bot/config/rangos/rangos.json");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -50,7 +50,7 @@ module.exports = (bot) => {
     const isBuyer =
       rangosFilePath.BUYER && rangosFilePath.BUYER.includes(userId);
 
-    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
+    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
       .getChatMember(chatId, botInfo.id)

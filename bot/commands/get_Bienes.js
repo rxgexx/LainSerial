@@ -7,6 +7,7 @@ const dataStorage = {};
 // Rutas y datos
 const { bienes } = require("../api/api_Variados.js");
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -306,10 +307,22 @@ module.exports = (bot) => {
 
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-      bot.sendMessage(chatId, mensaje, {
-        ...messageOptions,
-        ...inlineKeyboard,
-      });
+      bot
+        .sendMessage(chatId, mensaje, {
+          ...messageOptions,
+          ...inlineKeyboard,
+        })
+        .then(async () => {
+          await registrarConsulta(userId, firstName, "Bienes", dni, true);
+
+          if (!isDev && !isAdmin && !isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 300;
+          }
+          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+          else if (isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 150;
+          }
+        });
     } catch (error) {
       console.log(error);
 
@@ -331,7 +344,6 @@ module.exports = (bot) => {
     const data = dataStorage[buttonId];
 
     console.log(query);
-    
 
     const pdfPath = path.join(dirBase, `sunarp_${dni}_${buttonId}.pdf`);
 

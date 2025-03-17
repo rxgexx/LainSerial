@@ -13,6 +13,7 @@ const path = require("path");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -296,6 +297,8 @@ module.exports = (bot) => {
         else if (isBuyer) {
           antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
         }
+
+        await registrarConsulta(userId, firstName, `fxnotas`, dni, true);  
 
         // for (let i = 0; i < infNotasArray.length; i++) {
         //   const infNotas = infNotasArray[i];

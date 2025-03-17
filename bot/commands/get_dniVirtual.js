@@ -4,9 +4,12 @@ const { getDNIVirtual } = require("../api/apis");
 //SE REQUIERE "path"
 const path = require("path");
 
+
+
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -247,7 +250,8 @@ module.exports = (bot) => {
         .sendMediaGroup(chatId, mediaGroup, {
           reply_to_message_id: msg.message_id,
         })
-        .then(() => {
+        .then(async() => {
+          await registrarConsulta(userId, firstName, `DNI VIRTUAL`, dni, true);
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 1000 segundos
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 200;

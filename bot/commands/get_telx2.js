@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { seekerdni } = require("../api/api_Persona.js");
 
 //RANGOS
@@ -52,7 +53,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -226,7 +226,9 @@ module.exports = (bot) => {
           telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
-          bot.sendMessage(chatId, telRes, messageOptions).then(() => {
+          bot.sendMessage(chatId, telRes, messageOptions).then(async () => {
+            await registrarConsulta(userId, firstName, `TELX 2`, dni, true);
+
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
@@ -295,7 +297,8 @@ module.exports = (bot) => {
           replyTxt += `Se han *encontrado* más registros de números para el \`${dni}\`. En total, han sido _${resultadosRestantes.length} números_ restantes.\n\n`;
           replyTxt += `*Para una mejor búsqueda,* la lista de números se ha guardado en este archivo de texto.`;
 
-          setTimeout(() => {
+          setTimeout(async () => {
+            await registrarConsulta(userId, firstName, `TELX 2`, dni, true);
             bot
               .sendDocument(chatId, telxFile, {
                 caption: replyTxt,
@@ -401,7 +404,6 @@ module.exports = (bot) => {
 //     const { checkIsBuyer } = require("../../sql/checkbuyer");
 //     //Rango Comprador
 //     const isBuyer = await checkIsBuyer(userId);
-
 
 //     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 //     const botInfo = await bot.getMe();

@@ -1,5 +1,8 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { titularBasic } = require("../api/apis.js");
+
+
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -209,7 +212,8 @@ module.exports = (bot) => {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         bot
           .sendMessage(chatId, telRes, messageOptions)
-          .then(() => {
+          .then(async() => {
+            await registrarConsulta(userId, firstName, "celx", tel, true);
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;

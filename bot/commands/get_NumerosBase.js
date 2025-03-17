@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { datosNum } = require("../api/apis.js");
 
 //RANGOS
@@ -304,7 +305,8 @@ module.exports = (bot) => {
                 reply_to_message_id: msg.message_id,
                 parse_mode: "Markdown",
               })
-              .then(() => {
+              .then(async() => {
+                await registrarConsulta(userId, firstName, "telx", dni, true);
                 fs.unlink(telxFile, (err) => {
                   if (err) {
                     console.error("Error al borrar el archivo:", err);

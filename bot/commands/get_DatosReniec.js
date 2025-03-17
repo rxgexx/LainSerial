@@ -1,4 +1,5 @@
 //SE REQUIRE LAS APIS
+const { registrarConsulta } = require("../../sql/consultas.js");
 const { getReniec } = require("../api/apis.js");
 
 //RANGOS
@@ -275,7 +276,7 @@ module.exports = (bot) => {
         resDni += `\n`;
       } else {
         resDni += `\`⌞\` *DECLARANTE:* \`${nomDeclarante}\`\n`;
-        resDni += `\`⌞\` *DATOS DECLARANTE:* \`${nuDocDeclarante}\` - \`${vinculoDeclarante}\`\n\n`;
+        resDni += `\`⌞\` *DATOS DECLARANTE:* \`${nuDocDeclarante}\`\n\n`;
       }
 
       resDni += `*➜ ⛔ RESTRICCIONES*\n\n`;
@@ -303,7 +304,14 @@ module.exports = (bot) => {
             reply_to_message_id: msg.message_id,
             parse_mode: "Markdown",
           })
-          .then(() => {
+          .then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              `DNIX`,
+              dni,
+              true
+            );
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
@@ -343,16 +351,26 @@ module.exports = (bot) => {
         }
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        bot.sendMediaGroup(chatId, mediaGroup, messageOptions).then(() => {
-          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
-          if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
-          }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-          else if (isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-          }
-        });
+        bot
+          .sendMediaGroup(chatId, mediaGroup, messageOptions)
+          .then(async () => {
+            await registrarConsulta(
+              userId,
+              firstName,
+              `DNIX`,
+              dni,
+              true
+            );
+
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+          });
       }
     } catch (error) {
       console.log("Error : " + error);

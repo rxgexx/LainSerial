@@ -7,6 +7,7 @@ const dataStorage = {};
 // Rutas y datos
 const { boletaInformativa } = require("../api/api_Variados.js");
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -262,9 +263,16 @@ module.exports = (bot) => {
           caption: caption,
           reply_to_message_id: msg.message_id,
           parse_mode: "Markdown",
-          thumb: img
+          thumb: img,
         })
-        .then(() => {
+        .then(async () => {
+          await registrarConsulta(
+            userId,
+            firstName,
+            placa,
+            "Boleta Informativa",
+            true
+          );
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 150;
           }

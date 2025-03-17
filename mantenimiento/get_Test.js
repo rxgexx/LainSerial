@@ -1,7 +1,7 @@
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const path = require("path");
-const rangosFilePath = require("../config/rangos/rangos.json");
+const rangosFilePath = require("../bot/config/rangos/rangos.json");
 
 const chatIdsToForward = rangosFilePath.DEVELOPER; // Reemplaza con los IDs de los chats deseados
 

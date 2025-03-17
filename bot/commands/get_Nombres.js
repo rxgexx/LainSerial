@@ -7,6 +7,7 @@ const fs = require("fs");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -51,7 +52,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -256,7 +256,15 @@ module.exports = (bot) => {
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
           bot
             .sendMessage(chatId, replyDni, messageOptions)
-            .then(() => {
+            .then(async () => {
+              await registrarConsulta(
+                userId,
+                firstName,
+                "nombres",
+                commandArgs,
+                true
+              );
+
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
               if (!isDev && !isAdmin && !isBuyer) {
                 antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
@@ -322,7 +330,14 @@ module.exports = (bot) => {
               reply_to_message_id: msg.message_id,
               parse_mode: "Markdown",
             })
-            .then(() => {
+            .then(async () => {
+              await registrarConsulta(
+                userId,
+                firstName,
+                "nombres",
+                commandArgs,
+                true
+              );
               fs.unlink(fileName, (err) => {
                 if (err) {
                   console.error("Error al borrar el archivo:", err);

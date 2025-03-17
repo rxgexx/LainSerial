@@ -4,9 +4,12 @@ const path = require("path");
 
 const dataStorage = {};
 
+
+
 // Rutas y datos
 const { api_insVehiculo } = require("../api/api_Variados.js");
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -234,6 +237,8 @@ module.exports = (bot) => {
         caption: caption,
         reply_to_message_id: msg.message_id,
         parse_mode: "Markdown",
+      }).then(async()=>{
+        await registrarConsulta(userId, firstName, "insve", placa, true);
       });
     } catch (error) {
       console.log(error);

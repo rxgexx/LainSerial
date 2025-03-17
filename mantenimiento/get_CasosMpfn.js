@@ -1,12 +1,12 @@
 //SE REQUIRE LAS APIS
 const iconv = require("iconv-lite");
-const { mpfnDni } = require("../api/api_Legales.js");
+const { mpfnDni } = require("../bot/api/api_Legales.js");
 
 const path = require("path");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../config/rangos/rangos.json");
+const rangosFilePath = require("../bot/config/rangos/rangos.json");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -15,8 +15,11 @@ const antiSpam = {};
 const img = path.join(__dirname, "../img/mpfn.jpg");
 const dirDoc = path.join(__dirname, "../../fichasDocuments/mpfnDoc");
 
+
+
 //FS
 const fs = require("fs");
+const { registrarConsulta } = require("../sql/consultas.js");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
@@ -56,11 +59,11 @@ module.exports = (bot) => {
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
     //Rango Comprador
-    const { checkIsBuyer } = require("../../sql/checkbuyer");
+    const { checkIsBuyer } = require("../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
-    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
+    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
       .getChatMember(chatId, botInfo.id)
