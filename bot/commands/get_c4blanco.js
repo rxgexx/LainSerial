@@ -214,7 +214,7 @@ module.exports = (bot) => {
       return;
     }
 
-    const y = `*[ ⚙️ ] Construyendo* la \`FICHA AZUL\` del *➜ DNI* \`${dni}\``;
+      const y = `*[ ⚙️ ] Construyendo* la \`FICHA BLANCA\` del *➜ DNI* \`${dni}\``;
 
     //Si todo se cumple, se iniciará con la consulta...
     const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
@@ -297,9 +297,9 @@ module.exports = (bot) => {
       const pdfbuffer = Buffer.from(pdf, "base64");
 
       bot
-        .sendMessage(chatId, pdfbuffer, {
-          caption: message,
-          parse_mode: "HTML",
+        .sendDocument(chatId, pdfbuffer, {
+          caption: reply,
+          parse_mode: "Markdown",
           reply_to_message_id: msg.message_id,
         })
         .then(async () => {

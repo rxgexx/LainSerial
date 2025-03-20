@@ -239,7 +239,7 @@ module.exports = (bot) => {
         
         if(responseNotas.coRespuesta === "9999"){
           return bot.sendPhoto(chatId, img, {
-            caption: `*[ ✖️ ] SIAGIE* no ha validado al estudiante, *puede ser que sea menor de 16 años o no esté registrado.*\``,
+            caption: `*[ ✖️ ] SIAGIE* no ha validado al estudiante, *puede ser que sea menor de 16 años o no esté registrado.*`,
             parse_mode: "Markdown",
             reply_to_message_id: msg.message_id,
           });

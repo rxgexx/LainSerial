@@ -185,24 +185,29 @@ module.exports = (bot) => {
       const responseTitular = await fiscalia_pdf(dni);
 
       const pdf = responseTitular.data.pdf;
+      
 
       const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
       const pdfbuffer = Buffer.from(pdfdata, "base64");
 
-      let message = `<b>[#LAIN-DOX 🌐] ➤ #FISCALIA</b>\n\n`;
+      let mensaje = `<b>[#LAIN-DOX 🌐] ➤ #FISCALIA</b>\n\n`;
 
       if (responseTitular.data.data.data.results.length === 0) {
-        message += `*[ ✖️ ] No se encontraron* resultados en la búsqueda.\n\n`;
+        mensaje += `*[ ✖️ ] No se encontraron* resultados en la búsqueda.\n\n`;
 
         mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
         mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
         mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
-        await bot.sendMessage(chatId, message, messageOptions);
+        await bot.sendMessage(chatId, mensaje, messageOptions);
         return;
       } else {
-        mensaje += `<b>[ ☑️ ] CASOS FISCALES DE - </b><code>${dni}</code> - <b>⚖️</b>\n\n`;
-        mensaje += `<b>➤ REGISTROS ENCONTRADOS ${responseTitular.data.data.data.results.length}📂:</b>\n\n`;
 
+        const index = responseTitular.data.data.data.results.length
+
+        mensaje += `<b>[ ☑️ ] CASOS FISCALES DE - </b><code>${dni}</code> - <b>⚖️</b>\n\n`;
+        mensaje += `<b>➤ REGISTROS ENCONTRADOS ${index}📂:</b>\n\n`;
+        console.log(responseTitular.data.data.data.results.length);
+        
         mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
         mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
         mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
@@ -210,8 +215,8 @@ module.exports = (bot) => {
       }
 
       bot
-        .sendMessage(chatId, pdfbuffer, {
-          caption: message,
+        .sendDocument(chatId, pdfbuffer, {
+          caption: mensaje,
           parse_mode: "HTML",
           reply_to_message_id: msg.message_id,
         })
