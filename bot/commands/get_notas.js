@@ -9,7 +9,7 @@ const { apiNotas } = require("../api/api_Variados.js");
 
 //SE REQUIERE "path"
 const path = require("path");
-
+const img = path.join(__dirname, "../img/siagie.png");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
@@ -236,6 +236,15 @@ module.exports = (bot) => {
 
         bot.sendMessage(chatId, y, messageOptions);
       } else {
+        
+        if(responseNotas.coRespuesta === "9999"){
+          return bot.sendPhoto(chatId, img, {
+            caption: `*[ ✖️ ] SIAGIE* no ha validado al estudiante, *puede ser que sea menor de 16 años o no esté registrado.*\``,
+            parse_mode: "Markdown",
+            reply_to_message_id: msg.message_id,
+          });
+        }
+
         const infNotasArray = valorNotas.daSource; // Array de objetos
 
         // Función para guardar un PDF y enviar un mensaje
