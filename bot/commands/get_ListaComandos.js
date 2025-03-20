@@ -133,6 +133,7 @@ module.exports = (bot) => {
       cmds += `*➜ /telx2:* _Números por DNI en una 2da base de datos - 🟢_\n`;
       cmds += `*➜ /osiptel:* _Números por DNI en tiempo real - 🟢_\n`;
       cmds += `*➜ /fiscalia:* _Búsqueda de casos FISCALES x DNI - 🟢_\n`;
+      cmds += `*➜ /fis_pdf:* _Búsqueda de casos FISCALES x DNI PDF- 🟢_\n`;
       // cmds += `*➜ /mpfn:* _Búsqueda de casos MPFN + PDF - 🟢_\n`;
       // cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;
@@ -152,6 +153,7 @@ module.exports = (bot) => {
       // cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
       cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;
+      cmds += `*➜ /c4b:* _C4 BLANCO - 🟢_\n`;
       cmds += `*➜ /fxazul:* _C4 AZUL - 🟢_\n`;
       cmds += `*➜ /fxantpol:* _FICHA ANT. POLICIALES - 🟢_\n`;
       cmds += `*➜ /fxantpen:* _FICHA ANT. PENALES - 🟢_\n`;
