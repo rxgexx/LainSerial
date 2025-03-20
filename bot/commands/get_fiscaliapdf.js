@@ -1,12 +1,10 @@
 //SE REQUIRE LAS APIS
 const { registrarConsulta } = require("../../sql/consultas.js");
-const { fiscalia } = require("../api/api_Legales");
+const { fiscalia_pdf } = require("../api/api_Legales");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
-
-
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -17,7 +15,7 @@ const fs = require("fs");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]fiscalia (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]fispdf (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -51,7 +49,7 @@ module.exports = (bot) => {
 
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
-    
+
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
@@ -184,92 +182,50 @@ module.exports = (bot) => {
 
     try {
       //RESPONSE TITULAR
-      const responseTitular = await fiscalia(dni);
-      const mensajeStatus = responseTitular.message;
+      const responseTitular = await fiscalia_pdf(dni);
 
-      if (mensajeStatus === "No se encontraron resultados.") {
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        const yx = `*[ ✖️ ] No se encontró registros* del *DNI* \`${dni}\`.`;
+      const pdf = responseTitular.data.pdf;
 
-        bot.sendMessage(chatId, yx, messageOptions);
+      const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
+      const pdfbuffer = Buffer.from(pdfdata, "base64");
+
+      let message = `<b>[#LAIN-DOX 🌐] ➤ #FISCALIA</b>\n\n`;
+
+      if (responseTitular.data.data.data.results.length === 0) {
+        message += `*[ ✖️ ] No se encontraron* resultados en la búsqueda.\n\n`;
+
+        mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
+        mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
+        mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
+        await bot.sendMessage(chatId, message, messageOptions);
+        return;
       } else {
-        const resultados = responseTitular.results;
+        mensaje += `<b>[ ☑️ ] CASOS FISCALES DE - </b><code>${dni}</code> - <b>⚖️</b>\n\n`;
+        mensaje += `<b>➤ REGISTROS ENCONTRADOS ${responseTitular.data.data.data.results.length}📂:</b>\n\n`;
 
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        resultados.forEach((dato) => {
-          const apMatPart = dato.apMatPart;
-          const apPatPart = dato.apPatPart;
-          const deDepeMpub = dato.deDepeMpub;
-          const deDistJudi = dato.deDistJudi;
-          const deEdad = dato.deEdad;
-          const deEsp = dato.deEsp;
-          const deEstado = dato.deEstado;
-          const deTipoParte = dato.deTipoParte;
-          const feDenuncia = dato.feDenuncia;
-          const idAno = dato.idAno;
-          const idUnico = dato.idUnico;
-          const noPart = dato.noPart;
-
-          let mensaje = `<b>[#LAIN-DOX 🌐] ➤ #FISCALIA</b>\n\n`;
-          mensaje += `<b>[ ☑️ ] CASOS FISCALES DE - </b><code>${dni}</code> - <b>⚖️</b>\n\n`;
-          mensaje += `<b>➤ REGISTROS ENCONTRADOS 📂:</b>\n\n`;
-
-          mensaje += `  <code>⌞</code> <b>AÑO:</b> <code>${idAno}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>EDAD:</b> <code>${deEdad}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${noPart}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>AP. PATERNO:</b> <code>${apPatPart}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>AP. MATERNO:</b> <code>${apMatPart}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>FECHA. DENUNCIA:</b> <code>${feDenuncia}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>DEPENDENCIA. MP:</b> <code>${deDepeMpub}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>ESTADO. CASO:</b> <code>${deEstado}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>DISRITO JURÍDICO:</b> <code>${deDistJudi}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>ESPECIALIDAD CASO:</b> <code>${deEsp}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>ID ÚNICO DEL CASO:</b> <code>${idUnico}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>ROL DEL CONSULTADO:</b> <code>${deTipoParte}</code>\n\n`;
-
-          mensaje += `<b>➤ LISTA DELITOS ASOCIADOS 👨‍✈️:</b>\n\n`;
-
-          const listaMateriaDelito = dato.listaMateriaDelito;
-
-          listaMateriaDelito.forEach((dato) => {
-            const espDeMatDeli = dato.espDeMatDeli;
-            const espIdMatDeli = dato.espIdMatDeli;
-            const genDeMatDeli = dato.genDeMatDeli;
-            const genIdMatDeli = dato.genIdMatDeli;
-            const subDeMatDeli = dato.subDeMatDeli;
-            const subIdMatDeli = dato.subIdMatDeli;
-
-            mensaje += `  <code>⌞</code> <b>CU. ESPECIFICACIÓN:</b> <code>${espIdMatDeli}</code>\n`;
-            mensaje += `  <code>⌞</code> <b>ESPECIFICACIÓN. DELITO:</b> <code>${espDeMatDeli}</code>\n`;
-            mensaje += `  <code>⌞</code> <b>CU. CLASIFICACIÓN:</b> <code>${genIdMatDeli}</code>\n`;
-            mensaje += `  <code>⌞</code> <b>CLASIFICACIÓN. DELITO:</b> <code>${genDeMatDeli}</code>\n`;
-            mensaje += `  <code>⌞</code> <b>CU. SUB-CATEGORÍA:</b> <code>${subIdMatDeli}</code>\n`;
-            mensaje += `  <code>⌞</code> <b>SUB-CATEGORÍA. DELITO:</b> <code>${subDeMatDeli}</code>\n`;
-          });
-          mensaje += `\n`;
-          mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
-          mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
-          mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
-          mensaje += `<b>MENSAJE:</b> <i>La consulta se hizo de manera exitosa ♻.</i>\n\n`;
-
-          bot
-            .sendMessage(chatId, mensaje, {
-              parse_mode: "HTML",
-              reply_to_message_id: msg.message_id,
-            })
-            .then(async() => {
-              await registrarConsulta(userId, firstName, `fiscalia`, dni, true);
-              //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
-              if (!isDev && !isAdmin && !isBuyer) {
-                antiSpam[userId] = Math.floor(Date.now() / 1000) + 120;
-              }
-              //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
-              else if (isBuyer) {
-                antiSpam[userId] = Math.floor(Date.now() / 1000) + 70;
-              }
-            });
-        });
+        mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
+        mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
+        mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
+        mensaje += `<b>MENSAJE:</b> <i>La consulta se hizo de manera exitosa ♻.</i>\n\n`;
       }
+
+      bot
+        .sendMessage(chatId, pdfbuffer, {
+          caption: message,
+          parse_mode: "HTML",
+          reply_to_message_id: msg.message_id,
+        })
+        .then(async () => {
+          await registrarConsulta(userId, firstName, `fiscaliapdf`, dni, true);
+          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+          if (!isDev && !isAdmin && !isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 120;
+          }
+          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
+          else if (isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 70;
+          }
+        });
     } catch (error) {
       let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       console.log(error);

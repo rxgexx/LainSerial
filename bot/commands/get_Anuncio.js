@@ -13,7 +13,8 @@ module.exports = (bot) => {
 
       let anuncio = `*Estimado Usuario, se han agregado nuevos comandos 🚀!*\n\n`
       anuncio += `*Como medida de actualización para este año,* se está cumpliendo con agregar nuevos comandos al +sistema.+\n\n`
-      anuncio += `  \`➜\` */fiscalia:* Obtén los casos y detallado fiscales de un *DNI.*\n\n`
+      anuncio += `  \`➜\` */fispdf:* Obtén los casos y detallado fiscales de un *DNI en PDF*\n\n`
+      anuncio += `  \`➜\` */c4b:* c4 blanco\n\n`
       anuncio += `*Cualquier duda, contáctame: @SinFlowxr - Programadora y creadora del Bot.*`
 
       for (const usuarioId of buyers) {

@@ -539,6 +539,21 @@ async function argentinaData(cuit) {
   }
 }
 
+async function c4blanco(dni) {
+  const apiUrl = `http://161.132.48.228:3111/api/c4b?dni=${dni}`;
+
+  let data;
+
+  try {
+    const response = await axios.get(apiUrl);
+    data = response.data;
+    return data;
+  } catch (error) {
+    console.error("Error al obtener los datos de RENIEC desde la API:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   getReniec,
   getReniecRes,
@@ -564,4 +579,5 @@ module.exports = {
   arbolGen2,
   argentinaData,
   datosNum,
+  c4blanco
 };
