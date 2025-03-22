@@ -540,7 +540,7 @@ async function argentinaData(cuit) {
 }
 
 async function c4blanco(dni) {
-  const apiUrl = `http://161.132.48.228:3111/api/c4b?dni=${dni}`;
+  const apiUrl = `http://161.132.56.103:3000/api/c4b?dni=${dni}`;
 
   let data;
 
