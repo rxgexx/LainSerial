@@ -279,7 +279,7 @@ module.exports = (bot) => {
       } = listaAni;
 
       let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-      reply += `*[ ☑️ ] DOCUMENTO C4 AZUL*\n\n`;
+      reply += `*[ ☑️ ] DOCUMENTO C4 BLANCO*\n\n`;
       reply += `*➤ INF. PERSONA:*\n`;
       reply += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
       reply += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
