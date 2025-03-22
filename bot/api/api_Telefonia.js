@@ -168,7 +168,7 @@ async function claroDni(dni) {
 }
 
 async function seekertel(tel) {
-  const apiUrl = `http://161.132.56.149:2005/consultar/numero?num=${tel}`;
+  const apiUrl = `http://161.132.56.103:3000/api/seeker_numero?num=${tel}`;
 
   try {
     const response = await axios.get(apiUrl);
