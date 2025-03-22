@@ -143,7 +143,7 @@ async function getActaDefuncion(dni) {
 //API DNI VIRTUAL
 async function getDNIVirtual(dni) {
   //END - POINT DNIVirtual - API
-  const apiUrl = `http://161.132.56.149:4000/procesar_dni?dni=${dni}`;
+  const apiUrl = `http://161.132.56.103:5050/api/dni_virtual?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
