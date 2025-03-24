@@ -57,7 +57,7 @@ async function rqPer(dni) {
 }
 
 async function fiscalia(dni) {
-  const apiUrl = `http://161.132.56.149:9911/api/fiscalia/original?dni=${dni}`;
+  const apiUrl = `http://161.132.56.103:3000/api/fiscalia_original?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
