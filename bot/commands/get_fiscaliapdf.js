@@ -192,7 +192,7 @@ module.exports = (bot) => {
 
       let mensaje = `<b>[#LAIN-DOX 🌐] ➤ #FISCALIA</b>\n\n`;
 
-      if (responseTitular.data.data.data.results.length === 0) {
+      if (responseTitular.data.data.data.mensaje === "No se encontraron resultados.") {
         mensaje += `*[ ✖️ ] No se encontraron* resultados en la búsqueda.\n\n`;
 
         mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
