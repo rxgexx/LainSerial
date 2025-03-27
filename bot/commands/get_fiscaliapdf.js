@@ -185,35 +185,44 @@ module.exports = (bot) => {
       const responseTitular = await fiscalia_pdf(dni);
 
       const pdf = responseTitular.data.pdf;
-      
 
       const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
       const pdfbuffer = Buffer.from(pdfdata, "base64");
 
       let mensaje = `<b>[#LAIN-DOX 🌐] ➤ #FISCALIA</b>\n\n`;
 
-      if (responseTitular.data.data.data.mensaje === "No se encontraron resultados.") {
-        mensaje += `*[ ✖️ ] No se encontraron* resultados en la búsqueda.\n\n`;
+      if (
+        responseTitular.data.data.data.message ===
+        "No se encontraron resultados."
+      ) {
+        mensaje += `<b>[ ✖️ ] No se encontraron</b> resultados en la búsqueda.\n\n`;
 
         mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
         mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
         mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
-        await bot.sendMessage(chatId, mensaje, messageOptions);
+        mensaje += `<b>MENSAJE:</b> <i>La consulta se hizo de manera exitosa ♻.</i>\n\n`;
+
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+
+        await bot.sendDocument(chatId, pdf, {
+          caption: mensaje,
+          parse_mode: "HTML",
+          reply_to_message_id: msg.message_id,
+        });
         return;
       } else {
-
-        const index = responseTitular.data.data.data.results.length
+        const index = responseTitular.data.data.data.results.length;
 
         mensaje += `<b>[ ☑️ ] CASOS FISCALES DE - </b><code>${dni}</code> - <b>⚖️</b>\n\n`;
         mensaje += `<b>➤ REGISTROS ENCONTRADOS ${index}📂:</b>\n\n`;
         console.log(responseTitular.data.data.data.results.length);
-        
+
         mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
         mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
         mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
         mensaje += `<b>MENSAJE:</b> <i>La consulta se hizo de manera exitosa ♻.</i>\n\n`;
       }
-
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
       bot
         .sendDocument(chatId, pdfbuffer, {
           caption: mensaje,
