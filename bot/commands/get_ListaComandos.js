@@ -129,8 +129,10 @@ module.exports = (bot) => {
       cmds += `*➤ LISTA DE COMANDOS DISPONIBLES*\n\n`;
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
       cmds += `*➜ /nm2:* _Búsqueda de nombres RESPALDO - 🟢_\n`;
+      cmds += `*➜ /correos:* _Correos registrados - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
       cmds += `*➜ /telx2:* _Números por DNI en una 2da base de datos - 🟢_\n`;
+      cmds += `*➜ /fonos:* _Números por DNI en una 3da base de datos - 🟢_\n`;
       cmds += `*➜ /osiptel:* _Números por DNI en tiempo real - 🟢_\n`;
       cmds += `*➜ /fiscalia:* _Búsqueda de casos FISCALES x DNI - 🟢_\n`;
       cmds += `*➜ /fispdf:* _Búsqueda de casos FISCALES x DNI PDF- 🟢_\n`;
@@ -151,6 +153,7 @@ module.exports = (bot) => {
       // cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
       // cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
+      cmds += `*➜ /trabajos:* _Búsqueda de registro laboral 2DA FUENTE🟢_\n`;
       cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;
       cmds += `*➜ /c4b:* _C4 BLANCO - 🟢_\n`;

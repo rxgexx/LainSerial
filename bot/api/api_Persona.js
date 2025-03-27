@@ -92,6 +92,19 @@ async function seekerpdf(dni) {
   }
 }
 
+async function infoburo(dni) {
+  const apiUrl = `http://161.132.48.94:5000/api/infoburo/dni/${dni}`;
+  // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
+
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la API SEEKER PDF: ", error);
+  }
+}
+
 
 module.exports = {
   seekerpdf,
@@ -100,5 +113,6 @@ module.exports = {
   dniElectronico,
   seekerApi,
   seekerApi_pdf,
-  seekerdni
+  seekerdni,
+  infoburo
 };
