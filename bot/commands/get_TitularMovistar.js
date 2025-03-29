@@ -1,9 +1,9 @@
 //SE REQUIRE LAS APIS
-const { validarOp, titularMov } = require("../bot/api/api_Telefonia.js");
+const { validarOp, titularMov } = require("../api/api_Telefonia.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../bot/config/rangos/rangos.json");
+const rangosFilePath = require("../config/rangos/rangos.json");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -49,12 +49,11 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../sql/checkbuyer.js");
+    const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
-
-    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
+    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
       .getChatMember(chatId, botInfo.id)
@@ -199,81 +198,82 @@ module.exports = (bot) => {
       //RESPONSE MOVISTAR
       const responseMov = await titularMov(tel);
       // console.log(responseMov);
-      
-      // if (responseMov.error === "No se encontro datos.") {
-      //   await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      //   let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Movistar.\n\n`;
-      //   yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
 
-      //   bot.sendMessage(chatId, yx, messageOptions).then(() => {
-      //     //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-      //     if (!isDev && !isAdmin && !isBuyer) {
-      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 15;
-      //     }
-      //     //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-      //     else if (isBuyer) {
-      //       antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
-      //     }
-      //   });
-      //   return;
-      // } else {
-        //RESPONSE MOVISTAR
-        const dataMovistar = responseMov[0];
-        
-        
-        //DATOS MOVISTAR
-        const tipoProducto = dataMovistar.tipoProducto;
-        const modo = dataMovistar.desProducto;
-        const plan = dataMovistar.nomProducto;
-        const tipoDoc = dataMovistar.tipDocumento;
-        const imei = dataMovistar.celInfo.numImei;
-        const titular = dataMovistar.nomTitular;
-        const tecnologia = dataMovistar.desTecnologia;
-        const tipProducto = dataMovistar.tipProducto;
-        const feCompra = dataMovistar.celInfo.feCompra;
-        const documento = dataMovistar.numDocumento;
-        const fechaActivacion = dataMovistar.feActivacion;
-        //PONER FORMATO CORRECTO LA FECHA
-        const fecha = moment(fechaActivacion);
-        const fechaPeru = fecha.utcOffset(-5).format("YYYY-MM-DD HH:mm:ss");
-        //MENSAJE DEL BOT
-        let telRes = `*[#LAIN-DOX 🌐] ➤ #MOVISTAR*\n\n`;
-        telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
-        telRes += `*➤ MOVISTAR EN TIEMPO REAL*\n`;
-        telRes += `  \`⌞\` *TIPO. DOC:* \`${tipoDoc}\`\n`;  
-        telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
-        telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
-        telRes += `  \`⌞\` *IMEI:* \`${imei}\`\n`;
-        telRes += `  \`⌞\` *TECONOLOGÍA:* \`${tecnologia}\`\n`;
-        telRes += `  \`⌞\` *TIPO:* \`${tipProducto.toUpperCase()}\`\n`;
-        telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan.toUpperCase()}\`\n`;
-        telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo.toUpperCase()}\`\n`;
-        telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${fechaPeru}\`\n`;
-        telRes += `  \`⌞\` *FECHA. COMPRA:* \`${feCompra}\`\n`;
-        telRes += `  \`⌞\` *TIPO. PRODUCTO:* \`${tipProducto.toUpperCase()}\`\n\n`;
-        telRes += `*➤ CONSULTADO POR:*\n`;
-        telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-        telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-        telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
+      if (responseMov.status === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        bot
-          .sendMessage(chatId, telRes, messageOptions)
-          .then(() => {
-            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
-            if (!isDev && !isAdmin && !isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
-            }
-            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-            else if (isBuyer) {
-              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-            }
-          }).catch((error) => {
-            console.log(
-              "Error al enviar el mensaje en la API TITULAR MOVISTAR: " + error
-            );
-          });
-     // }
+        let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Movistar.\n\n`;
+        yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
+
+        bot.sendMessage(chatId, yx, messageOptions).then(() => {
+          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+          if (!isDev && !isAdmin && !isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 15;
+          }
+          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+          else if (isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 10;
+          }
+        });
+        return;
+      }
+      // } else {
+      //RESPONSE MOVISTAR
+      const dataMovistar = responseMov;
+
+      //DATOS MOVISTAR
+      // const tipoProducto = dataMovistar.tipoProducto;
+      const modo = dataMovistar.modo;
+      // const plan = dataMovistar.nomProducto;
+      const tipoDoc = dataMovistar.tipoDoc;
+      // const imei = dataMovistar.celInfo.numImei;
+      const titular = dataMovistar.titular;
+      const tecnologia = dataMovistar.tegnologia;
+      // const tipProducto = dataMovistar.tipProducto;
+      // const feCompra = dataMovistar.celInfo.feCompra;
+      const documento = dataMovistar.documento;
+      // const fechaActivacion = dataMovistar.feActivacion;
+      //PONER FORMATO CORRECTO LA FECHA
+      // const fecha = moment(fechaActivacion);
+      // const fechaPeru = fecha.utcOffset(-5).format("YYYY-MM-DD HH:mm:ss");
+      //MENSAJE DEL BOT
+      let telRes = `*[#LAIN-DOX 🌐] ➤ #MOVISTAR*\n\n`;
+      telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
+      telRes += `*➤ MOVISTAR EN TIEMPO REAL*\n`;
+      telRes += `  \`⌞\` *TIPO. DOC:* \`${tipoDoc}\`\n`;
+      telRes += `  \`⌞\` *DOCUMENTO:* \`${documento}\`\n`;
+      telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
+      // telRes += `  \`⌞\` *IMEI:* \`${imei}\`\n`;
+      telRes += `  \`⌞\` *TECONOLOGÍA:* \`${tecnologia}\`\n`;
+      // telRes += `  \`⌞\` *TIPO:* \`${tipProducto.toUpperCase()}\`\n`;
+      // telRes += `  \`⌞\` *PLAN. LÍNEA:* \`${plan.toUpperCase()}\`\n`;
+      telRes += `  \`⌞\` *MODO. LÍNEA:* \`${modo.toUpperCase()}\`\n\n`;
+      // telRes += `  \`⌞\` *FECHA. ACTIVACIÓN:* \`${fechaPeru}\`\n\n`;
+      // telRes += `  \`⌞\` *FECHA. COMPRA:* \`${feCompra}\`\n`;
+      // telRes += `  \`⌞\` *TIPO. PRODUCTO:* \`${tipProducto.toUpperCase()}\`\n\n`;
+      telRes += `*➤ CONSULTADO POR:*\n`;
+      telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+      telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+      telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      bot
+        .sendMessage(chatId, telRes, messageOptions)
+        .then(() => {
+          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
+          if (!isDev && !isAdmin && !isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+          }
+          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+          else if (isBuyer) {
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+          }
+        })
+        .catch((error) => {
+          console.log(
+            "Error al enviar el mensaje en la API TITULAR MOVISTAR: " + error
+          );
+        });
+      // }
     } catch (error) {
       // let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
       let xerror = `*[ ✖️ ] Titular MOVISTAR no encontrado,* es posible que la *línea* no sea Movistar.`;
