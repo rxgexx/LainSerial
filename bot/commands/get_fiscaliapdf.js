@@ -183,6 +183,8 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await fiscalia_pdf(dni);
+      console.log(responseTitular);
+      
 
       const pdf = responseTitular.data.pdf;
 
@@ -204,7 +206,7 @@ module.exports = (bot) => {
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-        await bot.sendDocument(chatId, pdf, {
+        await bot.sendDocument(chatId, pdfbuffer, {
           caption: mensaje,
           parse_mode: "HTML",
           reply_to_message_id: msg.message_id,
