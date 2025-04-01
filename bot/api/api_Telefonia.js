@@ -191,6 +191,30 @@ async function osiptel(dni) {
   }
 }
 
+async function davidapi_dni(dni) {
+  const url = `http://161.132.48.228:3550/api/consulta_telefonia/dni/${dni}`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error after logging it
+  }
+}
+
+async function davidapi_tel(tel) {
+  const url = `http://161.132.48.228:3550/api/consulta_telefonia/numero/${tel}`;
+
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error; // Rethrow the error after logging it
+  }
+}
+
 module.exports = {
   validarOp,
   apiBitel,
@@ -200,4 +224,6 @@ module.exports = {
   claroDni,
   seekertel,
   osiptel,
+  davidapi_dni,
+  davidapi_tel
 };

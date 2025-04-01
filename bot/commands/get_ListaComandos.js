@@ -166,6 +166,7 @@ module.exports = (bot) => {
       // cmds += `*➜ /anteper:* _Consulta Antecdentes de una persona - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
+      cmds += `*➜ /celx3:* _Titular en tercera Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
       cmds += `*➜ /dnie:* _DNI VIRTUAL ELECTRÓNICO- 🟢_\n`;
       cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
