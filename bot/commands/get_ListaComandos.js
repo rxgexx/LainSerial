@@ -183,7 +183,7 @@ module.exports = (bot) => {
       cmds += `*➜ /reve:* _Estado RECORD de Brevete- 🟢_\n`;
       cmds += `*➜ /pap:* _PAPELETAS por el SAT- 🟢_\n`;
       cmds += `*➜ /revitec:* _Detallado de revisiones ténicas con placa.- 🟢_\n`;
-      cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
+      // cmds += `*➜ /fxnotas:* _Búsqueda de notas escolares_ - 🟢 `;
 
       bot.sendMessage(chatId, cmds, messageOptions).catch((error) => {
         console.log(error);

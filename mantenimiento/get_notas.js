@@ -5,15 +5,15 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
 //APIS
-const { apiNotas } = require("../api/api_Variados.js");
+const { apiNotas } = require("../bot/api/api_Variados.js");
 
 //SE REQUIERE "path"
 const path = require("path");
 const img = path.join(__dirname, "../img/siagie.png");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../config/rangos/rangos.json");
-const { registrarConsulta } = require("../../sql/consultas.js");
+const rangosFilePath = require("../bot/config/rangos/rangos.json");
+const { registrarConsulta } = require("../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -56,13 +56,13 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../../sql/checkbuyer");
+    const { checkIsBuyer } = require("../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
 
-    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
-    const gruposBloqueados = require("../config/gruposManager/gruposBloqueados.js");
+    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
+    const gruposBloqueados = require("../bot/config/gruposManager/gruposBloqueados.js");
 
     const grupoBloqueado = gruposBloqueados.includes(chatId);
 
