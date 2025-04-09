@@ -136,6 +136,7 @@ module.exports = (bot) => {
       cmds += `*➜ /osiptel:* _Números por DNI en tiempo real - 🟢_\n`;
       cmds += `*➜ /fiscalia:* _Búsqueda de casos FISCALES x DNI - 🟢_\n`;
       cmds += `*➜ /fispdf:* _Búsqueda de casos FISCALES x DNI PDF- 🟢_\n`;
+      cmds += `*➜ /licencia:* _Búsqueda de LICENCIA ONLINE EN PDF x DNI- 🟢_\n`;
       // cmds += `*➜ /mpfn:* _Búsqueda de casos MPFN + PDF - 🟢_\n`;
       // cmds += `*➜ /fxcaso:* _Detalles del caso - MPFN - 🟢_\n`;
       cmds += `*➜ /placa:* _Búsqueda de placa - 🟢_\n`;

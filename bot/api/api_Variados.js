@@ -214,6 +214,17 @@ async function satApi(pla) {
   }
 }
 
+async function brevete_pdf(dni) {
+  const apiUrl = `http://161.132.48.228:5085/api/brevete?dni=${dni}`;
+  try {
+    const response = await axios.get(apiUrl);
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
 
 module.exports = {
   apiPlaca,
@@ -232,5 +243,6 @@ module.exports = {
   detalleLicencia,
   reviTec,
   infRUC,
-  satApi
+  satApi,
+  brevete_pdf
 };
