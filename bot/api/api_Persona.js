@@ -1,5 +1,8 @@
 const axios = require("axios");
 
+const url_vps = "http://161.132.55.207"
+
+
 async function apiHogar(dni) {
   const apiUrl = `http://161.132.49.101:3535/hogar?dni=${dni}`;
 
@@ -30,7 +33,7 @@ async function apiname_2(prinombre, apPaterno = " ", apMaterno = " ") {
 }
 
 async function dniElectronico(dni) {
-  const apiUrl = `http://161.132.50.131:2010/dni_electronico?dni=${dni}`;
+  const apiUrl = `${url_vps}:2010/dni_electronico?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -54,7 +57,7 @@ async function seekerApi(dni) {
 }
 
 async function seekerApi_pdf(dni) {
-  const apiUrl = `http://161.132.49.224:2210/seeker?dni=${dni}`;
+  const apiUrl = `${url_vps}:2210/seeker?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -67,7 +70,7 @@ async function seekerApi_pdf(dni) {
 
 async function seekerdni(dni) {
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
-  const apiUrl = `http://161.132.56.103:3000/api/seeker_dni?dni=${dni}`;
+  const apiUrl = `${url_vps}:3000/api/seeker_dni?dni=${dni}`;
 
 
   try {
@@ -80,7 +83,7 @@ async function seekerdni(dni) {
 }
 
 async function seekerpdf(dni) {
-  const apiUrl = `http://161.132.56.103:8511/seeker?dni=${dni}`;
+  const apiUrl = `${url_vps}:8511/seeker?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
   try {

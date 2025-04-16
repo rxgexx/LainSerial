@@ -1,6 +1,8 @@
 //API TELEFONÍAS
 const axios = require("axios");
 
+const url_vps = "http://161.132.55.207:3000"
+
 //API "VALIDAR OPERADOR"
 // Función para esperar una cantidad de tiempo especificada
 function retrasar(time) {
@@ -168,7 +170,7 @@ async function claroDni(dni) {
 }
 
 async function seekertel(tel) {
-  const apiUrl = `http://161.132.56.103:3000/api/seeker_numero?num=${tel}`;
+  const apiUrl = `${url_vps}/api/seeker_numero?num=${tel}`;
 
   try {
     const response = await axios.get(apiUrl);
