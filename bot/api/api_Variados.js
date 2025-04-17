@@ -1,4 +1,5 @@
 const axios = require("axios");
+const url_vps = "http://161.132.55.207"
 
 async function apiPlaca(placa) {
   const apiUrl = `https://placa-img7.onrender.com/api/imgsun?pla=${placa}`;
@@ -47,7 +48,7 @@ async function apiNotas(dni) {
 }
 
 async function api_trabajos(dni) {
-  const apiUrl = `http://161.132.56.103:3000/api/seeker_dni?dni=${dni}`;
+  const apiUrl = `${url_vps}:3000/api/seeker_dni?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
 
@@ -85,7 +86,7 @@ async function bienes(dni) {
 }
 
 async function sbs_img(dni) {
-  const apiUrl = `http://161.132.56.103:3456/captura?documento=${dni}`;
+  const apiUrl = `http://161.132.55.207:3456/captura?documento=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
