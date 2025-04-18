@@ -1,10 +1,10 @@
 //SE REQUIRE LAS APIS
-const { registrarConsulta } = require("../sql/consultas.js");
-const { arbolGen2 } = require("../bot/api/apis.js");
+const { registrarConsulta } = require("../../sql/consultas.js");
+const { arbolGen2 } = require("../api/apis.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../bot/config/rangos/rangos.json");
+const rangosFilePath = require("../config/rangos/rangos.json");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -13,12 +13,12 @@ const antiSpam = {};
 //FS
 const fs = require("fs");
 
-const { registrarConsulta } = require("../sql/consultas.js");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]arbg2 (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]arbg (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -53,11 +53,11 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../sql/checkbuyer.js");
+    const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
     
-    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
+    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
       .getChatMember(chatId, botInfo.id)
