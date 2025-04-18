@@ -1,5 +1,4 @@
 //SE REQUIRE LAS APIS
-const { registrarConsulta } = require("../../sql/consultas.js");
 const { arbolGen2 } = require("../api/apis.js");
 
 //RANGOS
