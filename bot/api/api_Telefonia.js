@@ -1,7 +1,7 @@
 //API TELEFONÍAS
 const axios = require("axios");
 
-const url_vps = "http://161.132.55.207:3000"
+const url_vps = "http://161.132.56.176:3000"
 
 //API "VALIDAR OPERADOR"
 // Función para esperar una cantidad de tiempo especificada
