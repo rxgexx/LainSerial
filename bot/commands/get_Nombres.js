@@ -211,16 +211,13 @@ module.exports = (bot) => {
         apellidoMaterno
       );
 
-      if (
-        responseNombres.message ===
-        "No se encontró ningún resultado con los datos ingresados."
-      ) {
+      if (responseNombres.data.status_data === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let x = `*[ ✖️ ] No se han* encontrado personas para los _nombres dados._`;
         bot.sendMessage(chatId, x, messageOptions);
         return;
       } else {
-        const nombresData = responseNombres.Resultados;
+        const nombresData = responseNombres.data.datos_nm;
 
         //SI LOS RESULTADOS SON MENOS DE 10
         if (nombresData.length <= 10) {
@@ -231,16 +228,16 @@ module.exports = (bot) => {
 
           nombresData.forEach((dato, index) => {
             const nuPersona = index + 1;
-            const nuDni = dato.nuDni;
-            // const digitoVerificacion = dato.digitoVerificacion;
-            const apePaterno = dato.apePaterno;
-            const apeMaterno = dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const nuEdad = dato.nuEdad;
+            const nuDni = dato.dni;
+            const digitoVerificacion = dato.cui;
+            const apePaterno = dato.apellido_paterno;
+            const apeMaterno = dato.apellido_materno;
+            const preNombres = dato.prenombres;
+            const nuEdad = dato.edad;
 
             replyDni += `  \`⌞\` *PERSONA:* \`${nuPersona}\`\n`;
-            replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\`\n`;
-            // replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
+            // replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\`\n`;
+            replyDni += `  \`⌞\` *N° DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
             replyDni += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
             replyDni += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
             replyDni += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n\n`;
@@ -292,16 +289,16 @@ module.exports = (bot) => {
 
           nombresData.forEach((dato, index) => {
             const nuPersona = index + 1;
-            const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
-            const apePaterno = dato.apePaterno;
-            const apeMaterno = dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const nuEdad = dato.nuEdad;
+            const nuDni = dato.dni;
+            const digitoVerificacion = dato.cui;
+            const apePaterno = dato.apellido_paterno;
+            const apeMaterno = dato.apellido_materno;
+            const preNombres = dato.prenombres;
+            const nuEdad = dato.edad;
 
             replyToTxt = `  ⌞ PERSONA: ${nuPersona}\n`;
-            replyToTxt += `  ⌞ N° DNI: ${nuDni}\n`;
-            // replyToTxt += `  ⌞ N° DNI: ${nuDni} - ${digitoVerificacion}\n`;
+            // replyToTxt += `  ⌞ N° DNI: ${nuDni}\n`;
+            replyToTxt += `  ⌞ N° DNI: ${nuDni} - ${digitoVerificacion}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apePaterno} ${apeMaterno}\n`;
             replyToTxt += `  ⌞ EDAD: ${nuEdad}\n\n`;

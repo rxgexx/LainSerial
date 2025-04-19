@@ -53,27 +53,29 @@ async function getReniecRes(dni) {
 //API NOMBRES
 
 async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
-  {
-    let apiUrl = `http://161.132.48.228:2336/consultaReniec?dni=&nombre=${prinombre}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/nombres`;
 
-    if (apPaterno !== "Ninguno") {
-      apiUrl += `&ap_pat=${apPaterno}`;
-    }
+  const payload = {
+    nombres: prinombre,
+    apePaterno: apPaterno,
+    apeMaterno: apMaterno,
+    edadMin: 0,
+    edadMax: 0,
+    token: "822b6e74d591f9bb81a0663c057485e0",
+    user: "sinflowxr"
+  };
 
-    if (apMaterno !== "Ninguno") {
-      apiUrl += `&ap_mat=${apMaterno}`;
-    }
+  try {
+    const response = await axios.post(apiUrl, payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-    return axios
-      .get(apiUrl)
-      .then((response) => {
-        const data = response.data;
-        return data;
-      })
-      .catch((error) => {
-        console.log("Error en la api de nombres: ", error);
-        throw error;
-      });
+    return response.data;
+  } catch (error) {
+    console.log("Error en la API de nombres:", error.message);
+    throw error;
   }
 }
 
