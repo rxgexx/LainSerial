@@ -57,26 +57,48 @@ async function rqPer(dni) {
 }
 
 async function fiscalia(dni) {
-  const apiUrl = `http://161.132.56.103:3000/api/fiscalia_original?dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/fiscalia_original`;
+
+  const data = {
+    valor: dni,
+    token: "822b6e74d591f9bb81a0663c057485e0",
+    user: "sinflowxr",
+  };
 
   try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-    return data;
+    const response = await axios.post(apiUrl, data);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener el fiscalia_pdf: ${response.status}`);
+    }
+    const data_res = response.data.data.datos_fis;
+    
+    return data_res;
   } catch (error) {
-    console.log("ERROR API MPFN x DNI: " + error);
+    console.error("Error al obtener el DNI Virtual desde la API", error);
+    throw error;
   }
 }
 
 async function fiscalia_pdf(dni) {
-  const apiUrl = `http://161.132.56.103:3000/api/fiscalia_pdf?dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/fiscalia_pdf`;
+
+  const data = {
+    valor: dni,
+    token: "822b6e74d591f9bb81a0663c057485e0",
+    user: "sinflowxr",
+  };
 
   try {
-    const response = await axios.get(apiUrl);
-    const data = response.data;
-    return data;
+    const response = await axios.post(apiUrl, data);
+    if (response.status !== 200) {
+      throw new Error(`Error al obtener el fiscalia_pdf: ${response.status}`);
+    }
+    const data_res = response.data.data.datos_fis;
+    
+    return data_res;
   } catch (error) {
-    console.log("ERROR API MPFN x DNI: " + error);
+    console.error("Error al obtener el DNI Virtual desde la API", error);
+    throw error;
   }
 }
 

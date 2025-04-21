@@ -182,11 +182,9 @@ module.exports = (bot) => {
 
     try {
       //RESPONSE TITULAR
-      const responseTitular = await fiscalia_pdf(dni);
-      console.log(responseTitular);
-      
+      const responseTitular = await fiscalia_pdf(dni);      
 
-      const pdf = responseTitular.data.pdf;
+      const pdf = responseTitular.pdf;
 
       const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
       const pdfbuffer = Buffer.from(pdfdata, "base64");
@@ -194,7 +192,7 @@ module.exports = (bot) => {
       let mensaje = `<b>[#LAIN-DOX 🌐] ➤ #FISCALIA</b>\n\n`;
 
       if (
-        responseTitular.data.data.data.message ===
+        responseTitular.data.message ===
         "No se encontraron resultados."
       ) {
         mensaje += `<b>[ ✖️ ] No se encontraron</b> resultados en la búsqueda.\n\n`;
@@ -213,11 +211,10 @@ module.exports = (bot) => {
         });
         return;
       } else {
-        const index = responseTitular.data.data.data.results.length;
+        const index = responseTitular.data.results.length;
 
         mensaje += `<b>[ ☑️ ] CASOS FISCALES DE - </b><code>${dni}</code> - <b>⚖️</b>\n\n`;
         mensaje += `<b>➤ REGISTROS ENCONTRADOS ${index}📂:</b>\n\n`;
-        console.log(responseTitular.data.data.data.results.length);
 
         mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
         mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;

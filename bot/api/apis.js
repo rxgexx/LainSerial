@@ -14,8 +14,8 @@ function retrasar(seconds) {
 
 //API RENIEC
 async function getReniec(dni) {
-//  const apiUrl = `http://161.132.48.228:8811/reniec?dni=${dni}`;
-	const apiUrl = `http://161.132.55.207:3000/api/reniec?dni=${dni}`
+  //  const apiUrl = `http://161.132.48.228:8811/reniec?dni=${dni}`;
+  const apiUrl = `http://161.132.55.207:3000/api/reniec?dni=${dni}`;
   let data;
 
   try {
@@ -62,14 +62,14 @@ async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
     edadMin: 0,
     edadMax: 0,
     token: "822b6e74d591f9bb81a0663c057485e0",
-    user: "sinflowxr"
+    user: "sinflowxr",
   };
 
   try {
     const response = await axios.post(apiUrl, payload, {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     return response.data;
@@ -103,7 +103,7 @@ async function getActaNacimiento(dni) {
 //API ACTA NACIMIENTO
 async function getActaMatrimonio(dni) {
   //END - PONT ACTA - API
-  const apiUrl = `http://161.132.55.224:7831/api/acta/matrimonio/${dni}`
+  const apiUrl = `http://161.132.55.224:7831/api/acta/matrimonio/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -140,20 +140,26 @@ async function getActaDefuncion(dni) {
     throw error;
   }
 }
-
-
+  
 //API DNI VIRTUAL
 async function getDNIVirtual(dni) {
-  //END - POINT DNIVirtual - API
-  const apiUrl = `http://161.132.55.207:5050/api/dni_virtual?dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/dni_virtual`;
+
+  const data = {
+    valor: dni,
+    token: "822b6e74d591f9bb81a0663c057485e0",
+    user: "sinflowxr",
+  };
 
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, data);
     if (response.status !== 200) {
       throw new Error(`Error al obtener el DNI Virtual: ${response.status}`);
     }
-    const data = response.data;
-    return data;
+    const data_res = response.data.data.data_dnivirtual;
+    console.log(data_res);
+    
+    return data_res;
   } catch (error) {
     console.error("Error al obtener el DNI Virtual desde la API", error);
     throw error;
@@ -581,5 +587,5 @@ module.exports = {
   arbolGen2,
   argentinaData,
   datosNum,
-  c4blanco
+  c4blanco,
 };

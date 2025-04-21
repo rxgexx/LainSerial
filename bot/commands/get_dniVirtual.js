@@ -179,24 +179,10 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
-      const responseDniVirtual = await getDNIVirtual(dni);
-      //SI NO HAY FOTO
-      const isFoto = responseDniVirtual.mensaje;
+      const responseDniVirtual = await getDNIVirtual(dni);    
 
-      if (isFoto === "No existe foto para el DNI consultado") {
-        let xnofoto = `*[ ✖️ ] El DNI consultado* no cuenta con \`DATOS SUFICIENTES\` para *la construcción* del _dni virtual_.`;
-
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(bot.sendMessage(chatId, xnofoto, messageOptions));
-
-        return;
-      }
-
-      const listaAni = responseDniVirtual.datos[0];
-      console.log(listaAni);
+      const listaAni = responseDniVirtual.listaAni[0][0];
 
       const {
         apeMaterno, // Apellido materno

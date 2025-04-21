@@ -185,8 +185,7 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await fiscalia(dni);
-      const mensajeStatus = responseTitular.data.message;
-      console.log(responseTitular);
+      const mensajeStatus = responseTitular.message;
 
       if (mensajeStatus === "No se encontraron resultados.") {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -194,7 +193,7 @@ module.exports = (bot) => {
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
-        const resultados = responseTitular.data.results;
+        const resultados = responseTitular.results;
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         resultados.forEach((dato) => {
