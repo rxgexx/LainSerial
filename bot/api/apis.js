@@ -15,7 +15,7 @@ function retrasar(seconds) {
 //API RENIEC
 async function getReniec(dni) {
   //  const apiUrl = `http://161.132.48.228:8811/reniec?dni=${dni}`;
-  const apiUrl = `http://161.132.55.207:3000/api/reniec?dni=${dni}`;
+  const apiUrl = `http://161.132.55.207:5000/api/reniec?dni=${dni}`;
   let data;
 
   try {

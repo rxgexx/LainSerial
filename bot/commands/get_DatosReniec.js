@@ -184,7 +184,7 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const datosReniec = await getReniec(dni);
+      const datosReniec = await getReniec(dni);      
 
       if (datosReniec.message === "El DNI no existe") {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
