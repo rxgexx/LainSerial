@@ -88,7 +88,7 @@ module.exports = (bot) => {
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
         console.log(
-          "Error al obtener la información del Bot en el comando Ficha Azul: ",
+          "Error al obtener la información del Bot.",
           err
         );
       });

@@ -548,17 +548,19 @@ async function argentinaData(cuit) {
 }
 
 async function c4blanco(dni) {
-  const apiUrl = `http://161.132.56.103:3000/api/c4b?dni=${dni}`;
-
-  let data;
-
   try {
-    const response = await axios.get(apiUrl);
-    data = response.data;
+    const url = "https://api.sinflower.net.pe/api/c4blanco";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
+    const data = response.data;
     return data;
   } catch (error) {
-    console.error("Error al obtener los datos de RENIEC desde la API:", error);
-    throw error;
+  console.log("🚀 ~ c4_blanco ~ error:", error)
   }
 }
 

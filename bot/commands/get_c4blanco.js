@@ -222,7 +222,9 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const response = await c4blanco(dni);
+      const res = await c4blanco(dni);
+      const response = res.data.data_c4;
+
 
       if (
         response.error ===
@@ -235,7 +237,7 @@ module.exports = (bot) => {
         return bot.sendMessage(chatId, yx, messageOptions);
       }
 
-      const listaAni = response.datosDni;
+      const listaAni = response.listaAni[0];
 
       const {
         apeMaterno, // Apellido materno
