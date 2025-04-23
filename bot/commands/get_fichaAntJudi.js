@@ -221,10 +221,11 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const responsefichaAntJud = await fichaAntJud(dni);
+
+      const responsefichaAntPen = await fichaAntJud(dni);
 
       if (
-        responsefichaAntJud.error ===
+        responsefichaAntPen.data.status_data ===
         `El DNI ${dni} no cuenta con datos disponibles para la construcción de la ficha`
       ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -233,8 +234,8 @@ module.exports = (bot) => {
 
         return bot.sendMessage(chatId, yx, messageOptions);
       }
-
-      const listaAni = responsefichaAntJud.listaAni;
+      const data_c4 = responsefichaAntPen.data.data_doc;
+      const listaAni = responsefichaAntPen.data.data_doc.listaAni[0];
       const {
         apeMaterno, // Apellido materno
         apePaterno, // Apellido paterno
@@ -293,7 +294,7 @@ module.exports = (bot) => {
 
       //BUILDIDNG PDF C4
       //Staring transforming the b64 image to a image....
-      const fotoImagen = responsefichaAntJud.fotoImagen;
+      const fotoImagen = data_c4.fotoImagen;
 
       //Declarate the path where save the pdf's
       const pdfsFolder = path.join(__dirname, "../../fichasDocuments"); // Ruta a la carpeta "docs"

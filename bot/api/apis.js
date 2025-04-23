@@ -140,7 +140,7 @@ async function getActaDefuncion(dni) {
     throw error;
   }
 }
-  
+
 //API DNI VIRTUAL
 async function getDNIVirtual(dni) {
   const apiUrl = `https://api.sinflower.net.pe/api/dni_virtual`;
@@ -158,7 +158,7 @@ async function getDNIVirtual(dni) {
     }
     const data_res = response.data.data.data_dnivirtual;
     console.log(data_res);
-    
+
     return data_res;
   } catch (error) {
     console.error("Error al obtener el DNI Virtual desde la API", error);
@@ -189,77 +189,72 @@ async function fichaAzul(dni) {
 }
 
 async function fichaInscripcion(dni) {
-  //END - POINT FICHA AZUL - API
-  const extencionFicha = "consulta/fichaInscripcion";
-  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
-
   try {
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
-    }
+    const url = "https://api.sinflower.net.pe/api/ficha-inscripcion";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
     const data = response.data;
     return data;
   } catch (error) {
-    console.error("Error al obtener la ficha azul desde la API");
-    throw error;
+    console.log("🚀 ~ get_fichains ~ error:", error);
   }
 }
 
 async function fichaAntPol(dni) {
-  //END - POINT FICHA AZUL - API
-  const extencionFicha = "consulta/certiPolicial";
-  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
-
   try {
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
-    }
+    const url = "https://api.sinflower.net.pe/api/ficha-antpol";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
     const data = response.data;
     return data;
   } catch (error) {
-    console.error("Error al obtener la ficha azul desde la API");
-    throw error;
-  }
-}
-
-async function fichaAntJud(dni) {
-  //END - POINT FICHA AZUL - API
-  const extencionFicha = "consulta/antCertiJudiPenales";
-  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
-
-  try {
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
-    }
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.error("Error al obtener la ficha azul desde la API");
-    throw error;
+    console.log("🚀 ~ api_antpol ~ error:", error);
   }
 }
 
 async function fichaAntPen(dni) {
-  //END - POINT FICHA AZUL - API
-  const extencionFicha = "consulta/antJudiciales";
-  const apiUrl = `${fichaEndPoint}/${extencionFicha}?dni=${dni}`;
-
   try {
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
-    }
+    const url = "https://api.sinflower.net.pe/api/ficha-antpen";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
     const data = response.data;
     return data;
   } catch (error) {
-    console.error("Error al obtener la ficha azul desde la API");
-    throw error;
+    console.log("🚀 ~ api_antpen ~ error:", error);
   }
 }
 
+async function fichaAntJud(dni) {
+  try {
+    const url = "https://api.sinflower.net.pe/api/ficha-antjud";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("🚀 ~ api_antjud ~ error:", error);
+  }
+}
 //API CEL
 const apiTelEndPoint = "http://161.132.48.228:10";
 
@@ -560,7 +555,7 @@ async function c4blanco(dni) {
     const data = response.data;
     return data;
   } catch (error) {
-  console.log("🚀 ~ c4_blanco ~ error:", error)
+    console.log("🚀 ~ c4_blanco ~ error:", error);
   }
 }
 

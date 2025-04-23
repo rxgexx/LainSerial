@@ -228,7 +228,7 @@ module.exports = (bot) => {
       const responsefichaAntPol = await fichaAntPol(dni);
 
       if (
-        responsefichaAntPol.error ===
+        responsefichaAntPol.data.status_data ===
         `El DNI ${dni} no cuenta con datos disponibles para la construcción de la ficha`
       ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -237,8 +237,8 @@ module.exports = (bot) => {
 
         return bot.sendMessage(chatId, yx, messageOptions);
       }
-      const listaAni = responsefichaAntPol.listaAni;
-
+      const data_c4 = responsefichaAntPol.data.data_doc;
+      const listaAni = responsefichaAntPol.data.data_doc.listaAni[0];
       const {
         apeMaterno, // Apellido materno
         apePaterno, // Apellido paterno
@@ -297,7 +297,7 @@ module.exports = (bot) => {
 
       //BUILDIDNG PDF C4
       //Staring transforming the b64 image to a image....
-      const fotoImagen = responsefichaAntPol.fotoImagen;
+      const fotoImagen = data_c4.fotoImagen;
 
       //Declarate the path where save the pdf's
       const pdfsFolder = path.join(__dirname, "../../fichasDocuments"); // Ruta a la carpeta "docs"

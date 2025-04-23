@@ -15,8 +15,6 @@ delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
 const { registrarConsulta } = require("../../sql/consultas.js");
 
-
-
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
 const antiSpam = {};
@@ -61,7 +59,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const gruposBloqueados = require("../config/gruposManager/gruposBloqueados.js");
@@ -222,12 +219,11 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
-
-      const responsefichaInscripcion = await fichaInscripcion(dni);
+      const res = await fichaInscripcion(dni);
+      const responsefichaInscripcion = res;
 
       if (
-        responsefichaInscripcion.error ===
+        responsefichaInscripcion.data.status_data ===
         `El DNI ${dni} no cuenta con datos disponibles para la construcción de la ficha`
       ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -236,8 +232,8 @@ module.exports = (bot) => {
 
         return bot.sendMessage(chatId, yx, messageOptions);
       }
-
-      const listaAni = responsefichaInscripcion.listaAni;
+      const data_c4 = responsefichaInscripcion.data.data_doc;
+      const listaAni = responsefichaInscripcion.data.data_doc.listaAni[0];
       const {
         apeMaterno, // Apellido materno
         apePaterno, // Apellido paterno
@@ -278,7 +274,6 @@ module.exports = (bot) => {
         vinculoDeclarante, // Vínculo del declarante
         cancelacion,
       } = listaAni;
-      console.log(listaAni);
 
       let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
       reply += `*[ ☑️ ] DOCUMENTO C4 INSCRIPCIÓN*\n\n`;
@@ -297,7 +292,7 @@ module.exports = (bot) => {
 
       //BUILDIDNG PDF C4
       //Staring transforming the b64 image to a image....
-      const fotoImagen = responsefichaInscripcion.fotoImagen;
+      const fotoImagen = data_c4.fotoImagen;
 
       //Declarate the path where save the pdf's
       const pdfsFolder = path.join(__dirname, "../../fichasDocuments"); // Ruta a la carpeta "docs"
@@ -361,8 +356,8 @@ module.exports = (bot) => {
               reply_to_message_id: msg.message_id,
               thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
             })
-            .then(async() => {
-              await registrarConsulta(userId, firstName, `fxins`, dni, true);  
+            .then(async () => {
+              await registrarConsulta(userId, firstName, `fxins`, dni, true);
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
               if (!isDev && !isAdmin && !isBuyer) {
                 antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
