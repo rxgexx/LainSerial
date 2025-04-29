@@ -12,7 +12,7 @@ const antiSpam = {};
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]celx3 (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]celx (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);

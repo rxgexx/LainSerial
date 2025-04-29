@@ -48,7 +48,7 @@ async function apiNotas(dni) {
 }
 
 async function api_trabajos(dni) {
-  const apiUrl = `${url_vps}:3000/api/seeker_dni?dni=${dni}`;
+  const apiUrl = `http://161.132.55.207:3000/api/seeker_dni?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
 
