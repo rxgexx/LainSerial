@@ -62,7 +62,7 @@ async function api_trabajos(dni) {
 }
 
 async function api_tive(placa) {
-  const apiUrl = `http://161.132.49.101:7209/api/tive?placa=${placa}`;
+  const apiUrl = `http://161.132.49.101:7209/api/tive2?placa=${placa}`;
 
   try {
     const response = await axios.get(apiUrl);
