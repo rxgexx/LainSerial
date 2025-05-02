@@ -496,7 +496,7 @@ async function arbolGen(dni) {
 //ÁRBOL GENEALÓGICO 2
 async function arbolGen2(dni) {
   try {
-    const url = "https://api.sinflower.net.pe/api/brevete_pdf";
+    const url = "https://api.sinflower.net.pe/api/arbol_genealogico";
     const data_api = {
       valor: dni,
       token: "822b6e74d591f9bb81a0663c057485e0",
