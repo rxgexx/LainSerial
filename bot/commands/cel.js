@@ -181,7 +181,7 @@ module.exports = (bot) => {
       //RESPONSE TITULAR
       const responseTitular = await davidapi_tel(tel);
 
-      if (!responseTitular.data.status_data === false) {
+      if (responseTitular.data.status_data === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
 
@@ -220,7 +220,7 @@ module.exports = (bot) => {
           else if (isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
           }
-        })
+        })  
         .catch((error) => {
           console.log(
             "Error al enviar el mensaje en la API TITULAR BASIC: " + error
@@ -228,7 +228,7 @@ module.exports = (bot) => {
         });
       //}
     } catch (error) {
-      let xerror = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\` en la segunda base.`;
+      let xerror = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
