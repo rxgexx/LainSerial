@@ -185,7 +185,6 @@ module.exports = (bot) => {
     try {
       //ARBOL RESPONSE
       const dataArbol = await arbolGen2(dni);
-      const responseArbol = dataArbol.listaAni;
 
       // const responseArbol = resApi;
       // console.log(responseArbol);
@@ -198,31 +197,33 @@ module.exports = (bot) => {
       // console.log(responseArbol.error);
 
       //SI NO ENCUENTRA RESULTADOS...
-      if (responseArbol.length === 0) {
+      if (!dataArbol.data.data_arbol) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
-
-        const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
-        bot.sendMessage(chatId, yx, messageOptions);
-        return;
-      } else {
+        return bot.sendMessage(
+          chatId,
+          `<b>[ ✖️ ] No se encontraron FAMILIARES para este DNI.</b>`,
+          messageOptions
+        );
+      }else {
         //CONSTRUCCIÓN DEL MENSAJE
         let dniRes = `*[#LAIN-DOX 🌐]*\n\n`;
         dniRes += `*[ ☑️ ] ÁRBOL GENEALÓGICO DE* - \`${dni}\` -\n\n`;
         dniRes += `*➤ RESULTADOS:*\n\n`;
+        
+        const responseArbol = dataArbol.data.data_arbol.lista_registros 
 
         //SI LOS RESULTADOS SON MENOS O IGUAL A 8
         if (responseArbol.length <= 5) {
           responseArbol.forEach((dato) => {
-            const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
-            const apellidos = dato.apePaterno + dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
-            const nuEdad = dato.nuEdad;
-            const tipo = dato.tipo;
-            const verificacion = dato.verificacion;
+            const nuDni = dato.DNI;
+            const apellidos = dato.APELLIDOS;
+            const preNombres = dato.NOMBRES;
+            const sexo = dato.GENERO;
+            const nuEdad = dato.EDAD;
+            const tipo = dato.TIPO;
+            const verificacion = dato.VERIFICACION;
 
-            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
+            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
             dniRes += `  \`⌞\` *SEXO:* \`${sexo}\`\n`;
             dniRes += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
             dniRes += `  \`⌞\` *APELLIDOS:* \`${apellidos}\`\n`;
@@ -249,16 +250,15 @@ module.exports = (bot) => {
           const resultadosRestantes = responseArbol.slice(maxResultsToShow);
 
           resultadosParaMostrar.forEach((dato) => {
-            const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
-            const apellidos = dato.apePaterno + dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
-            const nuEdad = dato.nuEdad;
-            const tipo = dato.tipo;
-            const verificacion = dato.verificacion;
+            const nuDni = dato.DNI;
+            const apellidos = dato.APELLIDOS;
+            const preNombres = dato.NOMBRES;
+            const sexo = dato.GENERO;
+            const nuEdad = dato.EDAD;
+            const tipo = dato.TIPO;
+            const verificacion = dato.VERIFICACION;
 
-            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
+            dniRes += `  \`⌞\` *DNI:* \`${nuDni}\`\n`;
             dniRes += `  \`⌞\` *SEXO:* \`${sexo}\`\n`;
             dniRes += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
             dniRes += `  \`⌞\` *APELLIDOS:* \`${apellidos}\`\n`;
@@ -285,16 +285,15 @@ module.exports = (bot) => {
 
           let replyToTxt;
           resultadosRestantes.forEach((dato) => {
-            const nuDni = dato.nuDni;
-            const digitoVerificacion = dato.digitoVerificacion;
-            const apellidos = dato.apePaterno + dato.apeMaterno;
-            const preNombres = dato.preNombres;
-            const sexo = dato.sexo;
-            const nuEdad = dato.nuEdad;
-            const tipo = dato.tipo;
-            const verificacion = dato.verificacion;
-
-            replyToTxt = `  ⌞ DNI: ${nuDni} - ${digitoVerificacion}\n`;
+            const nuDni = dato.DNI;
+            const apellidos = dato.APELLIDOS;
+            const preNombres = dato.NOMBRES;
+            const sexo = dato.GENERO;
+            const nuEdad = dato.EDAD;
+            const tipo = dato.TIPO;
+            const verificacion = dato.VERIFICACION;
+            
+            replyToTxt = `  ⌞ DNI: ${nuDni}\n`;
             replyToTxt += `  ⌞ SEXO: ${sexo}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
             replyToTxt += `  ⌞ APELLIDOS: ${apellidos}\n`;

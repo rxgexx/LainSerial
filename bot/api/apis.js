@@ -495,30 +495,19 @@ async function arbolGen(dni) {
 
 //ÁRBOL GENEALÓGICO 2
 async function arbolGen2(dni) {
-  //END - POINT
-
   try {
-    const url = "https://www.fakersys.com/api/v2/arbol";
-    const data = {
-      userID: "SinBFlowxr",
-      dni: dni,
-    };
-    const headers = {
-      Origin: "https://www.fakersys.com/",
+    const url = "https://api.sinflower.net.pe/api/brevete_pdf";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
     };
 
-    try {
-      const response = await axios.post(url, data, { headers });
-      return response.data;
-    } catch (error) {
-      console.error(
-        "Error en la solicitud:",
-        error.response ? error.response.data : error.message
-      );
-    }
+    const response = await axios.post(url, data_api);
+    const data = response.data;
+    return data;
   } catch (error) {
-    console.error("Error al obtener la información desde la API ARBOL");
-    throw error;
+    console.log("🚀 ~ api_licencia ~ error:", error);
   }
 }
 
