@@ -188,11 +188,11 @@ module.exports = (bot) => {
         bot.sendMessage(chatId, yx, messageOptions);
       }
 
-      const data = responseTitular.data.data_titular;
+      const datatel = responseTitular.data.data_titular;
       //DATOS TITULAR
-      const dni = data.dni;
-      const name = data.name;
-      const surname = data.surname;
+      const dni = datatel.dni;
+      const name = datatel.name;
+      const surname = datatel.surname;
 
       //MENSAJE DEL BOT
       let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
