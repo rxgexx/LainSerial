@@ -1,7 +1,7 @@
 //API TELEFONÍAS
 const axios = require("axios");
 
-const url_vps = "http://161.132.55.207:3000"
+const url_vps = "http://161.132.55.207:3000";
 
 //API "VALIDAR OPERADOR"
 // Función para esperar una cantidad de tiempo especificada
@@ -104,7 +104,6 @@ async function apiBitel(tel) {
 //   }
 // }
 
-
 //API MOVISTAR x DNI
 async function apiMovDni(dni) {
   //URL API
@@ -194,26 +193,36 @@ async function osiptel(dni) {
 }
 
 async function davidapi_dni(dni) {
-  const url = `http://161.132.48.228:3550/api/consulta_telefonia/dni/${dni}`;
-
   try {
-    const response = await axios.get(url);
-    return response.data;
+    const url = "https://api.sinflower.net.pe/api/telefoniav1-dni";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
+    const data = response.data;
+    return data;
   } catch (error) {
-    console.error("Error:", error);
-    throw error; // Rethrow the error after logging it
+    console.log("🚀 ~ telefoniav1_dni ~ error:", error);
   }
 }
 
 async function davidapi_tel(tel) {
-  const url = `http://161.132.48.228:3550/api/consulta_telefonia/numero/${tel}`;
-
   try {
-    const response = await axios.get(url);
-    return response.data;
+    const url = "https://api.sinflower.net.pe/api/telefoniav1-num";
+    const data_api = {
+      valor: tel,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
+    const data = response.data;
+    return data;
   } catch (error) {
-    console.error("Error:", error);
-    throw error; // Rethrow the error after logging it
+    console.log("🚀 ~ telefoniav1_dni ~ error:", error);
   }
 }
 
@@ -227,5 +236,5 @@ module.exports = {
   seekertel,
   osiptel,
   davidapi_dni,
-  davidapi_tel
+  davidapi_tel,
 };

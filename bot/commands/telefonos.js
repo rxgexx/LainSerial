@@ -183,14 +183,14 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await davidapi_dni(dni);
-      const data = responseTitular.data;
 
-      if (data.length === 0) {
+      if (responseTitular.data.status_data === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No se encontró registros de números en la segunda base* del DNI \`${dni}\`.`;
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
+        const data = responseTitular.data.data_telefonia.lista_registros;
         //CONSTRUCCIÓN DEL MENSAJE
         let telRes = `<b>[#LAIN-DOX 🌐] ➤ #TELEFONOSv3</b>\n\n`;
         telRes += `<b>➤ BASE DE DATOS 2:</b>\n\n`;
@@ -281,7 +281,7 @@ module.exports = (bot) => {
           //TOP TXT
           let topTxt = `[#LAIN-DOX 🌐]\n\n`;
           topTxt += `[ ☑️ ] NUMEROS DE - ${dni} -\n\n`;
-          topTxt += `➤ BASE DE DATOS:\n\n`;  
+          topTxt += `➤ BASE DE DATOS:\n\n`;
 
           fs.writeFileSync(telxFile, topTxt);
 

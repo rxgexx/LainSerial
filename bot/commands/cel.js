@@ -180,15 +180,15 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await davidapi_tel(tel);
-      const data = responseTitular.data;
 
-      if (!data) {
+      if (!responseTitular.data.status_data === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
 
         bot.sendMessage(chatId, yx, messageOptions);
       }
 
+      const data = responseTitular.data.data_titular;
       //DATOS TITULAR
       const dni = data.dni;
       const name = data.name;
@@ -197,7 +197,7 @@ module.exports = (bot) => {
       //MENSAJE DEL BOT
       let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
       telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
-      telRes += `*➤ BASE DE DATOS 2*\n`;
+      telRes += `*➤ BASE DE DATOS 1*\n`;
       telRes += `  \`⌞\` *DOC:* \`${dni}\`\n`;
       telRes += `  \`⌞\` *NOMBRE:* \`${name}\`\n`;
       telRes += `  \`⌞\` *DIRECCIÒN:* \`${surname}\`\n\n`;
