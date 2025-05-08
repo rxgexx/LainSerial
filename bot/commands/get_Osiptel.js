@@ -21,6 +21,8 @@ module.exports = (bot) => {
       console.error("Error en el bot de Telegram:", error);
     });
 
+    return bot.sendMessage(chatId, `*[ ✖️ ] Comando en mantenimiento, disculpen las molestias.*`)
+
     //BOT ANTI - BUG
     // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
     // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
