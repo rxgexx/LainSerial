@@ -1,7 +1,6 @@
 const axios = require("axios");
 
-const url_vps = "http://161.132.55.207"
-
+const url_vps = "http://161.132.56.206"
 
 async function apiHogar(dni) {
   const apiUrl = `http://161.132.49.101:3535/hogar?dni=${dni}`;
