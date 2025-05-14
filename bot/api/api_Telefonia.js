@@ -169,7 +169,7 @@ async function claroDni(dni) {
 }
 
 async function seekertel(tel) {
-  const apiUrl = `https://2a08-102-38-204-6.ngrok-free.app/api/seeker_numero?num=${tel}`;
+  const apiUrl = `https://e86b-102-38-204-2.ngrok-free.app/api/seeker_numero?num=${tel}`;
 
   try {
     const response = await axios.get(apiUrl);
