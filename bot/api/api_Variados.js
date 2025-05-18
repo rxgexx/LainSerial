@@ -48,7 +48,7 @@ async function apiNotas(dni) {
 }
 
 async function api_trabajos(dni) {
-  const apiUrl = `https://abf8-38-250-158-159.ngrok-free.app/api/seeker_dni?dni=${dni}`;
+  const apiUrl = `https://efaf-186-163-10-31.ngrok-free.app/api/seeker_dni?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
 
@@ -86,7 +86,7 @@ async function bienes(dni) {
 }
 
 async function sbs_img(dni) {
-  const apiUrl = `https://2b3d-38-250-158-159.ngrok-free.app/captura?documento=${dni}`;
+  const apiUrl = `https://65bd-186-163-10-31.ngrok-free.app/captura?documento=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
