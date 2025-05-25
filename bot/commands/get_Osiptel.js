@@ -21,7 +21,6 @@ module.exports = (bot) => {
       console.error("Error en el bot de Telegram:", error);
     });
 
-    return bot.sendMessage(chatId, `*[ ✖️ ] Comando en mantenimiento, disculpen las molestias.*`)
 
     //BOT ANTI - BUG
     // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
@@ -43,6 +42,7 @@ module.exports = (bot) => {
       reply_to_message_id: msg.message_id,
       parse_mode: "Markdown",
     };
+    return bot.sendMessage(chatId, `*[ ✖️ ] Comando en mantenimiento, disculpen las molestias.*`)
 
     //Se declaran los rangos
 
