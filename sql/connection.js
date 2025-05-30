@@ -6,7 +6,7 @@ const pool = mysql.createPool({
   user: "root",
   password: "andy2003",
   database: "lainserial_mensual",
-  connectionLimit: 10 // Ajusta según tus necesidades
+  connectionLimit: 100 // Ajusta según tus necesidades
 });
 
 // Verificar la conexión
