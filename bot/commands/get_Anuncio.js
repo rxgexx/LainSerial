@@ -15,7 +15,8 @@ module.exports = (bot) => {
       anuncio += `*Estimados usuarios, se han agregado nuevos comandos*\n\n`;
       anuncio += `*/fxnotas: CONSTANCIA DE LOGROS DE APRENDIZAJE*\n`;
       anuncio += `*/soat: SOAT PDF*\n`;
-      anuncio += `*/yape: YAPE FAKE GENERADO*\n`;
+      anuncio += `*/yape: YAPE FAKE GENERADO*\n\n`;
+      anuncio += `*desarrolladora y unica dueña del bot: https://t.me/SinFlowxr*\n`;
 
       for (const usuarioId of buyers) {
         try {
