@@ -5,7 +5,7 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
 //APIS
-const { c4blanco } = require("../api/apis.js");
+const { soat_pdf } = require("../api/api_Variados.js");
 
 //SE REQUIERE "path"
 const path = require("path");
@@ -19,12 +19,9 @@ const { registrarConsulta } = require("../../sql/consultas.js");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-//IMAGEN BUSCANDO
-const imagenBuscando = path.join(__dirname, "../img/buscandoImg.jpg");
-
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]c4b (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]soat (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -40,7 +37,7 @@ module.exports = (bot) => {
     // }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
-    const dni = match[1];
+    const placa = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -123,7 +120,7 @@ module.exports = (bot) => {
     }
 
     if (!botIsAdmin && typeChat === "group" && !isDev) {
-      let noAdmin = `*[ 💤 ] Dormiré* hasta que no me hagan *administradora* _zzz 😴_`;
+      let noAdmin = `*[ ✖️ ] Dormiré* hasta que no me hagan *administradora* _zzz 😴_`;
       bot.sendMessage(chatId, noAdmin, messageOptions);
 
       return;
@@ -200,9 +197,9 @@ module.exports = (bot) => {
       }
     }
 
-    if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/fxazul\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/fxazul 07768359\`*]*\n\n`;
+    if (placa.length !== 6) {
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/soat\`*]* seguido de un número de *PLACA* de \`6 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/soat CPX104\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -214,7 +211,7 @@ module.exports = (bot) => {
       return;
     }
 
-    const y = `*[ ⚙️ ] Construyendo* la \`FICHA BLANCA\` del *➜ DNI* \`${dni}\``;
+    const y = `*[ ⚙️ ] Obteniendo* \`SOAT\` del *➜ PLACA* \`${placa}\``;
 
     //Si todo se cumple, se iniciará con la consulta...
     const consultandoMessage = await bot.sendMessage(chatId, y, messageOptions);
@@ -222,92 +219,59 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const res = await c4blanco(dni);
-      const response = res.data.data_c4;
+      const res = await soat_pdf(placa);
+      const data_soat = res.data.data_soat;
 
-      if (
-        response.error ===
-        `El DNI ${dni} no cuenta con datos disponibles para la construcción de la ficha`
-      ) {
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
-
-        let yx = `*[✖️] El DNI ${dni}* no cuenta con datos suficientes para la construcción *de la ficha*.`;
-
-        return bot.sendMessage(chatId, yx, messageOptions);
-      }
-
-      const listaAni = response.listaAni[0];
+      const soat_datos = data_soat.data_soat;
 
       const {
-        apeMaterno, // Apellido materno
-        apePaterno, // Apellido paterno
-        coDocEmi, // Código del documento de emisión
-        deRestriccion, // Descripción de restricción
-        depaDireccion, // Departamento de la dirección
-        departamento, // Departamento
-        desDireccion, // Descripción de la dirección
-        digitoVerificacion, // Dígito de verificación
-        distDireccion, // Distrito de la dirección
-        distrito, // Distrito
-        donaOrganos, // Donación de órganos
-        estadoCivil, // Estado civil
-        estatura, // Estatura
-        feCaducidad, // Fecha de caducidad del documento
-        feEmision, // Fecha de emisión del documento
-        feFallecimiento, // Fecha de fallecimiento
-        feInscripcion, // Fecha de inscripción
-        feNacimiento, // Fecha de nacimiento
-        gradoInstruccion, // Grado de instrucción
-        inCel, // Indicador de celular
-        inGrupoRestri, // Indicador de grupo de restricción
-        nomDeclarante, // Nombre del declarante
-        nomMadre, // Nombre de la madre
-        nomPadre, // Nombre del padre
-        nuDni, // Número de DNI
-        nuDocDeclarante, // Número de documento del declarante
-        nuDocMadre, // Número de documento de la madre
-        nuDocPadre, // Número de documento del padre
-        nuEdad, // Edad
-        nuImagen, // Número de imagen
-        preNombres, // Nombres
-        provDireccion, // Provincia de la dirección
-        provincia, // Provincia
-        sexo, // Sexo
-        tipoFicha, // Tipo de ficha
-        tipoFichaImag, // Tipo de ficha de imagen
-        vinculoDeclarante, // Vínculo del declarante
-        cancelacion,
-      } = listaAni;
+        codigoSBSAseguradora,
+        codigoUnicoPoliza,
+        estado,
+        fechaControlPolicial,
+        fechaCreacion,
+        fechaFin,
+        fechaInicio,
+        nombreClaseVehiculo,
+        nombreCompania,
+        nombreUsoVehiculo,
+        numeroAseguradora,
+        tipoCertificado,
+      } = soat_datos;
 
-      let reply = `*[#LAIN-V.1-BETA ⚡]*\n\n`;
-      reply += `*[ ☑️ ] DOCUMENTO C4 BLANCO*\n\n`;
-      reply += `*➤ INF. PERSONA:*\n`;
-      reply += `  \`⌞\` *DNI:* \`${nuDni}\` - \`${digitoVerificacion}\`\n`;
-      reply += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
-      reply += `  \`⌞\` *NOMBRES:* \`${preNombres}\`\n`;
-      reply += `  \`⌞\` *APELLIDOS:* \`${apePaterno} ${apeMaterno}\`\n`;
-      reply += `  \`⌞\` *FECHA. EMISIÓN:* \`${feEmision}\`\n`;
-      reply += `  \`⌞\` *FECHA. NACIMIENTO:* \`${feNacimiento}\`\n`;
-      reply += `  \`⌞\` *FECHA. INSCRIPCIÓN:* \`${feInscripcion}\`\n\n`;
-      reply += `*➤ CONSULTADO POR:*\n`;
-      reply += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      reply += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      reply += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+      let mensaje = `<b>[#LAIN-DOX 🌐] ➤ #SOAT_PDF</b>\n\n`;
+      mensaje += `<b>[ ☑️ ] SOAT DE - </b><code>${placa}</code> - <b>🚗</b>\n\n`;
+      mensaje += `<b>➤ INFORMACIÓN 📂:</b>\n\n`;
 
-      const pdf = response.pdf;
+      mensaje += `  <code>⌞</code> <b>ESTADO:</b> <code>${estado}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>TIPO SOAT:</b> <code>${tipoCertificado}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>FE. POL:</b> <code>${fechaControlPolicial}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>FE. CREACION:</b> <code>${fechaCreacion}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>FE. INICIO:</b> <code>${fechaInicio}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>FE. FIN:</b> <code>${fechaFin}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>CLASE. VEHICULO:</b> <code>${nombreClaseVehiculo}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>NOMBRE COMPAÑÍA:</b> <code>${nombreCompania}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>NUMERO ASEGURADORA:</b> <code>${numeroAseguradora}</code>\n\n`;
+
+      mensaje += `<b>➤ CONSULTADO POR:</b>\n`;
+      mensaje += `  <code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
+      mensaje += `  <code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
+      mensaje += `<b>MENSAJE:</b> <i>La consulta se hizo de manera exitosa ♻.</i>\n\n`;
+
+      const pdf = data_soat.pdf;
       const pdfbuffer = Buffer.from(pdf, "base64");
-      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
       bot
         .sendDocument(chatId, pdfbuffer, {
-          caption: reply,
-          parse_mode: "Markdown",
+          caption: mensaje,
+          parse_mode: "HTML",
           reply_to_message_id: msg.message_id,
         })
         .then(async () => {
-          await registrarConsulta(userId, firstName, `c4b`, dni, true);
+          await registrarConsulta(userId, firstName, `soat_pdf`, placa, true);
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
           if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 120;
+            antiSpam[userId] = Math.floor(Date.now() / 1000) + 200;
           }
           //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 30 segundos.
           else if (isBuyer) {
@@ -315,33 +279,12 @@ module.exports = (bot) => {
           }
         });
     } catch (error) {
-      console.log(error);
+      console.log("🚀 ~ bot.onText ~ error:", error)
+      let xerror = `*[ ✖️ ] NO SE ENCONTRÓ SOAT.*`;
 
-      if (error.response && error.response.status === 524) {
-        let yerror = `*[ ✖️ ] La búsqueda ha tardado mucho,* probablemente haya un _error interno del servidor,_ *intente más tarde*.`;
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(() => {
-            bot.sendMessage(chatId, yerror, messageOptions);
-          });
-      } else if (error.response && error.response.status === 404) {
-        let zerror = `*[ ✖️ ] Ocurrió un error interno,* probablemente haya un _error interno del servidor,_ *intente más tarde*.`;
-
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(() => {
-            bot.sendMessage(chatId, zerror, messageOptions);
-          });
-      } else {
-        let xerror = `*[ 💤 ] Los servidores de RENIEC* andan apagados, no se ha *completado* la _búsqueda._`;
-
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(() => {
-            bot.sendMessage(chatId, xerror, messageOptions);
-          });
-      }
+      bot.sendMessage(chatId, xerror, messageOptions);
     } finally {
       delete usuariosEnConsulta[userId];
     }

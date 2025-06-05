@@ -5,15 +5,15 @@ const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
 //APIS
-const { apiNotas } = require("../bot/api/api_Variados.js");
+const { apiNotas } = require("../api/api_Variados.js");
 
 //SE REQUIERE "path"
 const path = require("path");
 const img = path.join(__dirname, "../img/siagie.png");
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../bot/config/rangos/rangos.json");
-const { registrarConsulta } = require("../sql/consultas.js");
+const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
@@ -56,13 +56,12 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../sql/checkbuyer.js");
+    const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
-
-    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
-    const gruposBloqueados = require("../bot/config/gruposManager/gruposBloqueados.js");
+    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
+    const gruposBloqueados = require("../config/gruposManager/gruposBloqueados.js");
 
     const grupoBloqueado = gruposBloqueados.includes(chatId);
 
@@ -216,7 +215,7 @@ module.exports = (bot) => {
 
     try {
       const responseNotas = await apiNotas(dni);
-      const valorNotas = responseNotas;
+      const valorNotas = responseNotas.data;
 
       if (
         valorNotas.deRespuesta[0] ===
@@ -236,8 +235,7 @@ module.exports = (bot) => {
 
         bot.sendMessage(chatId, y, messageOptions);
       } else {
-        
-        if(responseNotas.coRespuesta === "9999"){
+        if (responseNotas.data.coRespuesta === "9999") {
           return bot.sendPhoto(chatId, img, {
             caption: `*[ ✖️ ] SIAGIE* no ha validado al estudiante, *puede ser que sea menor de 16 años o no esté registrado.*`,
             parse_mode: "Markdown",
@@ -285,12 +283,6 @@ module.exports = (bot) => {
           let reply = `*[#LAIN-DOX 🌐]➤ #MINEDU*\n\n`;
           reply += `*[ ☑️ ] NOTAS ESCOLARES*\n\n`;
           reply += `*➜ REGISTRO* ${i + 1}*:*\n`;
-          reply += `  \`⌞\` *AÑO:* \`${infNotas.idAnio}\`\n`;
-          reply += `  \`⌞\` *JERARQUÍA:* \`${infNotas.nivelColegio}\`\n`;
-          reply += `  \`⌞\` *CÓDIGO MODULAR:* \`${infNotas.codigoModular}\`\n`;
-          reply += `  \`⌞\` *COLEGIO:* \`${infNotas.nombreIE}\`\n`;
-          reply += `  \`⌞\` *GRADO. REGISTRO:* \`${infNotas.descripcionGrado} GRADO\`\n\n`;
-          reply += `*➤ CONSULTADO POR:*\n`;
           reply += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
           reply += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
           reply += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
@@ -307,7 +299,7 @@ module.exports = (bot) => {
           antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
         }
 
-        await registrarConsulta(userId, firstName, `fxnotas`, dni, true);  
+        await registrarConsulta(userId, firstName, `fxnotas`, dni, true);
 
         // for (let i = 0; i < infNotasArray.length; i++) {
         //   const infNotas = infNotasArray[i];
@@ -346,7 +338,7 @@ module.exports = (bot) => {
     } catch (error) {
       console.log(error);
 
-      let y = `*[ ✖️ ] Error en la consulta,* recuerda que el _comando está en fase de prueba,_ el problema ha sido \`notificado a la developer :)\``;
+      let y = `*[ ✖️ ] No se ha podido validar al estudiante*`;
       bot.sendMessage(chatId, y, messageOptions);
       let q = `*[ ✖️ ] Error en el comando /fxnotas,* con el DNI ${dni}.`;
 

@@ -36,10 +36,14 @@ async function apiMPFN(dni) {
 }
 
 async function apiNotas(dni) {
-  const apiUrl = `https://api.ddosis.fun/minedu?token=fbXY00AC9JLJtVlwBfxA563kPK0&dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/minedu`;
 
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    });
     const data = response.data;
     return data;
   } catch (error) {
@@ -226,6 +230,52 @@ async function brevete_pdf(dni) {
   }
 }
 
+async function soat_pdf(placa) {
+  const apiUrl = `https://api.sinflower.net.pe/api/soat-pdf`;
+  try {
+    const response = await axios.post(apiUrl, {
+      valor: placa,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    });
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
+
+async function yape_fake(titular, numero, precio, destino) {
+  const apiUrl = `https://api.sinflower.net.pe/api/yape-fake`;
+
+  const payload = {
+    precio: precio,
+    titular: titular,
+    numero: numero,
+    destino: destino,
+    token: "822b6e74d591f9bb81a0663c057485e0",
+    user: "sinflowxr",
+  };
+
+  try {
+    const response = await axios.post(apiUrl, payload);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.error(
+      "❌ Error al consultar API:",
+      error.response?.data || error.message
+    );
+
+    // Mostrar detalles del request para depuración
+    if (error.response) {
+    }
+
+    return null;
+  }
+}
+
 module.exports = {
   apiPlaca,
   apiPlaca_2,
@@ -245,4 +295,6 @@ module.exports = {
   infRUC,
   satApi,
   brevete_pdf,
+  soat_pdf,
+  yape_fake,
 };

@@ -11,7 +11,11 @@ module.exports = (bot) => {
       const buyers = await obtenerBuyers();
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
-      let anuncio = `*Estimado Usuario, únete ya al nuevo bot y atento a las nuevas noticias @LainData_Bot 🚀!, este bot será el principal en unos días, no te pierdas de nada.* (SI TIENES UN PLAN ACTIVO NO TE PREOCUPES, TU PLAN SEGUIRÁ EN EL NUEVO BOT)\n\n`;
+      let anuncio = `*[ 📢 ] NUEVOS COMANDOS AGREGADOS*\n\n`;
+      anuncio += `*Estimados usuarios, se han agregado nuevos comandos*\n\n`;
+      anuncio += `*/fxnotas: CONSTANCIA DE LOGROS DE APRENDIZAJE*\n`;
+      anuncio += `*/soat: SOAT PDF*\n`;
+      anuncio += `*/yape: YAPE FAKE GENERADO*\n`;
 
       for (const usuarioId of buyers) {
         try {
@@ -29,19 +33,19 @@ module.exports = (bot) => {
         }
       }
 
-      // for (const grupoId of gruposPermitidos) {
-      //   try {
-      //     const chatInfo = await bot.getChat(grupoId);
+      for (const grupoId of gruposPermitidos) {
+        try {
+          const chatInfo = await bot.getChat(grupoId);
 
-      //     const sentMessage = await bot.sendPhoto(grupoId, img, {
-      //       caption: anuncio,
-      //       parse_mode: "Markdown",
-      //     });
-      //     await bot.pinChatMessage(grupoId, sentMessage.message_id); // Fija el mensaje en el grupo
-      //   } catch (error) {
-      //     console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
-      //   }
-      // }
+          const sentMessage = await bot.sendPhoto(grupoId, img, {
+            caption: anuncio,
+            parse_mode: "Markdown",
+          });
+          await bot.pinChatMessage(grupoId, sentMessage.message_id); // Fija el mensaje en el grupo
+        } catch (error) {
+          console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
+        }
+      }
 
       bot.sendMessage(
         msg.chat.id,
