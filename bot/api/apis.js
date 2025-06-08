@@ -15,37 +15,20 @@ function retrasar(seconds) {
 //API RENIEC
 async function getReniec(dni) {
   //  const apiUrl = `http://161.132.48.228:8811/reniec?dni=${dni}`;
-  const apiUrl = `http://161.132.56.206:5000/api/reniec?dni=${dni}`;
-  let data;
+  const apiUrl = `https://api.sinflower.net.pe/api/reniec`;
+
+  const payload = {
+    valor: dni,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
 
   try {
-    const response = await axios.get(apiUrl);
-    data = response.data;
-    return data;
-  } catch (error) {
-    console.error("Error al obtener los datos de RENIEC desde la API:", error);
-    throw error;
-  }
-}
-
-//API RENIEC RESPALDO
-async function getReniecRes(dni) {
-  //END - POING
-  const apiUrl = `http://161.132.49.138:50/respaldo/${dni}`;
-
-  try {
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(
-        `Error al obtener los datos reniec respaldo: ${response.status}`
-      );
-    }
+    const response = await axios.post(apiUrl, payload);
     const data = response.data;
     return data;
   } catch (error) {
-    console.error(
-      "Error al obtener los datos reniec desde la API RESPALDO: " + error
-    );
+    console.error("Error al obtener los datos de RENIEC desde la API:", error);
     throw error;
   }
 }
@@ -550,7 +533,6 @@ async function c4blanco(dni) {
 
 module.exports = {
   getReniec,
-  getReniecRes,
   getNombres,
   getActaNacimiento,
   getActaMatrimonio,

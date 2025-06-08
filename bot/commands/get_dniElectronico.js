@@ -178,24 +178,10 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const consultaStartTime = Date.now(); // Guardamos el tiempo de inicio de la consulta
 
       const responseDniVirtual = await dniElectronico(dni);
 
-      //SI NO HAY FOTO
-      const isFoto = responseDniVirtual.mensaje;
-
-      if (isFoto === "No existe foto para el DNI consultado") {
-        let xnofoto = `*[ ✖️ ] El DNI consultado* no cuenta con \`DATOS SUFICIENTES\` para *la construcción* del _dni virtual_.`;
-
-        await bot
-          .deleteMessage(chatId, consultandoMessage.message_id)
-          .then(bot.sendMessage(chatId, xnofoto, messageOptions));
-
-        return;
-      }
-
-      const listaAni = responseDniVirtual.datos;
+      const listaAni = responseDniVirtual.data.data_dnielectronico.listaAni[0];
 
       const {
         apeMaterno, // Apellido materno
@@ -207,8 +193,8 @@ module.exports = (bot) => {
         preNombres, // Nombres
       } = listaAni;
 
-      const caraDni = responseDniVirtual.frontal;
-      const atrasDni = responseDniVirtual.atras;
+      const caraDni = responseDniVirtual.data.data_dnielectronico.frontal_base64;
+      const atrasDni = responseDniVirtual.data.data_dnielectronico.posterior_base64;
 
       //TEXTO QUE ACOMPAÑARÁ AL DNI VIRTUAL
       let replyDni = `*[#LAIN-DOX 🌐] ➤ #DNIELECTRONICO*\n\n`;

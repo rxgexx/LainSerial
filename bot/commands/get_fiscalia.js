@@ -229,7 +229,7 @@ module.exports = (bot) => {
 
           mensaje += `<b>➤ LISTA DELITOS ASOCIADOS 👨‍✈️:</b>\n\n`;
 
-          const listaMateriaDelito = dato.listaMateriaDelito;
+          const listaMateriaDelito = dato.delitos;
 
           listaMateriaDelito.forEach((dato) => {
             const espDeMatDeli = dato.espDeMatDeli;

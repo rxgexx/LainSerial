@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const url_vps = "http://161.132.56.206"
+const url_vps = "http://161.132.56.206";
 
 async function apiHogar(dni) {
   const apiUrl = `http://161.132.49.101:3535/hogar?dni=${dni}`;
@@ -32,14 +32,21 @@ async function apiname_2(prinombre, apPaterno = " ", apMaterno = " ") {
 }
 
 async function dniElectronico(dni) {
-  const apiUrl = `http://161.132.56.206:2010/dni_electronico?dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/dni_electronico`;
+
+  const payload = {
+    valor: dni,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
 
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, payload);
     const data = response.data;
     return data;
   } catch (error) {
-    console.log("Error en la API HOGAR: ", error);
+    console.error("Error al obtener los datos de RENIEC desde la API:", error);
+    throw error;
   }
 }
 
@@ -70,7 +77,6 @@ async function seekerApi_pdf(dni) {
 async function seekerdni(dni) {
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
   const apiUrl = `https://c250-85-204-78-5.ngrok-free.app/api/seeker_dni?dni=${dni}`;
-
 
   try {
     const response = await axios.get(apiUrl);
@@ -107,7 +113,6 @@ async function infoburo(dni) {
   }
 }
 
-
 module.exports = {
   seekerpdf,
   apiHogar,
@@ -116,5 +121,5 @@ module.exports = {
   seekerApi,
   seekerApi_pdf,
   seekerdni,
-  infoburo
+  infoburo,
 };

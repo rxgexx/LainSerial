@@ -24,15 +24,6 @@ module.exports = (bot) => {
       console.error("Error en el bot de Telegram:", error);
     });
 
-    //BOT ANTI - BUG
-    // const botStartTime = Date.now() / 1000; // Tiempo de inicio del bot en segundos
-    // const messageTime = msg.date + 1; // Tiempo del mensaje en segundos + 1 segundo
-
-    // // Ignorar mensajes que son más antiguos que el tiempo de inicio del bot
-    // if (messageTime < botStartTime) {
-    //   return;
-    // }
-
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
     const dni = match[1];
     const chatId = msg.chat.id;
@@ -184,9 +175,12 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const datosReniec = await getReniec(dni);      
-
-      if (datosReniec.message === "El DNI no existe") {
+      const response = await getReniec(dni);
+      const datosReniec = response.data.data_reniec;
+      if (
+        datosReniec.message_data ===
+        "Consulta exitosa, pero no se encontraron datos."
+      ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
         let y = `*[ 💬 ] El DNI no existe o ha sido eliminado* de Reniec.`;
@@ -305,13 +299,7 @@ module.exports = (bot) => {
             parse_mode: "Markdown",
           })
           .then(async () => {
-            await registrarConsulta(
-              userId,
-              firstName,
-              `DNIX`,
-              dni,
-              true
-            );
+            await registrarConsulta(userId, firstName, `DNIX`, dni, true);
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
               antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
@@ -354,13 +342,7 @@ module.exports = (bot) => {
         bot
           .sendMediaGroup(chatId, mediaGroup, messageOptions)
           .then(async () => {
-            await registrarConsulta(
-              userId,
-              firstName,
-              `DNIX`,
-              dni,
-              true
-            );
+            await registrarConsulta(userId, firstName, `DNIX`, dni, true);
 
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
