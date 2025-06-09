@@ -7,8 +7,6 @@ const PDFDocument = require("pdfkit");
 //APIS
 const { fichaAzul } = require("../api/apis");
 
-
-
 //SE REQUIERE "path"
 const path = require("path");
 
@@ -64,7 +62,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const gruposBloqueados = require("../config/gruposManager/gruposBloqueados.js");
@@ -225,20 +222,20 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const responseFichaAzul = await fichaAzul(dni);
+      const response = await fichaAzul(dni);
+      const responseFichaAzul = response.data.data_c4;
+      // if (
+      //   responseFichaAzul.error ===
+      //   `El DNI ${dni} no cuenta con datos disponibles para la construcción de la ficha`
+      // ) {
+      //   await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
-      if (
-        responseFichaAzul.error ===
-        `El DNI ${dni} no cuenta con datos disponibles para la construcción de la ficha`
-      ) {
-        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      //   let yx = `*[✖️] El DNI ${dni}* no cuenta con datos suficientes para la construcción *de la ficha*.`;
 
-        let yx = `*[✖️] El DNI ${dni}* no cuenta con datos suficientes para la construcción *de la ficha*.`;
+      //   return bot.sendMessage(chatId, yx, messageOptions);
+      // }
 
-        return bot.sendMessage(chatId, yx, messageOptions);
-      }
-
-      const listaAni = responseFichaAzul.listaAni;
+      const listaAni = responseFichaAzul.listaAni[0];
 
       const {
         apeMaterno, // Apellido materno
@@ -362,7 +359,7 @@ module.exports = (bot) => {
               reply_to_message_id: msg.message_id,
               thumb: path.resolve(__dirname, "../img/min_pdf.jpg"), // Ruta absoluta a la miniatura
             })
-            .then(async() => {
+            .then(async () => {
               await registrarConsulta(userId, firstName, `fxazul`, dni, true);
               //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
               if (!isDev && !isAdmin && !isBuyer) {

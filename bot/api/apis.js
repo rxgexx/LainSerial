@@ -154,15 +154,17 @@ const fichaEndPoint = "http://161.132.48.228:4045";
 
 //C4 azul
 async function fichaAzul(dni) {
-  //END - POINT FICHA AZUL - API
-  const extencionFicha = "consulta/fichaAzul";
-  const apiUrl = `http://161.132.48.228:9933/api/c4?dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/c4azul`;
 
   try {
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(`Error al obtener la ficha azul: ${response.status}`);
-    }
+    const payload = {
+      valor: dni,
+      user: "sinflowxr",
+      token: "822b6e74d591f9bb81a0663c057485e0",
+    };
+
+    const response = await axios.post(apiUrl, payload);
+
     const data = response.data;
     return data;
   } catch (error) {
