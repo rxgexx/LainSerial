@@ -207,7 +207,7 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const datos = await dni;
+      const datos = await arbolVisual(dni);
 
       if (datos.status === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
