@@ -357,7 +357,7 @@ module.exports = (bot) => {
     } catch (error) {
       console.log("Error : " + error);
 
-      let xerror = `*[ ✖️ ] DNI muy reciente o eliminado de la Base Reniec.*`;
+        let xerror = `*[ ✖️ ] El DNI no ha sido encontrado en ninguna fuente Reniec*`;
 
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

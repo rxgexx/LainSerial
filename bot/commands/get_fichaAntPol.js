@@ -404,7 +404,7 @@ module.exports = (bot) => {
             bot.sendMessage(chatId, zerror, messageOptions);
           });
       } else {
-        let xerror = `*[ 💤 ] Los servidores de RENIEC* andan apagados, no se ha *completado* la _búsqueda._`;
+        let xerror = `*[ ✖️ ] El DNI no ha sido encontrado en ninguna fuente Reniec*`;
 
         await bot
           .deleteMessage(chatId, consultandoMessage.message_id)
