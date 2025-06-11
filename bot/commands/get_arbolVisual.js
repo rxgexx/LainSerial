@@ -1,5 +1,5 @@
 const fs = require("fs");
-const PDFDocument = require("pdfkit");
+const imgDocument = require("imgkit");
 const path = require("path");
 
 const dataStorage = {};
@@ -208,7 +208,7 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const datos = await arbolVisual(dni);
+      const datos = await dni;
 
       if (datos.status === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -217,20 +217,18 @@ module.exports = (bot) => {
       }
 
       // Datos obtenidos
-      const pdf = datos.data.pdf;
+      const img = datos.img;
 
-      const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
-      const pdfbuffer = Buffer.from(pdfdata, "base64");
+      const imgdata = img.replace(/^data:image\/jpeg;base64,/, "");
+      const imgbuffer = Buffer.from(imgdata, "base64");
 
       //PROPIETARIO
 
-      const dataPropietario = datos.data.persona;
-
-      const apepaterno = dataPropietario.AP_PRIMER;
-      const apematerno = dataPropietario.AP_SEGUNDO;
-      const nombres = dataPropietario.PRENOM_INSCRITO;
-      const ubicacion = dataPropietario.DISTRITO;
-      const nuEdad = dataPropietario.NU_EDAD;
+      // const apepaterno = dataPropietario.AP_PRIMER;
+      // const apematerno = dataPropietario.AP_SEGUNDO;
+      // const nombres = dataPropietario.PRENOM_INSCRITO;
+      // const ubicacion = dataPropietario.DISTRITO;
+      // const nuEdad = dataPropietario.NU_EDAD;
 
       // Datos dni
 
@@ -238,36 +236,35 @@ module.exports = (bot) => {
 
       caption += `*[ ☑️ ]  A.G. VISUAL -* \`${dni}\` *- 👪*\n\n`;
 
-      caption += `*➤ CONSULTADO:*\n`;
-      caption += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
-      caption += `  \`⌞\` *NOMBRE:* \`${nombres}\`\n`;
-      caption += `  \`⌞\` *AP. PATERNO:* \`${apepaterno}\`\n`;
-      caption += `  \`⌞\` *AP. MATERNO:* \`${apematerno}\`\n`;
-      caption += `  \`⌞\` *UBICACIÓN:* \`${ubicacion}\`\n\n`;
+      // caption += `*➤ CONSULTADO:*\n`;
+      // caption += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
+      // caption += `  \`⌞\` *NOMBRE:* \`${nombres}\`\n`;
+      // caption += `  \`⌞\` *AP. PATERNO:* \`${apepaterno}\`\n`;
+      // caption += `  \`⌞\` *AP. MATERNO:* \`${apematerno}\`\n`;
+      // caption += `  \`⌞\` *UBICACIÓN:* \`${ubicacion}\`\n\n`;
 
       caption += `*➤ CONSULTADO POR:*\n`;
       caption += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
       caption += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
       caption += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-      // Crea el directorio si no existe
-      if (!fs.existsSync(dirDoc)) {
-        fs.mkdirSync(dirDoc, { recursive: true });
-      }
+      // // Crea el directorio si no existe
+      // if (!fs.existsSync(dirDoc)) {
+      //   fs.mkdirSync(dirDoc, { recursive: true });
+      // }
 
-      // Define la ruta del archivo
-      const filePath = path.join(dirDoc, `arbolVisual_${dni}.pdf`);
+      // // Define la ruta del archivo
+      // const filePath = path.join(dirDoc, `arbolVisual_${dni}.img`);
 
-      // Guarda el PDF en el sistema de archivos
-      fs.writeFileSync(filePath, pdfbuffer);
+      // // Guarda el img en el sistema de archivos
+      // fs.writeFileSync(filePath, imgbuffer);
 
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
       bot
-        .sendDocument(chatId, filePath, {
+        .sendPhoto(chatId, imgbuffer, {
           caption: caption,
           reply_to_message_id: msg.message_id,
           parse_mode: "Markdown",
-          thumb: img,
         })
         .then(async () => {
           await registrarConsulta(userId, firstName, "ARBOL VISUAL", dni, true);
