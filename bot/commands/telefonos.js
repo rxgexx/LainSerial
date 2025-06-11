@@ -349,7 +349,7 @@ module.exports = (bot) => {
         }
       }
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      let xerror = `*[ ✖️ ] Ningún registro encontrado en las bases de números*`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)
