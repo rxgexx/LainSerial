@@ -1,5 +1,4 @@
 const fs = require("fs");
-const imgDocument = require("imgkit");
 const path = require("path");
 
 const dataStorage = {};
