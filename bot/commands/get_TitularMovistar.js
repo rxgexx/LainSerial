@@ -1,5 +1,6 @@
 //SE REQUIRE LAS APIS
 const { validarOp, titularMov } = require("../api/api_Telefonia.js");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -259,6 +260,7 @@ module.exports = (bot) => {
       bot
         .sendMessage(chatId, telRes, messageOptions)
         .then(() => {
+          registrarConsulta(userId, firstName, "Titular Movistar", tel, true);
           //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
           if (!isDev && !isAdmin && !isBuyer) {
             antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;

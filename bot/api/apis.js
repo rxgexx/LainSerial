@@ -309,17 +309,16 @@ async function titularBitel(tel) {
 //API CLARO
 async function titularClaro(tel) {
   //END - PINT
-  const apiUrl = `http://161.132.48.228:8080/clanum?num=${tel}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/claro_num`;
+
+  const payload = {
+    valor: tel,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
 
   try {
-    const responseClaro = await axios.get(apiUrl);
-
-    if (responseClaro.status !== 200) {
-      throw new Error(
-        "Error al obtener la información de la api CLARO: ",
-        responseClaro.status
-      );
-    }
+    const responseClaro = await axios.post(apiUrl, payload);
 
     const data = responseClaro.data;
     return data;

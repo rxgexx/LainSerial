@@ -151,7 +151,7 @@ async function migracionesPdf(dni) {
 }
 
 async function arbolVisual(dni) {
-  const apiUrl = `http://161.132.50.110:42991/plant/${dni}`;
+  const apiUrl = `http://161.132.50.110:42991/captura/${dni}`;
 
   try {
     const response = await axios.get(apiUrl);

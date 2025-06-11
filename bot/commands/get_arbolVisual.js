@@ -212,7 +212,7 @@ module.exports = (bot) => {
 
       if (datos.status === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        let yyx = `*[ ✖️ ] No se encontraron datos* para el *DNI proporcionado.*`;
+        let yyx = `*[ ✖️ ] No se encontraron familiares* para el *DNI proporcionado.*`;
         return bot.sendMessage(chatId, yyx, messageOptions);
       }
 

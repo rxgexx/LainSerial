@@ -3,8 +3,6 @@ const { titularClaro } = require("../api/apis.js");
 //SE REQUIRE LAS APIS
 const { validarOp } = require("../api/api_Telefonia.js");
 
-
-
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
 const rangosFilePath = require("../config/rangos/rangos.json");
@@ -54,7 +52,6 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
 
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
@@ -203,9 +200,12 @@ module.exports = (bot) => {
 
     try {
       //RESPONSE CLARO
-      const responseCla = await titularClaro(tel);
-
-      if (responseCla.result === "No existe linea") {
+      const res = await titularClaro(tel);
+      const responseCla = res.data.data_titular;
+      if (
+        responseCla.result === "No existe linea" &&
+        responseCla.result.documento === "00000000"
+      ) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`, de seguro el *número* no es Claro.\n\n`;
         yx += `✅ Si *crees* que se trata de un error. Intenta de nuevo o *comunícate* con la \`developer\`.\n\n`;
@@ -223,7 +223,7 @@ module.exports = (bot) => {
         return;
       } else {
         //RESPONSE CLARO
-        const dataClaro = responseCla.result;
+        const dataClaro = responseCla;
         //DATOS CLARO
         const apellidos = dataClaro.apellidos;
         const correo = dataClaro.correo;
@@ -255,7 +255,7 @@ module.exports = (bot) => {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         bot
           .sendMessage(chatId, telRes, messageOptions)
-          .then(async() => {
+          .then(async () => {
             await registrarConsulta(userId, firstName, "CLARO", tel, true);
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 80 segundos
             if (!isDev && !isAdmin && !isBuyer) {
