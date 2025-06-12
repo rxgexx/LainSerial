@@ -189,7 +189,7 @@ module.exports = (bot) => {
       // bot.sendMessage(chatId, yx, messageOptions);
       // } else {
       //RESPONSE TITULAR
-      const dataTitular = responseTitular.SeekerData.datosPersona.data;
+      const dataTitular = responseTitular.data.data_seeker.datosPersona.data;
 
       //DATOS TITULAR
       const dni = dataTitular.nuDni;

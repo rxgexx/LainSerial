@@ -169,14 +169,20 @@ async function claroDni(dni) {
 }
 
 async function  seekertel(tel) {
-  const apiUrl = `https://b53c-161-132-55-103.ngrok-free.app/api/seeker_numero?num=${tel}`;
+  const apiUrl = `https://api.sinflower.net.pe/seeker_celular`;
+
+  const payload = {
+    valor: tel,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
 
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, payload);
     const data = response.data;
     return data;
   } catch (error) {
-    console.log(error);
+    console.log("Error en la API SEEKER: ", error);
   }
 }
 

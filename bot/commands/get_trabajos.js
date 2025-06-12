@@ -169,8 +169,7 @@ module.exports = (bot) => {
 
     try {
       const data = await api_trabajos(dni);
-      const laboral = data.SeekerData.Trabajos;
-      console.log(laboral);
+      const laboral = data.data_seeker.Trabajos;
 
       if (laboral.data.length === 0) {
         let yx = `*[ ✖️ ] No se encontró registros laborales* para el *DNI* \`${dni}\`*.*\n\n`;

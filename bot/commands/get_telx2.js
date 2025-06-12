@@ -156,8 +156,8 @@ module.exports = (bot) => {
       }
     }
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/telx\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/telx 44444444\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/telx2\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/telx2 44444444\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -183,7 +183,7 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await seekerdni(dni);
-      const data = responseTitular.SeekerData.Telefonos.data;
+      const data = responseTitular.data.data_seeker.Telefonos.data;
 
       if (data.length === 0) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -191,7 +191,7 @@ module.exports = (bot) => {
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
-        const persona = responseTitular.SeekerData.datosPersona.data;
+        const persona = responseTitular.data.data_seeker.datosPersona.data;
 
         //RESPONSE TITULAR
         // const titular = responseTitular.datos.surname + responseTitular.datos.name;

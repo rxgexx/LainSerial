@@ -75,11 +75,16 @@ async function seekerApi_pdf(dni) {
 }
 
 async function seekerdni(dni) {
-  // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
-  const apiUrl = `https://b53c-161-132-55-103.ngrok-free.app/api/seeker_dni?dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/seeker_dni`;
+
+  const payload = {
+    valor: dni,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
 
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, payload);
     const data = response.data;
     return data;
   } catch (error) {
