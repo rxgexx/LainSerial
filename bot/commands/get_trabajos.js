@@ -169,7 +169,6 @@ module.exports = (bot) => {
 
     try {
       const data = await api_trabajos(dni);
-      console.log("🚀 ~ bot.onText ~ data:", data)
       const laboral = data.data.data_seeker.Trabajos;
 
       if (laboral.data.length === 0) {
