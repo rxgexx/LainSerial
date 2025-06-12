@@ -75,7 +75,7 @@ async function seekerApi_pdf(dni) {
 }
 
 async function seekerdni(dni) {
-  const apiUrl = `https://api.sinflower.net.pe/seeker_dni`;
+  const apiUrl = `https://api.sinflower.net.pe/api/seeker_dni`;
 
   const payload = {
     valor: dni,

@@ -52,7 +52,7 @@ async function apiNotas(dni) {
 }
 
 async function api_trabajos(dni) {
-  const apiUrl = `https://api.sinflower.net.pe/seeker_dni`;
+  const apiUrl = `https://api.sinflower.net.pe/api/seeker_dni`;
 
   const payload = {
     valor: dni,
