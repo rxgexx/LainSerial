@@ -222,10 +222,9 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      
-      const res = await brevete_pdf(dni); 
+      const res = await brevete_pdf(dni);
       const response = res.data;
-      
+
       if (response.data === null) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
@@ -233,9 +232,11 @@ module.exports = (bot) => {
 
         return bot.sendMessage(chatId, yx, messageOptions);
       }
+      console.log(response.data_brevete.data_brevete.data);
 
       const data_person =
-        response.data_brevete.data.datosAdministrado.Administrados[0];
+        response.data_brevete.data_brevete.data.datosAdministrado
+          .Administrados[0];
       const ApellidoMaterno = data_person.ApellidoMaterno;
       const ApellidoPaterno = data_person.ApellidoPaterno;
       const Restricciones1 = data_person.Restricciones1;
@@ -243,7 +244,7 @@ module.exports = (bot) => {
       const FechaHoraRegistro = data_person.FechaHoraRegistro;
 
       const data_licencia =
-        response.data_brevete.data.datosAdministrado.LicenciaA;
+        response.data_brevete.data_brevete.data.datosAdministrado.LicenciaA;
       const CentroEmision = data_licencia.CentroEmision;
       const Categoria = data_licencia.Categoria;
       const FechaEmision = data_licencia.FechaEmision;
@@ -263,7 +264,7 @@ module.exports = (bot) => {
       reply += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
       reply += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-      const pdf = response.pdf;
+      const pdf = response.data_brevete.pdf;
       const pdfbuffer = Buffer.from(pdf, "base64");
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
