@@ -224,9 +224,16 @@ async function satApi(pla) {
 }
 
 async function brevete_pdf(dni) {
-  const apiUrl = `http://161.132.48.228:5085/api/brevete?dni=${dni}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/brevete_pdf`;
+
+  const payload = {
+    valor: dni,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
+
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, payload);
     const data = response.data;
 
     return data;

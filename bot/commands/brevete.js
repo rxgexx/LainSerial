@@ -222,8 +222,9 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const response = await brevete_pdf(dni);
-      console.log(response);
+      
+      const res = await brevete_pdf(dni); 
+      const response = res.data;
       
       if (response.data === null) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
