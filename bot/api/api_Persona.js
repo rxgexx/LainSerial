@@ -93,7 +93,7 @@ async function seekerdni(dni) {
 }
 
 async function seekerpdf(dni) {
-  const apiUrl = `https://8782-149-88-101-18.ngrok-free.app/seeker?dni=${dni}`;
+  const apiUrl = `https://3996-62-197-145-21.ngrok-free.app/seeker?dni=${dni}`;
   // const apiUrl = `http://88.198.13.73:7845/api/seeker_original/dni/${dni}`;
 
   try {
