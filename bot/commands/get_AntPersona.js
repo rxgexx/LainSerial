@@ -5,9 +5,9 @@ const path = require("path");
 const dataStorage = {};
 
 // Rutas y datos
-const { antPersona } = require("../bot/api/api_Legales.js");
-const rangosFilePath = require("../bot/config/rangos/rangos.json");
-const { registrarConsulta } = require("../sql/consultas.js");
+const { antPersona } = require("../api/api_Legales.js");
+const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -55,12 +55,12 @@ module.exports = (bot) => {
     const isDev = rangosFilePath.DEVELOPER.includes(userId);
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
     //Rango Comprador
-    const { checkIsBuyer } = require("../sql/checkbuyer.js");
+    const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
-    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
-    const gruposBloqueados = require("../bot/config/gruposManager/gruposBloqueados.js");
+    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
+    const gruposBloqueados = require("../config/gruposManager/gruposBloqueados.js");
 
     const grupoBloqueado = gruposBloqueados.includes(chatId);
 
