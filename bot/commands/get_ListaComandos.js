@@ -162,9 +162,9 @@ module.exports = (bot) => {
       cmds += `*➜ /fxantpol:* _FICHA ANT. POLICIALES - 🟢_\n`;
       cmds += `*➜ /fxantpen:* _FICHA ANT. PENALES - 🟢_\n`;
       cmds += `*➜ /fxantjud:* _FICHA ANT. JUDICIALES - 🟢 _\n`;
-      // cmds += `*➜ /rq:* _Consulta RQ de una persona - 🟢 _\n`;
-      // cmds += `*➜ /rqpla:* _Consulta RQ de un vehículo - 🟢 _\n`;
-      // cmds += `*➜ /anteper:* _Consulta Antecdentes de una persona - 🟢 _\n`;
+      cmds += `*➜ /rq:* _Consulta RQ de una persona - 🟢 _\n`;
+      cmds += `*➜ /rqpla:* _Consulta RQ de un vehículo - 🟢 _\n`;
+      cmds += `*➜ /anteper:* _Consulta Antecdentes de una persona - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
       cmds += `*➜ /celx3:* _Titular en tercera Base de datos - 🟢_\n`;
