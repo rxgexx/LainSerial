@@ -5,17 +5,18 @@ module.exports = async (bot) => {
 
   const mensajeHTML = `🚨 <b>¡Atención! Reporta a tu revendedor</b> 🚨
 
-Si estás usando este bot a través de un <b>revendedor no oficial</b> (es decir, alguien que te dio un número de teléfono y un código para acceder, pero no es la dueña oficial), ¡puedes reportarlo!
+Si estás usando este bot a través de un <b>revendedor no oficial</b> (alguien que te dio un número y un código para acceder, pero no es la dueña oficial), <b>¡puedes reportarlo!</b>
 
-Contacta a la <b>única dueña oficial</b> 👉 <a href="https://t.me/SinFlowxr">@SinFlowxr</a> y envía pruebas del caso.
+📩 Contacta a la <b>única dueña oficial</b> 👉 <a href="https://t.me/SinFlowxr">@SinFlowxr</a> y envía pruebas del caso.
 
 🎁 <b>¿Qué ganas al reportar?</b>
-• Se te recompensará con <b>los días restantes</b> de tu compra actual.  
-• Al terminar tu periodo, podrás <b>renovar al mismo precio</b> que pagaste originalmente.
+• Recuperas los <b>días restantes</b> de tu compra.  
+• Al vencer tu acceso, podrás <b>renovar al mismo precio</b> que pagaste originalmente.
 
-¡Gracias por apoyar el uso justo y oficial del bot!`;
+📢 Además, únete al canal <a href="https://t.me/CazandoPuentes">@CazandoPuentes</a> donde publicamos a los <b>revendedores cazados</b> y te mantenemos informado.
 
-  // Función para enviar el mensaje a todos los buyers
+🙏 ¡Gracias por apoyar el uso legal y justo del bot!`;
+
   const enviarMensajeABuyers = async () => {
     for (const usuarioId of buyers) {
       try {
@@ -29,7 +30,7 @@ Contacta a la <b>única dueña oficial</b> 👉 <a href="https://t.me/SinFlowxr"
   // Enviar mensaje inmediatamente al iniciar
   await enviarMensajeABuyers();
 
-  // Enviar cada 30 minutos
+  // Repetir cada 30 minutos
   setInterval(() => {
     enviarMensajeABuyers();
   }, 30 * 60 * 1000); // 30 minutos
