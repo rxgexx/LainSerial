@@ -94,7 +94,7 @@ async function bienes(dni) {
 }
 
 async function sbs_img(dni) {
-  const apiUrl = `https://24b9-62-197-145-21.ngrok-free.app/captura?documento=${dni}`;
+  const apiUrl = `https://9b02-161-132-55-103.ngrok-free.app/captura?documento=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
