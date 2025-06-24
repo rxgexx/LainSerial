@@ -33,5 +33,5 @@ Si estás usando este bot a través de un <b>revendedor no oficial</b> (alguien 
   // Repetir cada 30 minutos
   setInterval(() => {
     enviarMensajeABuyers();
-  }, 3 * 60 * 60 * 1000); // 30 minutos
+  }, 12 * 60 * 60 * 1000); // 12 horas en milisegundos
 };
