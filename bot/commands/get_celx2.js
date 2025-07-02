@@ -181,22 +181,20 @@ module.exports = (bot) => {
       //RESPONSE TITULAR
       const responseTitular = await seekertel(tel);
 
-      //if (Object.keys(responseTitular.datos).length === 0) {
+      if (responseTitular.data.status_data === false) {
 
-      // await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      // const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
+      await bot.deleteMessage(chatId, consultandoMessage.message_id);
+      const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
 
-      // bot.sendMessage(chatId, yx, messageOptions);
-      // } else {
+      bot.sendMessage(chatId, yx, messageOptions);
+      } else {
       //RESPONSE TITULAR
-      const dataTitular = responseTitular.data.data_seeker.datosPersona.data;
+      const dataTitular = responseTitular.data.datos_tel;
 
       //DATOS TITULAR
-      const dni = dataTitular.nuDni;
-      const titular = dataTitular.nombreCompleto;
-      const ubicacion = dataTitular.ubicacion;
-      const fechaNacimiento = dataTitular.fechaNacimiento;
-      const direccion = dataTitular.direccion;
+      const dni = dataTitular.dni + " " + dataTitular.cui;
+      const titular = dataTitular.prenombres + " " + dataTitular.apellido_paterno + " " + dataTitular.apellido_materno;
+      const fechaNacimiento = dataTitular.fecha_nacimiento;
 
       //MENSAJE DEL BOT
       let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
@@ -204,9 +202,9 @@ module.exports = (bot) => {
       telRes += `*➤ BASE DE DATOS 2*\n`;
       telRes += `  \`⌞\` *DOCUMENTO:* \`${dni}\`\n`;
       telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
-      telRes += `  \`⌞\` *FE. NACIMIENTO:* \`${fechaNacimiento}\`\n`;
-      telRes += `  \`⌞\` *UBICACION:* \`${ubicacion}\`\n`;
-      telRes += `  \`⌞\` *DIRECCIÒN:* \`${direccion}\`\n\n`;
+      telRes += `  \`⌞\` *FE. NACIMIENTO:* \`${fechaNacimiento}\`\n\n`;
+      // telRes += `  \`⌞\` *UBICACION:* \`${ubicacion}\`\n`;
+      // telRes += `  \`⌞\` *DIRECCIÒN:* \`${direccion}\`\n\n`;
       telRes += `*➤ CONSULTADO POR:*\n`;
       telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
       telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
@@ -232,7 +230,7 @@ module.exports = (bot) => {
             "Error al enviar el mensaje en la API TITULAR BASIC: " + error
           );
         });
-      //}
+      }
     } catch (error) {
       let xerror = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\` en la segunda base.`;
       console.log(error);

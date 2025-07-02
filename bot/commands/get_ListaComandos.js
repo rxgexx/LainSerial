@@ -128,8 +128,8 @@ module.exports = (bot) => {
       let cmds = `*[#LAIN-DOX 🌐]*\n\n`;
       cmds += `*➤ LISTA DE COMANDOS DISPONIBLES*\n\n`;
       cmds += `*➜ /nm:* _Búsqueda de nombres - 🟢_\n`;
-      cmds += `*➜ /nm2:* _Búsqueda de nombres RESPALDO - 🟢_\n`;
-      cmds += `*➜ /correos:* _Correos registrados - 🟢_\n`;
+      // cmds += `*➜ /nm2:* _Búsqueda de nombres RESPALDO - 🟢_\n`;
+      // cmds += `*➜ /correos:* _Correos registrados - 🟢_\n`;
       cmds += `*➜ /telx:* _Números por DNI - 🟢_\n`;
       cmds += `*➜ /telx2:* _Números por DNI en una 2da base de datos - 🟢_\n`;
       cmds += `*➜ /fonos:* _Números por DNI en una 3da base de datos - 🟢_\n`;
@@ -154,8 +154,8 @@ module.exports = (bot) => {
       // cmds += `*➜ /movdni:* _Números Movistar x DNI -TIEMPO REAL- - 🟢_\n`;
       cmds += `*➜ /cladni:* _Números Claro x DNI -TIEMPO REAL- - 🟢_\n`;
       // cmds += `*➜ /entel:* _Titular Entel en tiempo real - 🟢_\n`;
-      cmds += `*➜ /trabajos:* _Búsqueda de registro laboral 2DA FUENTE🟢_\n`;
-      cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
+      // cmds += `*➜ /trabajos:* _Búsqueda de registro laboral 2DA FUENTE🟢_\n`;
+      // cmds += `*➜ /fxtrabajos:* _Búsqueda de registro laboral 🟢_\n`;
       cmds += `*➜ /fxins:* _Ficha Inscripcion - 🟢_\n`;
       cmds += `*➜ /c4b:* _C4 BLANCO - 🟢_\n`;
       cmds += `*➜ /fxazul:* _C4 AZUL - 🟢_\n`;
@@ -167,13 +167,13 @@ module.exports = (bot) => {
       cmds += `*➜ /anteper:* _Consulta Antecdentes de una persona - 🟢 _\n`;
       cmds += `*➜ /celx:* _Titular Base de datos - 🟢_\n`;
       cmds += `*➜ /celx2:* _Titular en segunda Base de datos - 🟢_\n`;
-      cmds += `*➜ /celx3:* _Titular en tercera Base de datos - 🟢_\n`;
+      // cmds += `*➜ /celx3:* _Titular en tercera Base de datos - 🟢_\n`;
       cmds += `*➜ /dniv:* _DNI VIRTUAL - 🟢_\n`;
       cmds += `*➜ /dnie:* _DNI VIRTUAL ELECTRÓNICO- 🟢_\n`;
       cmds += `*➜ /bienes:* _Bienes SUNARP por DNI - 🟢_\n`;
       cmds += `*➜ /insve:* _Ficha Inscripcion Vehicular - 🟢_\n`;
       cmds += `*➜ /bolinf:* _Boleta Informativa Vehicular - 🟢_\n`;
-      cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
+      // cmds += `*➜ /sbs:* _Reporte SBS- 🟢_\n`;
       // cmds += `*➜ /migra:* _Reporte migratorio textual- 🟢_\n`;
       // cmds += `*➜ /migrapdf:* _Reporte migratorio en PDF- 🟢_\n`;
       cmds += `*➜ /seeker:* _Búsqueda de datos generales en tiempo real por SEEKER en PDF - 🟢_\n`;

@@ -169,7 +169,7 @@ async function claroDni(dni) {
 }
 
 async function  seekertel(tel) {
-  const apiUrl = `https://api.sinflower.net.pe/api/seeker_celular`;
+  const apiUrl = `https://api.sinflower.net.pe/api/telefoniav3_tel`;
 
   const payload = {
     valor: tel,

@@ -183,35 +183,36 @@ module.exports = (bot) => {
     try {
       //RESPONSE TITULAR
       const responseTitular = await seekerdni(dni);
-      const data = responseTitular.data.data_seeker.Telefonos.data;
+      // const data = responseTitular.data.data_seeker.Telefonos.data;
 
-      if (data.length === 0) {
+      if (responseTitular.data.status_data === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         const yx = `*[ ✖️ ] No se encontró registros de números en la segunda base* del DNI \`${dni}\`.`;
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
-        const persona = responseTitular.data.data_seeker.datosPersona.data;
+        // const persona = responseTitular.data.data_seeker.datosPersona.data;
 
         //RESPONSE TITULAR
         // const titular = responseTitular.datos.surname + responseTitular.datos.name;
 
+        const data = responseTitular.data.datos_tel;
         //CONSTRUCCIÓN DEL MENSAJE
         let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] NUMEROS DE* - \`${dni}\` -\n\n`;
-        telRes += `*➤ INF. PERSONA:*\n`;
-        telRes += `  \`⌞\` *DNI:* \`${persona.nuDni}\`\n`;
-        telRes += `  \`⌞\` *TITULAR:* \`${persona.nombreCompleto}\`\n`;
-        telRes += `  \`⌞\` *UBICACION:* \`${persona.ubicacion}\`\n`;
-        telRes += `  \`⌞\` *NACIMIENTO:* \`${persona.fechaNacimiento}\`\n\n`;
+        // telRes += `*➤ INF. PERSONA:*\n`;
+        // telRes += `  \`⌞\` *DNI:* \`${persona.nuDni}\`\n`;
+        // telRes += `  \`⌞\` *TITULAR:* \`${persona.nombreCompleto}\`\n`;
+        // telRes += `  \`⌞\` *UBICACION:* \`${persona.ubicacion}\`\n`;
+        // telRes += `  \`⌞\` *NACIMIENTO:* \`${persona.fechaNacimiento}\`\n\n`;
 
         telRes += `*➤ BASE DE DATOS:*\n\n`;
 
         //SI LOS NÚMEROS SON MENOR O IGUAL A 10 RESULTADOS
-        if (data.length <= 6) {
+        if (data.datos_tel <= 6) {
           //POR CADA DATO
           data.forEach((dato) => {
-            const number = dato.telefono;
+            const number = dato.numero;
             const operator = dato.operador;
             const periodo = dato.periodo;
 
@@ -246,7 +247,7 @@ module.exports = (bot) => {
           const resultadosRestantes = data.slice(maxResultsToShow);
 
           resultadosParaMostrar.forEach((dato) => {
-            const number = dato.telefono;
+            const number = dato.numero;
             const operator = dato.operador;
             const periodo = dato.periodo;
 
@@ -275,7 +276,7 @@ module.exports = (bot) => {
 
           let replyToTxt;
           resultadosRestantes.forEach((dato) => {
-            const number = dato.telefono;
+            const number = dato.numero;
             const operator = dato.operador;
             const periodo = dato.periodo;
 
