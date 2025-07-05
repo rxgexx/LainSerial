@@ -71,7 +71,7 @@ async function fiscalia(dni) {
       throw new Error(`Error al obtener el fiscalia_pdf: ${response.status}`);
     }
     const data_res = response.data.data.datos_fis;
-    
+
     return data_res;
   } catch (error) {
     console.error("Error al obtener el DNI Virtual desde la API", error);
@@ -94,7 +94,7 @@ async function fiscalia_pdf(dni) {
       throw new Error(`Error al obtener el fiscalia_pdf: ${response.status}`);
     }
     const data_res = response.data.data.datos_fis;
-    
+
     return data_res;
   } catch (error) {
     console.error("Error al obtener el DNI Virtual desde la API", error);
@@ -102,4 +102,28 @@ async function fiscalia_pdf(dni) {
   }
 }
 
-module.exports = { mpfnDni, mpfnCaso, antPersona, rqPla, rqPer, fiscalia, fiscalia_pdf };
+async function denuncias(dni) {
+  const apiUrl = `http://161.132.47.47:1535/valerialarealeza/gaaaaaaa/denucias_pdf/${dni}?auth=audh72asbnu783GEAUbda7REFR54TW89asd7q8r174g812312`;
+
+  try {
+    const response = await axios.get(apiUrl);
+
+    const data_res = response.data;
+
+    return data_res;
+  } catch (error) {
+    console.error("Error al obtener el DNI Virtual desde la API", error);
+    throw error;
+  }
+}
+
+module.exports = {
+  mpfnDni,
+  mpfnCaso,
+  antPersona,
+  rqPla,
+  rqPer,
+  fiscalia,
+  fiscalia_pdf,
+  denuncias,
+};
