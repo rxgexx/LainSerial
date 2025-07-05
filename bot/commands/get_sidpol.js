@@ -20,7 +20,6 @@ const dirDoc = path.join(__dirname, "../../fichasDocuments/rqPer");
 const comandoInvocado = {};
 let messageId;
 
-let dni;
 
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]denuncias (.+)/, async (msg, match) => {
@@ -30,7 +29,7 @@ module.exports = (bot) => {
     });
 
     // Ayudas rápidas
-    dni = match[1];
+    const dni = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
