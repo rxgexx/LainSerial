@@ -20,8 +20,6 @@ const dirDoc = path.join(__dirname, "../../fichasDocuments/antPersona");
 const comandoInvocado = {};
 let messageId;
 
-
-
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]anteper (.+)/, async (msg, match) => {
     // Manejo de errores de polling
@@ -277,7 +275,7 @@ module.exports = (bot) => {
           thumb: img,
         })
         .then(async () => {
-            registrarConsulta(userId, firstName, "ANTECEDENTES ESINPOL", dni);
+          registrarConsulta(userId, firstName, "ANTECEDENTES ESINPOL", dni);
 
           await registrarConsulta(userId, firstName, "/anteper", dni, true);
           fs.unlink(filePath, (err) => {
