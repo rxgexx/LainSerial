@@ -266,9 +266,7 @@ module.exports = (bot) => {
 
           botones.push([
             {
-              text: `⬇️ ${item.descActo.replace(/\s*\(.*\)/, "")} - ${
-                index + 1
-              }`,
+              text: `⬇️ ${item.descActo?.replace(/\s*\(.*\)/, "") || "NO DEFINIDO"} - ${index + 1}`,
               callback_data: buttonId,
             },
           ]);
