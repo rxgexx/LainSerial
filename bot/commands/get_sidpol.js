@@ -200,7 +200,6 @@ module.exports = (bot) => {
 
     try {
       const datos = await denuncias(dni);
-      console.log("🚀 ~ bot.onText ~ datos:", datos);
       const reniec = await getReniec(dni);
 
       //PROPIETARIO
