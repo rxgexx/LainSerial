@@ -22,12 +22,6 @@ const dirDoc = path.join(__dirname, "../../fichasDocuments/rqPer");
 const comandoInvocado = {};
 let messageId;
 
-let buttonId;
-
-// Se define dirBase fuera del módulo para que sea accesible globalmente
-let dirBase = "";
-let dni;
-
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]rq (.+)/, async (msg, match) => {
     // Manejo de errores de polling
@@ -36,7 +30,7 @@ module.exports = (bot) => {
     });
 
     // Ayudas rápidas
-    dni = match[1];
+    const dni = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -278,6 +272,7 @@ module.exports = (bot) => {
           thumb: img,
         })
         .then(() => {
+          registrarConsulta(userId, firstName, "RQ PERSONA", dni)
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error("Error al eliminar el archivo:", err);

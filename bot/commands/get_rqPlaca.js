@@ -7,6 +7,7 @@ const dataStorage = {};
 // Rutas y datos
 const { rqPla } = require("../api/api_Legales.js");
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -19,12 +20,6 @@ const dirDoc = path.join(__dirname, "../../fichasDocuments/rqPla");
 const comandoInvocado = {};
 let messageId;
 
-let buttonId;
-
-// Se define dirBase fuera del módulo para que sea accesible globalmente
-let dirBase = "";
-let placa;
-
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]rqpla (.+)/, async (msg, match) => {
     // Manejo de errores de polling
@@ -33,7 +28,7 @@ module.exports = (bot) => {
     });
 
     // Ayudas rápidas
-    placa = match[1];
+    const placa = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -281,6 +276,8 @@ module.exports = (bot) => {
           thumb: img,
         })
         .then(() => {
+          registrarConsulta(userId, firstName, "RQ VEHICULAR", placa);
+
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error("Error al eliminar el archivo:", err);

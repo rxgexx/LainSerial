@@ -7,7 +7,7 @@ const dataStorage = {};
 // Rutas y datos
 const { antPersona } = require("../api/api_Legales.js");
 const rangosFilePath = require("../config/rangos/rangos.json");
-const { registrarConsulta } = require("../../sql/consultas.js");
+const { registrarConsulta } = require("../../sql/consultas.j");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
@@ -20,11 +20,7 @@ const dirDoc = path.join(__dirname, "../../fichasDocuments/antPersona");
 const comandoInvocado = {};
 let messageId;
 
-let buttonId;
 
-// Se define dirBase fuera del módulo para que sea accesible globalmente
-let dirBase = "";
-let dni;
 
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]anteper (.+)/, async (msg, match) => {
@@ -34,7 +30,7 @@ module.exports = (bot) => {
     });
 
     // Ayudas rápidas
-    dni = match[1];
+    const dni = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -281,6 +277,8 @@ module.exports = (bot) => {
           thumb: img,
         })
         .then(async () => {
+            registrarConsulta(userId, firstName, "ANTECEDENTES ESINPOL", dni);
+
           await registrarConsulta(userId, firstName, "/anteper", dni, true);
           fs.unlink(filePath, (err) => {
             if (err) {
