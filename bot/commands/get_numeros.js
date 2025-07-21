@@ -1,6 +1,6 @@
 //SE REQUIRE LAS APIS
 const { registrarConsulta } = require("../../sql/consultas.js");
-const { osiptel } = require("../api/api_Telefonia.js");
+const { dni_seek1 } = require("../api/api_Telefonia.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -15,7 +15,7 @@ const fs = require("fs");
 
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]osiptel (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]numeros (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -41,11 +41,6 @@ module.exports = (bot) => {
       reply_to_message_id: msg.message_id,
       parse_mode: "Markdown",
     };
-    return bot.sendMessage(
-      chatId,
-      `*[ ✖️ ] Comando en mantenimiento, disculpen las molestias.*`,
-      messageOptions
-    );
 
     //Se declaran los rangos
 
@@ -55,7 +50,7 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../../sql/checkbuyer.js");
+    const { checkIsBuyer } = require("../../sql/checkbuyer");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
@@ -161,8 +156,8 @@ module.exports = (bot) => {
       }
     }
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/telx\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/osiptel 44444444\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/telx2\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/telx2 44444444\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -187,44 +182,43 @@ module.exports = (bot) => {
 
     try {
       //RESPONSE TITULAR
-      const responseTitular = await osiptel(dni);
+      const responseTitular = await dni_seek1(dni);
+      // const data = responseTitular.data.data_seeker.Telefonos.data;
 
-      if (responseTitular.deRespuesta === "Sin Resultados") {
+      if (responseTitular.data.status_data === false) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        const yx = `*[ ✖️ ] No se encontró registros de números en OSIPTEL* del DNI \`${dni}\`.`;
+        const yx = `*[ ✖️ ] No se encontró registros de números en la segunda base* del DNI \`${dni}\`.`;
 
         bot.sendMessage(chatId, yx, messageOptions);
       } else {
-        const data = responseTitular.listaAni;
+        const persona = responseTitular.data.data_seeker.dataPersona;
 
         //RESPONSE TITULAR
         // const titular = responseTitular.datos.surname + responseTitular.datos.name;
 
+        const data = responseTitular.data.data_seeker.telefonos;
         //CONSTRUCCIÓN DEL MENSAJE
-        let telRes = `*[#LAIN-DOX 🌐] ➤ #OSIPTEL*\n\n`;
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
         telRes += `*[ ☑️ ] NUMEROS DE* - \`${dni}\` -\n\n`;
+        telRes += `*➤ INF. PERSONA:*\n`;
+        telRes += `  \`⌞\` *DNI:* \`${persona.dni}\`\n`;
+        telRes += `  \`⌞\` *TITULAR:* \`${persona.nombreCompleto}\`\n`;
+        telRes += `  \`⌞\` *UBICACION:* \`${persona.ubigeo}\`\n`;
+        telRes += `  \`⌞\` *NACIMIENTO:* \`${persona.fecha_nacimiento}\`\n\n`;
 
-        telRes += `*➤ OSIPTEL TIEMPO REAL ☎️ :*\n\n`;
+        telRes += `*➤ BASE DE DATOS:*\n\n`;
 
         //SI LOS NÚMEROS SON MENOR O IGUAL A 10 RESULTADOS
-        if (data.length <= 6) {
+        if (data.datos_tel <= 6) {
           //POR CADA DATO
           data.forEach((dato) => {
-            const aPaternoAbonado = dato.aPaternoAbonado;
-            const aMaternoAbonado = dato.aMaternoAbonado;
-            const nombresAbonado = dato.nombresAbonado;
-            const numeroNervicioMovil = dato.numeroNervicioMovil;
-            const concesionario = dato.concesionario;
-            const fechaActivacion = dato.fechaActivacion;
-            const fechaEmpresa = dato.fechaEmpresa;
+            const number = dato.numero;
+            const operator = dato.operador;
+            const periodo = dato.periodo;
 
-            telRes += `  \`⌞\` *NÚMERO:* \`${numeroNervicioMovil}\`\n`;
-            telRes += `  \`⌞\` *OPERADOR:* \`${concesionario}\`\n`;
-            telRes += `  \`⌞\` *F. EMPRESA:* \`${fechaEmpresa}\`\n`;
-            telRes += `  \`⌞\` *F. ACTIVACION:* \`${fechaActivacion}\`\n`;
-            telRes += `  \`⌞\` *NM. TITULAR:* \`${nombresAbonado}\`\n`;
-            telRes += `  \`⌞\` *AP. PATERNO:* \`${aPaternoAbonado}\`\n`;
-            telRes += `  \`⌞\` *AP. MATERNO:* \`${aMaternoAbonado}\`\n\n`;
+            telRes += `  \`⌞\` *NÚMERO:* \`${number}\`\n`;
+            telRes += `  \`⌞\` *OPERADOR:* \`${operator}\`\n`;
+            telRes += `  \`⌞\` *PERIODO:* \`${periodo}\`\n\n`;
           });
 
           telRes += `*➤ CONSULTADO POR:*\n`;
@@ -234,7 +228,7 @@ module.exports = (bot) => {
 
           await bot.deleteMessage(chatId, consultandoMessage.message_id);
           bot.sendMessage(chatId, telRes, messageOptions).then(async () => {
-            await registrarConsulta(userId, firstName, `OSIPTEL`, dni, true);
+            await registrarConsulta(userId, firstName, `TELX 2`, dni, true);
 
             //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
             if (!isDev && !isAdmin && !isBuyer) {
@@ -253,21 +247,13 @@ module.exports = (bot) => {
           const resultadosRestantes = data.slice(maxResultsToShow);
 
           resultadosParaMostrar.forEach((dato) => {
-            const aPaternoAbonado = dato.aPaternoAbonado;
-            const aMaternoAbonado = dato.aMaternoAbonado;
-            const nombresAbonado = dato.nombresAbonado;
-            const numeroNervicioMovil = dato.numeroNervicioMovil;
-            const concesionario = dato.concesionario;
-            const fechaActivacion = dato.fechaActivacion;
-            const fechaEmpresa = dato.fechaEmpresa;
+            const number = dato.numero;
+            const operator = dato.operador;
+            const periodo = dato.periodo;
 
-            telRes += `  \`⌞\` *NÚMERO:* \`${numeroNervicioMovil}\`\n`;
-            telRes += `  \`⌞\` *OPERADOR:* \`${concesionario}\`\n`;
-            telRes += `  \`⌞\` *F. EMPRESA:* \`${fechaEmpresa}\`\n`;
-            telRes += `  \`⌞\` *F. ACTIVACION:* \`${fechaActivacion}\`\n`;
-            telRes += `  \`⌞\` *NM. TITULAR:* \`${nombresAbonado}\`\n`;
-            telRes += `  \`⌞\` *AP. PATERNO:* \`${aPaternoAbonado}\`\n`;
-            telRes += `  \`⌞\` *AP. MATERNO:* \`${aMaternoAbonado}\`\n\n`;
+            telRes += `  \`⌞\` *NÚMERO:* \`${number}\`\n`;
+            telRes += `  \`⌞\` *OPERADOR:* \`${operator}\`\n`;
+            telRes += `  \`⌞\` *PERIODO:* \`${periodo}\`\n\n`;
           });
 
           telRes += `*➤ CONSULTADO POR:*\n`;
@@ -290,21 +276,13 @@ module.exports = (bot) => {
 
           let replyToTxt;
           resultadosRestantes.forEach((dato) => {
-            const aPaternoAbonado = dato.aPaternoAbonado;
-            const aMaternoAbonado = dato.aMaternoAbonado;
-            const nombresAbonado = dato.nombresAbonado;
-            const numeroNervicioMovil = dato.numeroNervicioMovil;
-            const concesionario = dato.concesionario;
-            const fechaActivacion = dato.fechaActivacion;
-            const fechaEmpresa = dato.fechaEmpresa;
+            const number = dato.numero;
+            const operator = dato.operador;
+            const periodo = dato.periodo;
 
-            replyToTxt = `  ⌞ NÚMERO: ${numeroNervicioMovil}\n`;
-            replyToTxt += `  ⌞ OPERADOR: ${concesionario}\n`;
-            replyToTxt += `  ⌞ F. EMPRESA: ${fechaEmpresa}\n`;
-            replyToTxt += `  ⌞ F. ACTIVACION: ${fechaActivacion}\n`;
-            replyToTxt += `  ⌞ NM. TITULAR: ${nombresAbonado}\n`;
-            replyToTxt += `  ⌞ AP. PATERNO: ${aPaternoAbonado}\n`;
-            replyToTxt += `  ⌞ AP. MATERNO: ${aMaternoAbonado}\n\n`;
+            replyToTxt = `  ⌞ NÚMERO: ${number}\n`;
+            replyToTxt += `  ⌞ OPERADOR: ${operator}\n`;
+            replyToTxt += `  ⌞ PERIODO: ${periodo}\n\n`;
 
             fs.appendFileSync(telxFile, replyToTxt);
           });
@@ -320,21 +298,15 @@ module.exports = (bot) => {
           replyTxt += `Se han *encontrado* más registros de números para el \`${dni}\`. En total, han sido _${resultadosRestantes.length} números_ restantes.\n\n`;
           replyTxt += `*Para una mejor búsqueda,* la lista de números se ha guardado en este archivo de texto.`;
 
-          setTimeout(() => {
+          setTimeout(async () => {
+            await registrarConsulta(userId, firstName, `NUMEROS`, dni, true);
             bot
               .sendDocument(chatId, telxFile, {
                 caption: replyTxt,
                 reply_to_message_id: msg.message_id,
                 parse_mode: "Markdown",
               })
-              .then(async () => {
-                await registrarConsulta(
-                  userId,
-                  firstName,
-                  `OSIPTEL`,
-                  dni,
-                  true
-                );
+              .then(() => {
                 fs.unlink(telxFile, (err) => {
                   if (err) {
                     console.error("Error al borrar el archivo:", err);
@@ -345,11 +317,11 @@ module.exports = (bot) => {
                   .then(() => {
                     //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
                     if (!isDev && !isAdmin && !isBuyer) {
-                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 200;
+                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
                     }
                     //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
                     else if (isBuyer) {
-                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 150;
+                      antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
                     }
                   })
                   .catch((error) => {

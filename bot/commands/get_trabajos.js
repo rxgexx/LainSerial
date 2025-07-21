@@ -1,17 +1,17 @@
 // API TRABAJOS
-const { registrarConsulta } = require("../sql/consultas.js");
-const { api_trabajos } = require("../bot/api/api_Variados.js");
+const { registrarConsulta } = require("../../sql/consultas.js");
+const { api_trabajos } = require("../api/api_Variados.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
-const rangosFilePath = require("../bot/config/rangos/rangos.json");
+const rangosFilePath = require("../config/rangos/rangos.json");
 
 //MANEJO ANTI - SPAM
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
 module.exports = (bot) => {
-  bot.onText(/\/fxtrabajos (.+)/, async (msg, match) => {
+  bot.onText(/\/trabajos (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -37,11 +37,11 @@ module.exports = (bot) => {
     //Rango Administrador
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
 
-    const { checkIsBuyer } = require("../sql/checkbuyer.js");
+    const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
 
-    const gruposPermitidos = require("../bot/config/gruposManager/gruposPermitidos.js");
+    const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
       .getChatMember(chatId, botInfo.id)
@@ -169,9 +169,10 @@ module.exports = (bot) => {
 
     try {
       const data = await api_trabajos(dni);
-      const laboral = data.data.data_seeker.Trabajos;
+      const laboral = data.data.data_seeker.laborales;
+      console.log("🚀 ~ bot.onText ~ laboral:", laboral)
 
-      if (laboral.data.length === 0) {
+      if (laboral.length === 0) {
         let yx = `*[ ✖️ ] No se encontró registros laborales* para el *DNI* \`${dni}\`*.*\n\n`;
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
@@ -192,10 +193,10 @@ module.exports = (bot) => {
           }
         });
 
-      send_ResultadosSeparados(chatId, laboral.data);
+      send_ResultadosSeparados(chatId, laboral);
       await registrarConsulta(userId, firstName, "Trabajos", dni, true);
     } catch (error) {
-      bot.sendMessage(chatId, "Hubo un error al obtener los datos.");
+      bot.sendMessage(chatId, `*[ ✖️ ] SIN DATOS ENCONTRADOS*`, messageOptions);
       console.error(error);
     } finally {
       delete usuariosEnConsulta[userId];
@@ -227,9 +228,9 @@ module.exports = (bot) => {
           message += `*➤ RESULTADO* \`${start + index + 1}\`\n`;
           message += `  \`⌞\` *REGISTRO:* \`${formattedDate}\`\n`;
           message += `  \`⌞\` *NUM. RUC:* \`${item.ruc}\`\n`;
-          message += `  \`⌞\` *EMPRESA:* \`${item.nomEmpresa}\`\n`;
-          message += `  \`⌞\` *SUELDO:* \`${item.sueldo}\`\n`;
-          message += `  \`⌞\` *ESTADO:* \`${item.estado}\`\n\n`;
+          message += `  \`⌞\` *EMPRESA:* \`${item.denominacion}\`\n`;
+          message += `  \`⌞\` *SUELDO:* \`${item.variable}\`\n`;
+          message += `  \`⌞\` *ESTADO:* \`${item.situacion}\`\n\n`;
         });
 
         message += `*➤ CONSULTADO POR:*\n`;

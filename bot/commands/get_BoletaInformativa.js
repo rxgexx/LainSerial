@@ -87,10 +87,7 @@ module.exports = (bot) => {
     const botMember = await bot
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
-        console.log(
-          "Error al obtener la información del Bot.",
-          err
-        );
+        console.log("Error al obtener la información del Bot.", err);
       });
     const botIsAdmin = botMember.status === "administrator";
 
@@ -210,15 +207,15 @@ module.exports = (bot) => {
       const datos = await boletaInformativa(placa);
 
       // Datos obtenidos
-      const pdf = datos.data.pdf;
+      const pdf = datos.data.data_boleta.pdfBase64;
 
       const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
       const pdfbuffer = Buffer.from(pdfdata, "base64");
 
       //PROPIETARIO
 
-      const dataPropietario =
-        datos.data.datosVehiculares.dataSunarp.listProp[0];
+      const dataPropietario = datos.data.data_boleta.dataPlaca.dataSunarp.listProp[0];
+      console.log("🚀 ~ bot.onText ~ dataPropietario:", dataPropietario)
 
       const tipoPartic = dataPropietario.tipoPartic;
       const tipDocumento = dataPropietario.tipDocumento;

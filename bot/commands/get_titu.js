@@ -1,7 +1,6 @@
-const { apiPlaca, apiPlaca_2 } = require("../api/api_Variados");
-
 //SE REQUIRE LAS APIS
-const { validarOp, apiBitel } = require("../api/api_Telefonia.js");
+const { registrarConsulta } = require("../../sql/consultas.js");
+const { tel_seek1 } = require("../api/api_Telefonia.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -11,13 +10,9 @@ const rangosFilePath = require("../config/rangos/rangos.json");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-//MOMENTO
-const moment = require("moment");
-const { registrarConsulta } = require("../../sql/consultas.js");
-
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]placa (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]titu (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -33,7 +28,7 @@ module.exports = (bot) => {
     // }
 
     //Ayudas rápidas como declarar nombres, opciones de mensajes, chatId, etc
-    const placa = match[1];
+    const tel = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -62,7 +57,7 @@ module.exports = (bot) => {
       .getChatMember(chatId, botInfo.id)
       .catch((err) => {
         console.log(
-          "Error al obtener la información del Bot en el comando titularMov: ",
+          "Error al obtener la información del Bot en el comando titularBasic: ",
           err
         );
       });
@@ -157,9 +152,9 @@ module.exports = (bot) => {
         return;
       }
     }
-    if (placa.length !== 6) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/placa\`*]* seguido de una serie de *PLACA* de \`6 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/placa F5U597\`*]*\n\n`;
+    if (tel.length !== 9) {
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/celx2\`*]* seguido de un número de *CELULAR* de \`9 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/celx2 957908908\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -172,7 +167,7 @@ module.exports = (bot) => {
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando la* \`PLACA\` *➜* \`${placa}\``;
+    let yx = `*[ 💬 ] Consultando el* \`TITULAR\` del *➜ NÚMERO* \`${tel}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -183,103 +178,62 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      // const response = await apiPlaca(placa);
-      // const foto = response.base.img64;
+      //RESPONSE TITULAR
+      const responseTitular = await tel_seek1(tel);
 
-      // const imgPlaca = foto.replace(/^data:image\/jpeg;base64,/, "");
-      // const fotoBuffer = Buffer.from(imgPlaca, "base64");
+      if (responseTitular.data.data_seeker === null) {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
 
-      const res = await apiPlaca_2(placa);
-      const response_2 = res.data.data_placa.dataSunarp;
-      //console.log(response_2)
-      //console.log(res.data.datosVehiculares.LPropietario[0])
-      //Propietario
-      const datos_propietario = response_2.LPropietario[0];
-      //      console.log("datos vehiculares:", datos_propietario)
-      const NombrePropietario = datos_propietario.NombrePropietario;
-      const TipoPartic = datos_propietario.TipoPartic;
-      const TipoDocumento = datos_propietario.TipoDocumento;
-      const NroDocumento = datos_propietario.NroDocumento;
-      const FechaPropiedad = datos_propietario.FechaPropiedad;
-      const Direccion = datos_propietario.Direccion;
+        bot.sendMessage(chatId, yx, messageOptions);
+      } else {
+        //RESPONSE TITULAR
+        const dataTitular = responseTitular.data.data_seeker.dataPersona;
 
-      //Detalles del vehículo
-      const detalles_vehiculo = response_2;
+        //DATOS TITULAR
+        const dni = dataTitular.dni;
+        const titular = dataTitular.nombreCompleto;
+        const ubigeo = dataTitular.ubigeo;
+        const fechaNacimiento = dataTitular.fecha_nacimiento;
+        const direccion = dataTitular.direccion;
 
-      const numPartida = detalles_vehiculo.numPartida;
-      const anMode = detalles_vehiculo.anMode;
-      const fecIns = detalles_vehiculo.fecIns;
-      const descTipoCarr = detalles_vehiculo.descTipoCarr;
-      const marca = detalles_vehiculo.marca;
-      const modelo = detalles_vehiculo.modelo;
-      const anoFab = detalles_vehiculo.anoFab;
-      const descTipoComb = detalles_vehiculo.descTipoComb;
-      const numCilindros = detalles_vehiculo.numCilindros;
-      const color = detalles_vehiculo.color;
-      const numMotor = detalles_vehiculo.numMotor;
-      const numSerie = detalles_vehiculo.numSerie;
-      const descTipoUso = detalles_vehiculo.descTipoUso;
-      const numRuedas = detalles_vehiculo.numRuedas;
-      const numPasajeros = detalles_vehiculo.numPasajeros;
-      const numAsientos = detalles_vehiculo.numAsientos;
-      const longitud = detalles_vehiculo.longitud;
-      const altura = detalles_vehiculo.altura;
-      const ancho = detalles_vehiculo.ancho;
-      const estado = detalles_vehiculo.estado;
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
+        telRes += `*➤ BASE DE DATOS 2*\n`;
+        telRes += `  \`⌞\` *DOCUMENTO:* \`${dni}\`\n`;
+        telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
+        telRes += `  \`⌞\` *FE. NACIMIENTO:* \`${fechaNacimiento}\`\n`;
+        telRes += `  \`⌞\` *UBIGEO ACTUAL:* \`${ubigeo}\`\n`;
+        telRes += `  \`⌞\` *DIRECCIÒN ENCONTRADA:* \`${direccion}\`\n\n`;
+        telRes += `*➤ CONSULTADO POR:*\n`;
+        telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-      let mssg = `*[#LAIN-DOX 🌐] ➤ #PLACAS*\n\n`;
-      mssg += `*[ ☑️ ] BÚSQUEDA DE PLACA -* \`${placa}\` *- *\n\n`;
-      mssg += `*➤ PROPIETARIO:*\n`;
-      mssg += `  \`⌞\` *NOMBRE:* \`${NombrePropietario}\`\n`;
-      mssg += `  \`⌞\` *TIPO. PARTIDA:* \`${TipoPartic}\`\n`;
-      mssg += `  \`⌞\` *TIPO. DOCUMENTO:* \`${TipoDocumento}\`\n`;
-      mssg += `  \`⌞\` *NÚMERO. DOCUMENTO:* \`${NroDocumento}\`\n`;
-      mssg += `  \`⌞\` *FECHA. PROPIEDAD:* \`${FechaPropiedad}\`\n`;
-      mssg += `  \`⌞\` *DIRECCIÓN:* \`${Direccion}\`\n\n`;
-      mssg += `*➤ DETALLES DEL VEHÍCULO:*\n\n`;
-      mssg += `*NÚMERO. PARTIDA:* \`${numPartida}\`\n`;
-      mssg += `*AÑO. MODELO:* \`${anMode}\`\n`;
-      mssg += `*FECHA. INSCRIPCIÓN:* \`${fecIns}\`\n`;
-      mssg += `*DESCRIPCIÓN TIPO CARR:* \`${descTipoCarr}\`\n`;
-      mssg += `*MARCA:* \`${marca}\`\n`;
-      mssg += `*MODELO:* \`${modelo}\`\n`;
-      mssg += `*AÑO DE FABRICACIÓN:* \`${anoFab}\`\n`;
-      mssg += `*TIPO DE COMBUSTIBLE:* \`${descTipoComb}\`\n`;
-      mssg += `*NÚMERO DE CILINDROS:* \`${numCilindros}\`\n`;
-      mssg += `*COLOR:* \`${color}\`\n`;
-      mssg += `*NÚMERO DE MOTOR:* \`${numMotor}\`\n`;
-      mssg += `*NÚMERO DE SERIE:* \`${numSerie}\`\n`;
-      mssg += `*TIPO DE USO:* \`${descTipoUso}\`\n`;
-      mssg += `*NÚMERO DE RUEDAS:* \`${numRuedas}\`\n`;
-      mssg += `*NÚMERO DE PASAJEROS:* \`${numPasajeros}\`\n`;
-      mssg += `*NÚMERO DE ASIENTOS:* \`${numAsientos}\`\n`;
-      mssg += `*LONGITUD:* \`${longitud}\`\n`;
-      mssg += `*ALTURA:* \`${altura}\`\n`;
-      mssg += `*ANCHO:* \`${ancho}\`\n`;
-      mssg += `*ESTADO:* \`${estado}\`\n\n`;
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(async () => {
+            await registrarConsulta(userId, firstName, `TITU`, tel, true);
 
-      mssg += `*➤ CONSULTADO POR:*\n`;
-      mssg += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      mssg += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      mssg += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
-
-      const foto = res.data.img_placa;
-      const fotoData = foto.replace(/^data:image\/jpeg;base64,/, "");
-      const fotoBuffer = Buffer.from(fotoData, "base64");
-
-      await bot
-        .deleteMessage(chatId, consultandoMessage.message_id)
-        .then(async () => {
-          bot.sendPhoto(chatId, fotoBuffer, {
-            caption: mssg,
-            reply_to_message_id: msg.message_id,
-            parse_mode: "Markdown",
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR BASIC: " + error
+            );
           });
-
-          await registrarConsulta(userId, firstName, `PLACA`, placa, true);
-        });
+      }
     } catch (error) {
-      let xerror = `*[ ✖️ ] Ha ocurrido* un error en la consulta. _La búsqueda_ no ha sido completada.`;
+      let xerror = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\` en la segunda base.`;
       console.log(error);
       await bot
         .deleteMessage(chatId, consultandoMessage.message_id)

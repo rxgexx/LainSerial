@@ -13,9 +13,14 @@ async function apiPlaca(placa) {
 }
 
 async function apiPlaca_2(placa) {
-  const apiUrl = `http://161.132.48.228:7833/api/atu_backoffice/placa/${placa}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/placa`;
+
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, {
+      valor: placa,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    });
     const data = response.data;
     return data;
   } catch (error) {
@@ -130,10 +135,14 @@ async function migraciones(dni) {
 }
 
 async function boletaInformativa(placa) {
-  const apiUrl = `http://161.132.48.228:2215/placa?placa=${placa}`;
+  const apiUrl = `https://api.sinflower.net.pe/api/boleta_informativa`;
 
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, {
+      valor: placa,
+      user: "sinflowxr",
+      token: "822b6e74d591f9bb81a0663c057485e0",
+    });
     const data = response.data;
 
     return data;

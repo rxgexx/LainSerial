@@ -232,6 +232,42 @@ async function davidapi_tel(tel) {
   }
 }
 
+async function  tel_seek1(tel) {
+  const apiUrl = `https://api.sinflower.net.pe/api/seeker_celular`;
+
+  const payload = {
+    valor: tel,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
+
+  try {
+    const response = await axios.post(apiUrl, payload);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la API SEEKER: ", error);
+  }
+}
+
+async function  dni_seek1(tel) {
+  const apiUrl = `https://api.sinflower.net.pe/api/seeker_dni`;
+
+  const payload = {
+    valor: tel,
+    user: "sinflowxr",
+    token: "822b6e74d591f9bb81a0663c057485e0",
+  };
+
+  try {
+    const response = await axios.post(apiUrl, payload);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("Error en la API SEEKER: ", error);
+  }
+}
+
 module.exports = {
   validarOp,
   apiBitel,
@@ -243,4 +279,6 @@ module.exports = {
   osiptel,
   davidapi_dni,
   davidapi_tel,
+  tel_seek1,
+  dni_seek1
 };
