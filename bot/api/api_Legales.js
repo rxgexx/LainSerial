@@ -103,7 +103,7 @@ async function fiscalia_pdf(dni) {
 }
 
 async function denuncias(dni) {
-  const apiUrl = `http://161.132.47.47:1535/api/denuncias_pdf/${dni}?auth=GmkNvhnJfdt8P6Miaw3X20y1YTDWx5NLq1rgJ7Gfa0o`;
+  const apiUrl = `http://161.132.47.47:1535/api/denuncias_pdf/${dni}?auth=GQkp3m8EsGwz8stJGnldEgYap7gvJW5Hf1K2MtlDV9s`;
 
   try {
     const response = await axios.get(apiUrl);
