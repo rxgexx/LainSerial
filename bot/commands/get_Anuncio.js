@@ -34,19 +34,19 @@ module.exports = (bot) => {
         }
       }
 
-      for (const grupoId of gruposPermitidos) {
-        try {
-          const chatInfo = await bot.getChat(grupoId);
+      // for (const grupoId of gruposPermitidos) {
+      //   try {
+      //     const chatInfo = await bot.getChat(grupoId);
 
-          const sentMessage = await bot.sendPhoto(grupoId, img, {
-            caption: anuncio,
-            parse_mode: "Markdown",
-          });
-          await bot.pinChatMessage(grupoId, sentMessage.message_id); // Fija el mensaje en el grupo
-        } catch (error) {
-          console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
-        }
-      }
+      //     const sentMessage = await bot.sendPhoto(grupoId, img, {
+      //       caption: anuncio,
+      //       parse_mode: "Markdown",
+      //     });
+      //     await bot.pinChatMessage(grupoId, sentMessage.message_id); // Fija el mensaje en el grupo
+      //   } catch (error) {
+      //     console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
+      //   }
+      // }
 
       bot.sendMessage(
         msg.chat.id,
