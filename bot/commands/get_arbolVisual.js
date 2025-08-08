@@ -12,7 +12,8 @@ const { registrarConsulta } = require("../../sql/consultas.js");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-const img = path.join(__dirname, "../img/arbolVisual.jpg");
+
+const tumblr = path.join(__dirname, "../img/arbolicon.jpg")
 const dirDoc = path.join(__dirname, "../../fichasDocuments/arbolVisual");
 
 // ALMACENAR LOS MENSAJES ID
@@ -207,19 +208,25 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const datos = await arbolVisual(dni);
+      const datos = await arbolVisual(dni, "Lain Data", userId);
 
-      if (datos.status === false) {
+      if (datos.data.status_data !== true && !datos.data.pdf) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yyx = `*[ ✖️ ] No se encontraron familiares* para el *DNI proporcionado.*`;
         return bot.sendMessage(chatId, yyx, messageOptions);
       }
 
       // Datos obtenidos
-      const img = datos.img;
+      const pdfBase64 = datos.data.pdf;
 
-      const imgdata = img.replace(/^data:image\/jpeg;base64,/, "");
-      const imgbuffer = Buffer.from(imgdata, "base64");
+      // Elimina el encabezado si viene en formato Data URI
+      const cleanBase64 = pdfBase64.replace(
+        /^data:application\/pdf;base64,/,
+        ""
+      );
+
+      // Convierte a Buffer
+      const pdfBuffer = Buffer.from(cleanBase64, "base64");
 
       //PROPIETARIO
 
@@ -231,39 +238,37 @@ module.exports = (bot) => {
 
       // Datos dni
 
-      let caption = `*[#LAIN-DOX 🌐] ➤ #ARBOLVISUAL*\n\n`;
+      let caption = `<b>[#LAIN-DOX 🌐] ➤ #ARBOLVISUAL</b>\n\n`;
 
-      caption += `*[ ☑️ ]  A.G. VISUAL -* \`${dni}\` *- 👪*\n\n`;
+      caption += `<b>[ ☑️ ]  A.G. VISUAL -</b> <code>${dni}</code> <b>- 👪</b>\n\n`;
 
-      // caption += `*➤ CONSULTADO:*\n`;
-      // caption += `  \`⌞\` *EDAD:* \`${nuEdad}\`\n`;
-      // caption += `  \`⌞\` *NOMBRE:* \`${nombres}\`\n`;
-      // caption += `  \`⌞\` *AP. PATERNO:* \`${apepaterno}\`\n`;
-      // caption += `  \`⌞\` *AP. MATERNO:* \`${apematerno}\`\n`;
-      // caption += `  \`⌞\` *UBICACIÓN:* \`${ubicacion}\`\n\n`;
+      caption += `<b>➤ DATA ARBOL:</b>\n\n`;
+      caption += `  <code>⌞</code> <b>CANTIDAD TOTAL:</b> <code>${datos.data.data_arbol.cantidad_registros}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. PATERNOS:</b> <code>${datos.data.data_arbol.total_paterno}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. MATERNOS:</b> <code>${datos.data.data_arbol.total_materno}</code>\n\n`;
 
-      caption += `*➤ CONSULTADO POR:*\n`;
-      caption += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-      caption += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      caption += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+      caption += `<b>➤ CONSULTADO POR:</b>\n`;
+      caption += `<code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
+      caption += `<code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
+      caption += `<b>MENSAJE:</b> <i>La consulta se hizo de manera exitosa ♻.</i>\n\n`;
 
-      // // Crea el directorio si no existe
-      // if (!fs.existsSync(dirDoc)) {
-      //   fs.mkdirSync(dirDoc, { recursive: true });
-      // }
+      // Crea el directorio si no existe
+      if (!fs.existsSync(dirDoc)) {
+        fs.mkdirSync(dirDoc, { recursive: true });
+      }
 
-      // // Define la ruta del archivo
-      // const filePath = path.join(dirDoc, `arbolVisual_${dni}.img`);
+      const filePath = path.join(dirDoc, `ARBOL_VISUAL_PROFESIONAL_${dni}.pdf`);
+      const tumblrStream = fs.createReadStream(tumblr);
 
-      // // Guarda el img en el sistema de archivos
-      // fs.writeFileSync(filePath, imgbuffer);
-
+      // Guarda el buffer PDF en disco
+      fs.writeFileSync(filePath, pdfBuffer);
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
       bot
-        .sendPhoto(chatId, imgbuffer, {
+        .sendDocument(chatId, filePath, {
           caption: caption,
+          thumbnail: tumblrStream,
           reply_to_message_id: msg.message_id,
-          parse_mode: "Markdown",
+          parse_mode: "HTML",
         })
         .then(async () => {
           await registrarConsulta(userId, firstName, "ARBOL VISUAL", dni, true);
@@ -286,7 +291,7 @@ module.exports = (bot) => {
     } catch (error) {
       console.log(error);
 
-      let xerror = `*[ ✖️ ] Error en la consulta.`;
+      let xerror = `*[ ✖️ ] Error en la consulta.*`;
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
       bot.sendMessage(chatId, xerror, messageOptions);

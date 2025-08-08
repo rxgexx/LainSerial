@@ -346,6 +346,9 @@ module.exports = (bot) => {
           }, 1000);
         }
       }
+
+      registrarConsulta(userId, firstName, "ARBOL GENEALOGICO", dni)
+
     } catch (error) {
       const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
       console.log(error);

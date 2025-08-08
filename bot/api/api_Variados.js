@@ -164,11 +164,17 @@ async function migracionesPdf(dni) {
   }
 }
 
-async function arbolVisual(dni) {
-  const apiUrl = `http://161.132.50.110:42991/captura/${dni}`;
+async function arbolVisual(dni, nombre, user) {
+  const apiUrl = `https://api.sinflower.net.pe/api/arbol-visual`;
 
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.post(apiUrl, {
+      valor: dni,
+      nombre: nombre,
+      usuario: user,
+      user: "sinflowxr",
+      token: "822b6e74d591f9bb81a0663c057485e0",
+    });
     const data = response.data;
 
     return data;

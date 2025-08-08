@@ -11,7 +11,7 @@ module.exports = (bot) => {
       const buyers = await obtenerBuyers();
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
-      let anuncio = `*[ 📢 ] SE AGREGARON COMANDOS /denuncias <dni> ^^ bot desarrollado por @sinflowxr*\n\n`;
+      let anuncio = `*[ 📢 ] SE CORRIGIÓ COMANDO ARBOL VISUAL /arbgv <dni> ^^ bot desarrollado por @sinflowxr*\n\n`;
       // anuncio += `*Estimados usuarios, se han agregado nuevos comandos*\n\n`;
       // anuncio += `*/fxnotas: CONSTANCIA DE LOGROS DE APRENDIZAJE*\n`;
       // anuncio += `*/soat: SOAT PDF*\n`;
