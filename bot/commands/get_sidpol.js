@@ -277,7 +277,7 @@ module.exports = (bot) => {
         // Opcional: borrar el archivo después de enviarlo
         fs.unlinkSync(filePath);
       }
-      registrarConsulta(userId, firstName, "DENUNCIAS", dni)
+      registrarConsulta(userId, firstName, "DENUNCIAS", dni, true)
       //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
       if (!isDev && !isAdmin && !isBuyer) {
         antiSpam[userId] = Math.floor(Date.now() / 1000) + 300;
