@@ -11,7 +11,7 @@ module.exports = (bot) => {
       const buyers = await obtenerBuyers();
       const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
 
-      let anuncio = `*[ 📢 ] Eres policía o tienes un contacto que lo sea? comunicate conmigo @sinflowxr ganará una paga mensual*\n\n`;
+      let anuncio = `*[ 📢 ] Se agregaron 2 nuevos comandos para buscar familiares y parentescos: /familia y /famivi.*\n\n`;
       // anuncio += `*Estimados usuarios, se han agregado nuevos comandos*\n\n`;
       // anuncio += `*/fxnotas: CONSTANCIA DE LOGROS DE APRENDIZAJE*\n`;
       // anuncio += `*/soat: SOAT PDF*\n`;
@@ -34,19 +34,19 @@ module.exports = (bot) => {
         }
       }
 
-      // for (const grupoId of gruposPermitidos) {
-      //   try {
-      //     const chatInfo = await bot.getChat(grupoId);
+      for (const grupoId of gruposPermitidos) {
+        try {
+          const chatInfo = await bot.getChat(grupoId);
 
-      //     const sentMessage = await bot.sendPhoto(grupoId, img, {
-      //       caption: anuncio,
-      //       parse_mode: "Markdown",
-      //     });
-      //     await bot.pinChatMessage(grupoId, sentMessage.message_id); // Fija el mensaje en el grupo
-      //   } catch (error) {
-      //     console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
-      //   }
-      // }
+          const sentMessage = await bot.sendPhoto(grupoId, img, {
+            caption: anuncio,
+            parse_mode: "Markdown",
+          });
+          await bot.pinChatMessage(grupoId, sentMessage.message_id); // Fija el mensaje en el grupo
+        } catch (error) {
+          console.error(`No se pudo enviar mensaje a grupo ${grupoId}:`, error);
+        }
+      }
 
       bot.sendMessage(
         msg.chat.id,

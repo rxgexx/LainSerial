@@ -183,6 +183,25 @@ async function arbolVisual(dni, nombre, user) {
   }
 }
 
+async function arbolVisual2(dni, nombre, user) {
+  const apiUrl = `https://api.sinflower.net.pe/api/arbol-visual-2`;
+
+  try {
+    const response = await axios.post(apiUrl, {
+      valor: dni,
+      nombre: nombre,
+      usuario: user,
+      user: "sinflowxr",
+      token: "822b6e74d591f9bb81a0663c057485e0",
+    });
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    console.log("ERROR EN LA API PLACA");
+  }
+}
+
 async function detalleLicencia(dni) {
   const apiUrl = `http://161.132.50.110:49012/api/record?dni=${dni}`;
   try {
@@ -317,6 +336,7 @@ module.exports = {
   boletaInformativa,
   migracionesPdf,
   arbolVisual,
+  arbolVisual2,
   detalleLicencia,
   reviTec,
   infRUC,

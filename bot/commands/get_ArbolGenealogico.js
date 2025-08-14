@@ -1,5 +1,5 @@
 //SE REQUIRE LAS APIS
-const { arbolGen2 } = require("../api/apis.js");
+const { arbolGen } = require("../api/apis.js");
 
 //RANGOS
 delete require.cache[require.resolve("../config/rangos/rangos.json")];
@@ -14,9 +14,10 @@ const fs = require("fs");
 
 const { registrarConsulta } = require("../../sql/consultas.js");
 
+
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]familia (.+)/, async (msg, match) => {
+  bot.onText(/[\/.$?!]arbg (.+)/, async (msg, match) => {
     //POLLING ERROR
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
@@ -54,7 +55,7 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-
+    
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
@@ -157,8 +158,8 @@ module.exports = (bot) => {
       }
     }
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/familia\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/familia 44443333\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/arbg\`*]* seguido de un número de *DNI* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/arbg 44443333\`*]*\n\n`;
 
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
@@ -171,7 +172,7 @@ module.exports = (bot) => {
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando* \`FAMILIA\` del *➜ DNI* \`${dni}\``;
+    let yx = `*[ 💬 ] Consultando el* \`ÁRBOL GENEALÓGICO\` del *➜ DNI* \`${dni}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -183,7 +184,7 @@ module.exports = (bot) => {
 
     try {
       //ARBOL RESPONSE
-      const dataArbol = await arbolGen2(dni);
+      const dataArbol = await arbolGen(dni);
 
       // const responseArbol = resApi;
       // console.log(responseArbol);
@@ -203,13 +204,13 @@ module.exports = (bot) => {
           `<b>[ ✖️ ] No se encontraron FAMILIARES para este DNI.</b>`,
           messageOptions
         );
-      } else {
+      }else {
         //CONSTRUCCIÓN DEL MENSAJE
         let dniRes = `*[#LAIN-DOX 🌐]*\n\n`;
         dniRes += `*[ ☑️ ] ÁRBOL GENEALÓGICO DE* - \`${dni}\` -\n\n`;
         dniRes += `*➤ RESULTADOS:*\n\n`;
-
-        const responseArbol = dataArbol.data.data_arbol.lista_registros;
+        
+        const responseArbol = dataArbol.data.data_arbol.lista_registros 
 
         //SI LOS RESULTADOS SON MENOS O IGUAL A 8
         if (responseArbol.length <= 5) {
@@ -291,7 +292,7 @@ module.exports = (bot) => {
             const nuEdad = dato.EDAD;
             const tipo = dato.TIPO;
             const verificacion = dato.VERIFICACION;
-
+            
             replyToTxt = `  ⌞ DNI: ${nuDni}\n`;
             replyToTxt += `  ⌞ SEXO: ${sexo}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
@@ -345,7 +346,9 @@ module.exports = (bot) => {
           }, 1000);
         }
       }
-      registrarConsulta(userId, firstName, "ARBOL GENEALOGICO", dni, true);
+
+      registrarConsulta(userId, firstName, "ARBOL GENEALOGICO", dni, true)
+
     } catch (error) {
       const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
       console.log(error);

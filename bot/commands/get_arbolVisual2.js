@@ -1,32 +1,40 @@
 const fs = require("fs");
-const PDFDocument = require("pdfkit");
 const path = require("path");
 
 const dataStorage = {};
 
 // Rutas y datos
-const { antPersona } = require("../api/api_Legales.js");
 const rangosFilePath = require("../config/rangos/rangos.json");
+const { arbolVisual2 } = require("../api/api_Variados.js");
 const { registrarConsulta } = require("../../sql/consultas.js");
 
 // Manejo anti-spam
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-const img = path.join(__dirname, "../img/antecPersona.jpg");
-const dirDoc = path.join(__dirname, "../../fichasDocuments/antPersona");
+
+const tumblr = path.join(__dirname, "../img/arbolicon.jpg")
+const dirDoc = path.join(__dirname, "../../fichasDocuments/arbolVisual");
+
+// ALMACENAR LOS MENSAJES ID
+const comandoInvocado = {};
+let messageId;
+
+let buttonId;
+
+// Se define dirBase fuera del módulo para que sea accesible globalmente
+let dirBase = "";
+let dni;
 
 module.exports = (bot) => {
-  bot.onText(/[\/.$?!]anteper (.+)/, async (msg, match) => {
-    console.log("Escucho comando");
-
+  bot.onText(/[\/.$?!]famivi (.+)/, async (msg, match) => {
     // Manejo de errores de polling
     bot.on("polling_error", (error) => {
       console.error("Error en el bot de Telegram:", error);
     });
 
     // Ayudas rápidas
-    const dni = match[1];
+    dni = match[1];
     const chatId = msg.chat.id;
     const userId = msg.from.id;
     const typeChat = msg.chat.type;
@@ -37,10 +45,16 @@ module.exports = (bot) => {
       parse_mode: "Markdown",
     };
 
+    // BOTON - CFG
+    messageId = msg.message_id; // PRIMER MSG - ID
+    // console.log("PRIMER ID DE MENSAJE...", messageId);
+
+    comandoInvocado[userId] = messageId + 1;
+
     // Verificación de rangos
     const isDev = rangosFilePath.DEVELOPER.includes(userId);
     const isAdmin = rangosFilePath.ADMIN.includes(userId);
-    //Rango Comprador
+
     const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
@@ -172,8 +186,8 @@ module.exports = (bot) => {
     }
 
     if (dni.length !== 8) {
-      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/anteper\`*]* seguido de un número de *dni* de \`8 dígitos\`\n\n`;
-      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/anteper 27427864\`*]*\n\n`;
+      let replyToUsoIncorrecto = `*[ ✖️ ] Uso incorrecto*, utiliza *[*\`/famivi\`*]* seguido de un número de *dni* de \`8 dígitos\`\n\n`;
+      replyToUsoIncorrecto += `*➜ EJEMPLO:* *[*\`/famivi 06256217\`*]*\n\n`;
       bot.sendMessage(chatId, replyToUsoIncorrecto, messageOptions);
       return;
     }
@@ -184,7 +198,7 @@ module.exports = (bot) => {
     }
 
     // Si todo se cumple, se iniciará con la consulta...
-    let yx = `*[ 💬 ] Consultando* \`ANTECEDENTES POLICIALES\` *PDF del* *➜ dni* \`${dni}\``;
+    let yx = `*[ 💬 ] Consultando* \`FAMILIA VISUAL\` *del* *➜ dni* \`${dni}\``;
     const consultandoMessage = await bot.sendMessage(
       chatId,
       yx,
@@ -194,82 +208,70 @@ module.exports = (bot) => {
     usuariosEnConsulta[userId] = true;
 
     try {
-      const datos = await antPersona(dni);
+      const datos = await arbolVisual2(dni, "Lain Data", userId);
 
-      if (datos.status === false && datos.msg === "No hay registros") {
+      if (datos.data.status_data !== true && !datos.data.pdf) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
-        let yyx = `*[ ✖️ ] EL DNI consultado* no cuenta con antecedentes.`;
+        let yyx = `*[ ✖️ ] No se encontraron familiares* para el *DNI proporcionado.*`;
         return bot.sendMessage(chatId, yyx, messageOptions);
       }
 
       // Datos obtenidos
-      const pdf = datos.data.pdf;
+      const pdfBase64 = datos.data.pdf;
 
-      const pdfdata = pdf.replace(/^data:image\/jpeg;base64,/, "");
-      const pdfbuffer = Buffer.from(pdfdata, "base64");
+      // Elimina el encabezado si viene en formato Data URI
+      const cleanBase64 = pdfBase64.replace(
+        /^data:application\/pdf;base64,/,
+        ""
+      );
+
+      // Convierte a Buffer
+      const pdfBuffer = Buffer.from(cleanBase64, "base64");
 
       //PROPIETARIO
 
-      const dataPersona = datos.data;
-
-      const nif = dataPersona.nif;
-      const talla = dataPersona.talla;
-      const contextura = dataPersona.contextura;
-      const documento = dataPersona.documento;
-      const fecNacimiento = dataPersona.fecNacimiento;
-      const lugNacimiento = dataPersona.lugNacimiento;
-      const nomCompletos = dataPersona.nomCompletos;
-      const nomPadre = dataPersona.nomPadre;
-      const nomMadre = dataPersona.nomMadre;
-      const tipDocumento = dataPersona.tipDocumento;
-      const tipRegistro = dataPersona.tipRegistro;
+      // const apepaterno = dataPropietario.AP_PRIMER;
+      // const apematerno = dataPropietario.AP_SEGUNDO;
+      // const nombres = dataPropietario.PRENOM_INSCRITO;
+      // const ubicacion = dataPropietario.DISTRITO;
+      // const nuEdad = dataPropietario.NU_EDAD;
 
       // Datos dni
 
-      let caption = `*[#LAIN-DOX 🌐] ➤ #ANTPOL*\n\n`;
+      let caption = `<b>[#LAIN-DOX 🌐] ➤ #ARBOLVISUAL</b>\n\n`;
 
-      caption += `*[ ☑️ ] ANTECEDENTES POL. -* \`${dni}\` *- 👮‍♀️*\n\n`;
+      caption += `<b>[ ☑️ ]  FAMILIA VISUAL -</b> <code>${dni}</code> <b>- 👪</b>\n\n`;
 
-      caption += `*➤ CONSULTADO:*\n`;
-      caption += `  \`⌞\` *NIF:* \`${nif}\`\n`;
-      caption += `  \`⌞\` *NOMBRE:* \`${nomCompletos}\`\n`;
-      caption += `  \`⌞\` *ESTATURA:* \`${talla}\`\n`;
-      caption += `  \`⌞\` *CONTEXTURA:* \`${contextura}\`\n`;
-      caption += `  \`⌞\` *NOM. PADRE:* \`${nomPadre}\`\n`;
-      caption += `  \`⌞\` *NOM. MADRE:* \`${nomMadre}\`\n`;
-      caption += `  \`⌞\` *TIPO. REGISTRO:* \`${tipRegistro}\`\n`;
-      caption += `  \`⌞\` *TIPO. DOCUMENTO:* \`${tipDocumento}\`\n`;
-      caption += `  \`⌞\` *FECHA. NACIMIENTO:* \`${fecNacimiento}\`\n`;
-      caption += `  \`⌞\` *LUGAR. NACIMIENTO:* \`${lugNacimiento}\`\n\n`;
+      caption += `<b>➤ DATA ARBOL:</b>\n\n`;
+      caption += `  <code>⌞</code> <b>CANTIDAD TOTAL:</b> <code>${datos.data.data_arbol.cantidad_registros}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. PATERNOS:</b> <code>${datos.data.data_arbol.total_paterno}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. MATERNOS:</b> <code>${datos.data.data_arbol.total_materno}</code>\n\n`;
 
-      caption += `*➤ CONSULTADO POR:*\n`;
-      caption += `\`⌞\` *USUARIO:* \`${userId}\`\n`;
-      caption += `\`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      caption += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+      caption += `<b>➤ CONSULTADO POR:</b>\n`;
+      caption += `<code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
+      caption += `<code>⌞</code> <b>NOMBRE:</b> <code>${firstName}</code>\n\n`;
+      caption += `<b>MENSAJE:</b> <i>La consulta se hizo de manera exitosa ♻.</i>\n\n`;
 
       // Crea el directorio si no existe
       if (!fs.existsSync(dirDoc)) {
         fs.mkdirSync(dirDoc, { recursive: true });
       }
 
-      // Define la ruta del archivo
-      const filePath = path.join(dirDoc, `antecedentesPersona_${dni}.pdf`);
+      const filePath = path.join(dirDoc, `FAMILIA_VISUAL_PROFESIONAL_${dni}.pdf`);
+      const tumblrStream = fs.createReadStream(tumblr);
 
-      // Guarda el PDF en el sistema de archivos
-      fs.writeFileSync(filePath, pdfbuffer);
-
+      // Guarda el buffer PDF en disco
+      fs.writeFileSync(filePath, pdfBuffer);
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
       bot
         .sendDocument(chatId, filePath, {
           caption: caption,
+          thumbnail: tumblrStream,
           reply_to_message_id: msg.message_id,
-          parse_mode: "Markdown",
-          thumb: img,
+          parse_mode: "HTML",
         })
         .then(async () => {
-          registrarConsulta(userId, firstName, "ANTECEDENTES ESINPOL", dni, true);
-
-          await registrarConsulta(userId, firstName, "/anteper", dni, true);
+          await registrarConsulta(userId, firstName, "FAMILIA VISUAL", dni, true);
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error("Error al eliminar el archivo:", err);
@@ -289,7 +291,7 @@ module.exports = (bot) => {
     } catch (error) {
       console.log(error);
 
-      let xerror = `*[ ✖️ ] Error en la consulta.`;
+      let xerror = `*[ ✖️ ] Error en la consulta.*`;
       await bot.deleteMessage(chatId, consultandoMessage.message_id);
 
       bot.sendMessage(chatId, xerror, messageOptions);

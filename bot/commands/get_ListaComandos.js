@@ -180,8 +180,10 @@ module.exports = (bot) => {
       // cmds += `*➜ /migrapdf:* _Reporte migratorio en PDF- 🟢_\n`;
       // cmds += `*➜ /seeker:* _Búsqueda de datos generales en tiempo real por SEEKER en PDF - 🟢_\n`;
       cmds += `*➜ /arbg:* _ARBOL GENEALÓGICO - 🟢_\n`;
+      cmds += `*➜ /familia:* _ARBOL GENEALÓGICO - 🟢_\n`;
       // cmds += `*➜ /arbg2:* _ARBOL GENEALÓGICO RESPALDO- 🟢_\n`;
       cmds += `*➜ /arbgv:* _ARBOL GENEALÓGICO VISUAL- 🟢_\n`;
+      cmds += `*➜ /famivi:* _FAMILIA GENEALÓGICO VISUAL- 🟢_\n`;
       cmds += `*➜ /ruc:* _DATOS RUC- 🟢_\n`;
       cmds += `*➜ /reve:* _Estado RECORD de Brevete- 🟢_\n`;
       cmds += `*➜ /pap:* _PAPELETAS por el SAT- 🟢_\n`;

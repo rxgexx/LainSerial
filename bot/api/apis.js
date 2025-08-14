@@ -459,26 +459,6 @@ async function titularPlaca(placa) {
 
 //ÁRBOL GENEALÓGICO
 async function arbolGen(dni) {
-  //END - POINT
-  const apiUrl = `https://apiarbol6.pythonanywhere.com/docragex/${dni}`;
-
-  try {
-    const response = await axios.get(apiUrl);
-    if (response.status !== 200) {
-      throw new Error(
-        `Error al obtener la información del CUIT: ${response.status}`
-      );
-    }
-    const data = response.data;
-    return data;
-  } catch (error) {
-    console.error("Error al obtener la información desde la API ARBOL");
-    throw error;
-  }
-}
-
-//ÁRBOL GENEALÓGICO 2
-async function arbolGen2(dni) {
   try {
     const url = "https://api.sinflower.net.pe/api/arbol_genealogico";
     const data_api = {
@@ -492,6 +472,23 @@ async function arbolGen2(dni) {
     return data;
   } catch (error) {
     console.log("🚀 ~ api_licencia ~ error:", error);
+  }
+}
+
+async function arbolGen2(dni) {
+  try {
+    const url = "https://api.sinflower.net.pe/api/arbol_genealogico_2";
+    const data_api = {
+      valor: dni,
+      token: "822b6e74d591f9bb81a0663c057485e0",
+      user: "sinflowxr",
+    };
+
+    const response = await axios.post(url, data_api);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    console.log("🚀 ~ api_arbol_2 ~ error:", error.message);
   }
 }
 
