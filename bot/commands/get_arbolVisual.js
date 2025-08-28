@@ -210,14 +210,14 @@ module.exports = (bot) => {
     try {
       const datos = await arbolVisual(dni, "Lain Data", userId);
 
-      if (datos.data.status_data !== true && !datos.data.pdf) {
+      if (datos.status !== 200 && !datos.pdf) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yyx = `*[ ✖️ ] No se encontraron familiares* para el *DNI proporcionado.*`;
         return bot.sendMessage(chatId, yyx, messageOptions);
       }
 
       // Datos obtenidos
-      const pdfBase64 = datos.data.pdf;
+      const pdfBase64 = datos.pdf;
 
       // Elimina el encabezado si viene en formato Data URI
       const cleanBase64 = pdfBase64.replace(
@@ -243,9 +243,9 @@ module.exports = (bot) => {
       caption += `<b>[ ☑️ ]  A.G. VISUAL -</b> <code>${dni}</code> <b>- 👪</b>\n\n`;
 
       caption += `<b>➤ DATA ARBOL:</b>\n\n`;
-      caption += `  <code>⌞</code> <b>CANTIDAD TOTAL:</b> <code>${datos.data.data_arbol.cantidad_registros}</code>\n`;
-      caption += `  <code>⌞</code> <b>FAMI. PATERNOS:</b> <code>${datos.data.data_arbol.total_paterno}</code>\n`;
-      caption += `  <code>⌞</code> <b>FAMI. MATERNOS:</b> <code>${datos.data.data_arbol.total_materno}</code>\n\n`;
+      caption += `  <code>⌞</code> <b>CANTIDAD TOTAL:</b> <code>${datos.data_arbol.cantidad_registros}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. PATERNOS:</b> <code>${datos.data_arbol.total_paterno}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. MATERNOS:</b> <code>${datos.data_arbol.total_materno}</code>\n\n`;
 
       caption += `<b>➤ CONSULTADO POR:</b>\n`;
       caption += `<code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;

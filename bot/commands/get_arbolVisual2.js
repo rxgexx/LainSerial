@@ -12,8 +12,7 @@ const { registrarConsulta } = require("../../sql/consultas.js");
 const usuariosEnConsulta = {};
 const antiSpam = {};
 
-
-const tumblr = path.join(__dirname, "../img/arbolicon.jpg")
+const tumblr = path.join(__dirname, "../img/arbolicon.jpg");
 const dirDoc = path.join(__dirname, "../../fichasDocuments/arbolVisual");
 
 // ALMACENAR LOS MENSAJES ID
@@ -210,14 +209,14 @@ module.exports = (bot) => {
     try {
       const datos = await arbolVisual2(dni, "Lain Data", userId);
 
-      if (datos.data.status_data !== true && !datos.data.pdf) {
+      if (datos.status !== 200 && !datos.pdf) {
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         let yyx = `*[ ✖️ ] No se encontraron familiares* para el *DNI proporcionado.*`;
         return bot.sendMessage(chatId, yyx, messageOptions);
       }
 
       // Datos obtenidos
-      const pdfBase64 = datos.data.pdf;
+      const pdfBase64 = datos.pdf;
 
       // Elimina el encabezado si viene en formato Data URI
       const cleanBase64 = pdfBase64.replace(
@@ -243,9 +242,9 @@ module.exports = (bot) => {
       caption += `<b>[ ☑️ ]  FAMILIA VISUAL -</b> <code>${dni}</code> <b>- 👪</b>\n\n`;
 
       caption += `<b>➤ DATA ARBOL:</b>\n\n`;
-      caption += `  <code>⌞</code> <b>CANTIDAD TOTAL:</b> <code>${datos.data.data_arbol.cantidad_registros}</code>\n`;
-      caption += `  <code>⌞</code> <b>FAMI. PATERNOS:</b> <code>${datos.data.data_arbol.total_paterno}</code>\n`;
-      caption += `  <code>⌞</code> <b>FAMI. MATERNOS:</b> <code>${datos.data.data_arbol.total_materno}</code>\n\n`;
+      caption += `  <code>⌞</code> <b>CANTIDAD TOTAL:</b> <code>${datos.data_arbol.cantidad_registros}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. PATERNOS:</b> <code>${datos.data_arbol.total_paterno}</code>\n`;
+      caption += `  <code>⌞</code> <b>FAMI. MATERNOS:</b> <code>${datos.data_arbol.total_materno}</code>\n\n`;
 
       caption += `<b>➤ CONSULTADO POR:</b>\n`;
       caption += `<code>⌞</code> <b>USUARIO:</b> <code>${userId}</code>\n`;
@@ -257,7 +256,10 @@ module.exports = (bot) => {
         fs.mkdirSync(dirDoc, { recursive: true });
       }
 
-      const filePath = path.join(dirDoc, `FAMILIA_VISUAL_PROFESIONAL_${dni}.pdf`);
+      const filePath = path.join(
+        dirDoc,
+        `FAMILIA_VISUAL_PROFESIONAL_${dni}.pdf`
+      );
       const tumblrStream = fs.createReadStream(tumblr);
 
       // Guarda el buffer PDF en disco
@@ -271,7 +273,13 @@ module.exports = (bot) => {
           parse_mode: "HTML",
         })
         .then(async () => {
-          await registrarConsulta(userId, firstName, "FAMILIA VISUAL", dni, true);
+          await registrarConsulta(
+            userId,
+            firstName,
+            "FAMILIA VISUAL",
+            dni,
+            true
+          );
           fs.unlink(filePath, (err) => {
             if (err) {
               console.error("Error al eliminar el archivo:", err);
