@@ -191,7 +191,7 @@ async function arbolVisual2(dni, nombre, user) {
 }
 
 async function detalleLicencia(dni) {
-  const apiUrl = `http://161.132.50.110:49012/api/record?dni=${dni}`;
+  const apiUrl = `http://161.132.51.233:49012/api/record?dni=${dni}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -203,7 +203,7 @@ async function detalleLicencia(dni) {
 }
 
 async function reviTec(pla) {
-  const apiUrl = `http://161.132.50.110:49012/api/citv?placa=${pla}`;
+  const apiUrl = `http://161.132.51.233:49012/api/citv?placa=${pla}`;
 
   try {
     let response = await axios.get(apiUrl);
@@ -222,7 +222,7 @@ async function reviTec(pla) {
 }
 
 async function infRUC(ruc) {
-  const apiUrl = `http://161.132.50.110:3584/api/sunat?ruc=${ruc}`;
+  const apiUrl = `http://161.132.51.233:3584/api/sunat?ruc=${ruc}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
@@ -234,7 +234,7 @@ async function infRUC(ruc) {
 }
 
 async function satApi(pla) {
-  const apiUrl = `http://161.132.50.110:49012/api/sat?placa=${pla}`;
+  const apiUrl = `http://161.132.51.233:49012/api/sat?placa=${pla}`;
   try {
     const response = await axios.get(apiUrl);
     const data = response.data;
