@@ -188,17 +188,21 @@ module.exports = (bot) => {
         bot.sendMessage(chatId, yx, messageOptions);
       }
 
-      const datatel = responseTitular.data.data_titular;
+      const datatel = responseTitular.data.data_telefonia.lista_registros[0];
       //DATOS TITULAR
       const dni = datatel.dni;
       const name = datatel.name;
       const surname = datatel.surname;
+      const tipo = datatel.plan;
+      const plan = datatel.tipo;
 
       //MENSAJE DEL BOT
       let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
       telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
       telRes += `*➤ BASE DE DATOS 1*\n`;
       telRes += `  \`⌞\` *DOC:* \`${dni}\`\n`;
+      telRes += `  \`⌞\` *PLAN:* \`${plan}\`\n`;
+      telRes += `  \`⌞\` *TIPO:* \`${tipo}\`\n`;
       telRes += `  \`⌞\` *NOMBRE:* \`${name}\`\n`;
       telRes += `  \`⌞\` *DIRECCIÒN:* \`${surname}\`\n\n`;
       telRes += `*➤ CONSULTADO POR:*\n`;

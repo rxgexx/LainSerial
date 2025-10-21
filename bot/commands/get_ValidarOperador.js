@@ -189,7 +189,7 @@ module.exports = (bot) => {
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
         telRes += `*El número* consultado pertenece a la línea \`${datosNumero.operador}\`\n`;
 
-        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/claxx ${tel}\`\n\n\`/clax ${tel}\`\n`;
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/clax ${tel}\`\n`;
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot
@@ -296,7 +296,7 @@ module.exports = (bot) => {
         telRes += `*[ ☑️ ] INFORMACIÓN DEL NÚMERO* \`${tel}\`\n\n`;
         telRes += `*El número* consultado pertenece a la línea \`${datosNumero.operador.toUpperCase()}\`\n`;
 
-        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/movx ${tel}\`.`;
+        telRes += `*Usted puede* usar los siguientes *comandos para su búsqueda:*\n\n\`/celx ${tel}\`.`;
 
         await bot.deleteMessage(chatId, consultandoMessage.message_id);
         return bot

@@ -157,7 +157,7 @@ async function apiEntel(tel) {
 }
 
 async function claroDni(dni) {
-  const apiUrl = `http://161.132.50.110:1212/claro?dni=${dni}`;
+  const apiUrl = `http://161.132.51.233:1212/claro?dni=${dni}`;
 
   try {
     const response = await axios.get(apiUrl);
