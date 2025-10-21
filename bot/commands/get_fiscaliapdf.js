@@ -211,7 +211,7 @@ module.exports = (bot) => {
         });
         return;
       } else {
-        const index = responseTitular.data.results.length;
+        const index = responseTitular.data.dataJson.length;
 
         mensaje += `<b>[ ☑️ ] CASOS FISCALES DE - </b><code>${dni}</code> - <b>⚖️</b>\n\n`;
         mensaje += `<b>➤ REGISTROS ENCONTRADOS ${index}📂:</b>\n\n`;

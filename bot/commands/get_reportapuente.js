@@ -6,13 +6,11 @@ module.exports = async (bot) => {
 
 Si estás usando este bot a través de un <b>revendedor no oficial</b> (alguien que te dio un número y un código para acceder, pero no es la dueña oficial), <b>¡puedes reportarlo!</b>
 
-📩 Contacta a la <b>única dueña oficial</b> 👉 <a href="https://t.me/SinFlowxr">@SinFlowxr</a> y envía pruebas del caso.
+📩 Contacta a la <b>única dueña oficial</b> 👉 <a href="tg://user?id=8194230892">@SxnFlowxr</a> y envía pruebas del caso.
 
 🎁 <b>¿Qué ganas al reportar?</b>
 • Recuperas los <b>días restantes</b> de tu compra.  
 • Al vencer tu acceso, podrás <b>renovar al mismo precio</b> que pagaste originalmente.
-
-📢 Además, únete al canal <a href="https://t.me/CazandoPuentes">@CazandoPuentes</a> donde publicamos a los <b>revendedores cazados</b> y te mantenemos informado.
 
 🙏 ¡Gracias por apoyar el uso legal y justo del bot!`;
 

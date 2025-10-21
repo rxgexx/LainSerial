@@ -19,7 +19,7 @@ module.exports = (bot) => {
     const chatid = msg.chat.id;
     console.log(programmerId);
 
-    if (programmerId !== 6484858971) {
+    if (programmerId !== 8135914263) {
       console.log("no admin");
 
       return;
@@ -44,7 +44,7 @@ module.exports = (bot) => {
     const chatid = msg.chat.id;
     console.log(programmerId);
 
-    if (programmerId !== 6484858971) {
+    if (programmerId !== 8135914263) {
       console.log("no admin");
 
       return;

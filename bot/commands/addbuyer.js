@@ -34,7 +34,7 @@ module.exports = (bot) => {
         `cliente ${comprador_ID} añadido exitosamente :)`
       );
       bot.sendMessage(
-        6484858971,
+        8194230892,
         `VENDEDOR ${msg.from.first_name} | ${msg.from.id} | ${msg.from.username} a añadido al cliente ${comprador_ID}`
       );
       console.log(msg);
@@ -68,7 +68,7 @@ module.exports = (bot) => {
         `cliente ${comprador_ID} eliminado exitosamente :)`
       );
       bot.sendMessage(
-        6484858971,
+        8194230892,
         `VENDEDOR ${msg.from.first_name} | ${msg.from.id} | ${msg.from.username} a eliminado al cliente ${comprador_ID}|| RAZON: ${razon}`
       );
       console.log(msg);

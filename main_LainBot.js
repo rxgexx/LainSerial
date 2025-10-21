@@ -28,6 +28,38 @@ bot
     console.error("❌ ERROR AL OBTENER INFO DEL BOT:", error);
   });
 
+bot.onText(/\/contacto/, (msg) => {
+  const chatId = msg.chat.id;
+  const enlaceSoporte = `tg://user?id=8194230892`; // tu ID o variable de entorno
+  const enlaceCanal = "https://t.me/+3wg61KTkS-9iMjU5"; // tu canal o grupo oficial
+
+  const mensaje = `
+💎 *¡Hola, ${msg.from.first_name}!*  
+
+Si quieres comprar tu acceso, resolver dudas o hablar directamente con la dueña, usa los botones de abajo 👇  
+
+📞 **Opción 1:** Contactar con la dueña y adquirir tu acceso.  
+📢 **Opción 2:** Unirte al canal oficial para ver novedades, precios y actualizaciones.
+`;
+
+  const opciones = {
+    parse_mode: "Markdown",
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "💬 Contactar con la dueña", url: enlaceSoporte },
+        ],
+        [
+          { text: "📣 Canal oficial", url: enlaceCanal },
+        ],
+      ],
+    },
+  };
+
+  bot.sendMessage(chatId, mensaje, opciones);
+});
+
+
 // CARGA DE COMANDOS DESDE /bot/commands
 const commandsDir = path.join(__dirname, "/bot/commands");
 

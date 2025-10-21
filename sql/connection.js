@@ -1,18 +1,9 @@
 const mysql = require("mysql2");
 
-// // Configuración del pool de conexiones
-// const pool = mysql.createPool({
-//   host: "161.132.48.228",
-//   user: "root",
-//   password: "andy2003",
-//   database: "lainserial_mensual",
-//   connectionLimit: 100 // Ajusta según tus necesidades
-// });
-
 // Configuración del pool de conexiones
 const pool = mysql.createPool({
   host: "161.132.68.46",
-  user: "valeria_2",
+  user: "valeria",
   password: "Valeria2005@@",
   database: "lainserial_mensual",
   connectionLimit: 100 // Ajusta según tus necesidades

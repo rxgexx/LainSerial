@@ -207,6 +207,7 @@ module.exports = (bot) => {
         if (data) {
           //POR CADA DATO
           data.forEach((dato) => {
+	/*
             const ambito = dato.ambito;
             const certificado = dato.certificado;
             const direccion = dato.direccion;
@@ -217,6 +218,17 @@ module.exports = (bot) => {
             const obs = dato.obs;
             const resultado = dato.resultado;
             const servicio = dato.servicio;
+	*/
+            const ambito = dato.TIPO_AMBITO;
+            const certificado = dato.NRO_CERTI;
+            const direccion = dato.DIRECCION;
+            const entidad = dato.SRAZONSOCENTCER;
+            const estado = dato.ESTADO;
+            const fecinsp = dato.REVISIONVIGENCIAINICIO;
+            const fecvcto = dato.REVISIONVIGENCIAFINAL;
+            const obs = dato.OBSERVACION;
+            const resultado = dato.RESULTADO;
+            const servicio = dato.TIPO_SERVICIO;
 
             telRes += `  \`⌞\` *AMBITO:* \`${ambito}\`\n`;
             telRes += `  \`⌞\` *ESTADO:* \`${estado}\`\n`;
