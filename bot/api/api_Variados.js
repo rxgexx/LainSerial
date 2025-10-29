@@ -165,7 +165,7 @@ async function migracionesPdf(dni) {
 }
 
 async function arbolVisual(dni, nombre, user) {
-  const apiUrl = `http://161.132.45.201:2050/api/arbol?dni=${dni}&nombre=${nombre}&usuario=${user}`;
+  const apiUrl = `http://161.132.68.46:2050/api/arbol?dni=${dni}&nombre=${nombre}&usuario=${user}`;
 
   try {
     const response = await axios.get(apiUrl);
@@ -178,7 +178,7 @@ async function arbolVisual(dni, nombre, user) {
 }
 
 async function arbolVisual2(dni, nombre, user) {
-  const apiUrl = `http://161.132.45.201:2050/api/arbol_2?dni=${dni}&nombre=${nombre}&usuario=${user}`;
+  const apiUrl = `http://161.132.68.46:2050/api/arbol_2?dni=${dni}&nombre=${nombre}&usuario=${user}`;
 
   try {
     const response = await axios.get(apiUrl);
