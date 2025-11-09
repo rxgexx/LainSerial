@@ -34,31 +34,34 @@ bot.onText(/\/contacto/, (msg) => {
   const enlaceCanal = "https://t.me/+3wg61KTkS-9iMjU5"; // tu canal o grupo oficial
 
   const mensaje = `
-💎 *¡Hola, ${msg.from.first_name}!*  
+<b>[ ☁️ LAIN_DATA ]</b>  
+<b>¡Hola, ${msg.from.first_name}!</b> 👋  
 
-Si quieres comprar tu acceso, resolver dudas o hablar directamente con la dueña, usa los botones de abajo 👇  
+🛰️ <b>Nuevo bot disponible:</b> <a href="https://t.me/LainData_Bot">@LainData_Bot</a>  
+🔥 <b>Regístrate y disfruta las nuevas funciones:</b>  
+➤ Mayor compatibilidad  
+➤ Más estabilidad  
+➤ Comandos mejorados  
 
-📞 **Opción 1:** Contactar con la dueña y adquirir tu acceso.  
-📢 **Opción 2:** Unirte al canal oficial para ver novedades, precios y actualizaciones.
+📢 POR FAVOR, INICIA Y REGÍSTRATE EN EL NUEVO BOT, SI ERES CLIENTE SERÁ DE MUCHA IMPORTANCIA PARA TRASLADAR TU MEMBRESÍA. CONTACTA A TU VENDEDOR, EN ESTOS DÍAS SE ESTARÁ DANDO INFORMANDO CUANDO INICIA EL NUEVO BOT.
+
+💬 <b>Opciones de contacto:</b>  
+• <b>Contactar con la dueña</b> (compras, soporte).  
+• <b>Unirte al canal oficial</b> (novedades, precios y actualizaciones).
 `;
 
   const opciones = {
     parse_mode: "Markdown",
     reply_markup: {
       inline_keyboard: [
-        [
-          { text: "💬 Contactar con la dueña", url: enlaceSoporte },
-        ],
-        [
-          { text: "📣 Canal oficial", url: enlaceCanal },
-        ],
+        [{ text: "💬 Contactar con la dueña", url: enlaceSoporte }],
+        [{ text: "📣 Canal oficial", url: enlaceCanal }],
       ],
     },
   };
 
   bot.sendMessage(chatId, mensaje, opciones);
 });
-
 
 // CARGA DE COMANDOS DESDE /bot/commands
 const commandsDir = path.join(__dirname, "/bot/commands");

@@ -19,10 +19,15 @@ function delay(ms) {
 async function eliminarUsuario(tabla, telegram_id) {
   const columna = tabla === "compradores" ? "telegram_userid" : "telegram_id";
   try {
-    await promisePool.query(`DELETE FROM ${tabla} WHERE ${columna} = ?`, [telegram_id]);
+    await promisePool.query(`DELETE FROM ${tabla} WHERE ${columna} = ?`, [
+      telegram_id,
+    ]);
     console.log(`🗑️ Usuario ${telegram_id} eliminado de tabla '${tabla}'`);
   } catch (error) {
-    console.error(`❌ Error al eliminar usuario ${telegram_id} de ${tabla}:`, error.message);
+    console.error(
+      `❌ Error al eliminar usuario ${telegram_id} de ${tabla}:`,
+      error.message
+    );
   }
 }
 
@@ -32,38 +37,43 @@ module.exports = (bot) => {
       const buyers = await obtenerBuyers();
       const iniciados = await obtenerIniciados();
 
-      console.log("📦 Buyers:", buyers.length, "Usuarios iniciados:", iniciados.length);
+      console.log(
+        "📦 Buyers:",
+        buyers.length,
+        "Usuarios iniciados:",
+        iniciados.length
+      );
 
       const idDueña = 8194230892; // ID de la nueva cuenta oficial
       const enlaceCanal = "https://t.me/+3wg61KTkS-9iMjU5"; // Enlace real del canal
 
       const anuncio = `
-<b>📢 COMUNICADO IMPORTANTE — CUENTA OFICIAL</b>
+<b>[ ☁️ LAIN_DATA ]</b>  
+<b>¡Hola, ${msg.from.first_name}!</b> 👋  
 
-👋 Hola, soy la <b>programadora y vendedora oficial del bot</b>.  
-Por motivos de seguridad y ataques recientes, mi cuenta principal ha cambiado.
+🛰️ <b>Nuevo bot disponible:</b> <a href="https://t.me/LainData_Bot">@LainData_Bot</a>  
+🔥 <b>Regístrate y disfruta las nuevas funciones:</b>  
+➤ Mayor compatibilidad  
+➤ Más estabilidad  
+➤ Comandos mejorados  
 
-💬 <b>Nueva cuenta oficial:</b> <a href="tg://user?id=${idDueña}">Contactar con la dueña</a>  
-📣 <b>Canal oficial:</b> <a href="${enlaceCanal}">Unirse al canal</a>
+📢 POR FAVOR, INICIA Y REGÍSTRATE EN EL NUEVO BOT, SI ERES CLIENTE SERÁ DE MUCHA IMPORTANCIA PARA TRASLADAR TU MEMBRESÍA. CONTACTA A TU VENDEDOR, EN ESTOS DÍAS SE ESTARÁ DANDO INFORMANDO CUANDO INICIA EL NUEVO BOT.
 
-Si quieres obtener la forma de contacto directa conmigo también puedes usar el comando <code>/contacto</code>.
-
-⚠️ <b>Por favor:</b>
-- No respondas a otras cuentas que digan ser del equipo.  
-- Las cuentas antiguas ya no están activas.  
-- Cualquier compra, renovación o duda, <b>solo se atiende desde la nueva cuenta</b>.
-
-Si en caso no contesto y necesitan ayuda o soporte, contacten con <b>@Morty_Ma</b>
-
-Gracias por tu confianza 💙  
-<b>— La programadora del bot</b>
+💬 <b>Opciones de contacto:</b>  
+• <b>Contactar con la dueña</b> (compras, soporte).  
+• <b>Unirte al canal oficial</b> (novedades, precios y actualizaciones).
 `;
 
       const opciones = {
         parse_mode: "HTML",
         reply_markup: {
           inline_keyboard: [
-            [{ text: "💬 Contactar con la dueña", url: `tg://user?id=${idDueña}` }],
+            [
+              {
+                text: "💬 Contactar con la dueña",
+                url: `tg://user?id=${idDueña}`,
+              },
+            ],
             [{ text: "📣 Unirse al canal oficial", url: enlaceCanal }],
           ],
         },
