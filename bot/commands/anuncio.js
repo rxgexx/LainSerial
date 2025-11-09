@@ -49,7 +49,7 @@ module.exports = (bot) => {
 
       const anuncio = `
 <b>[ ☁️ LAIN_DATA ]</b>  
-<b>¡Hola, ${msg.from.first_name}!</b> 👋  
+<b>¡Hola!</b> 👋  
 
 🛰️ <b>Nuevo bot disponible:</b> <a href="https://t.me/LainData_Bot">@LainData_Bot</a>  
 🔥 <b>Regístrate y disfruta las nuevas funciones:</b>  
