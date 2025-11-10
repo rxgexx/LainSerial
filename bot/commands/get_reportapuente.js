@@ -11,7 +11,7 @@ POR FAVOR, INICIA Y REGÍSTRATE EN EL NUEVO BOT: @LainData_Bot 👈👈👈👈
 
 QUE TIENE EL NUEVO BOT❓ 👉 SE HAN AGREGADO Y MEJORADO COMANDOS. MAYOR COMPATIBILIDAD Y ESTABILIDAD MEJORADA.
 
-📩 Contacta a la <b>única dueña oficial</b> 👉 <a href="tg://user?id=8194230892">@SxnFlowxr</a> y envía pruebas del caso.
+📩 Contacta a la <b>única dueña oficial</b> 👉 <a href="tg://user?id=8362630963">@SxnFlowxr</a> y envía pruebas del caso.
 
 ESTOS DÍAS SE ESTARÁ EMPEZANDO A MIGRAR DE CUENTAS, CONTACTA A TU VENDEDOR PARA NO PERDER TU ACCESO. </b>EN ESTOS DÍAS SE ESTARÁ AVISANDO CUANDO SE INICIA EL NUEVO BOT</b>`;
 

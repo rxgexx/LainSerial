@@ -44,7 +44,7 @@ module.exports = (bot) => {
         iniciados.length
       );
 
-      const idDueña = 8194230892; // ID de la nueva cuenta oficial
+      const idDueña = 8362630963; // ID de la nueva cuenta oficial
       const enlaceCanal = "https://t.me/+3wg61KTkS-9iMjU5"; // Enlace real del canal
 
       const anuncio = `
