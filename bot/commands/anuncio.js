@@ -44,12 +44,12 @@ module.exports = (bot) => {
         iniciados.length
       );
 
-      const idDueña = 8362630963; // ID de la nueva cuenta oficial
+      const idDueña = 8016686263; // ID de la nueva cuenta oficial
       const enlaceCanal = "https://t.me/+3wg61KTkS-9iMjU5"; // Enlace real del canal
 
       const anuncio = `
 <b>[ ☁️ LAIN_DATA ]</b>  
-<b>¡Hola!</b> 👋  
+<b>¡Hola! LA cuenta de la dueña ha sido dado de baja, ya hay una nueva</b> 👋  
 
 🛰️ <b>Nuevo bot disponible:</b> <a href="https://t.me/LainData_Bot">@LainData_Bot</a>  
 🔥 <b>Regístrate y disfruta las nuevas funciones:</b>  
