@@ -30,7 +30,7 @@ bot
 
 bot.onText(/\/contacto/, (msg) => {
   const chatId = msg.chat.id;
-  const enlaceSoporte = `tg://user?id=8194230892`; // tu ID o variable de entorno
+  const enlaceSoporte = `https://t.me/+hEKpOS1U4pFiZDRh`; // tu ID o variable de entorno
   const enlaceCanal = "https://t.me/+3wg61KTkS-9iMjU5"; // tu canal o grupo oficial
 
   const mensaje = `
