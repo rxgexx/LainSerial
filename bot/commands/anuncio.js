@@ -44,12 +44,15 @@ module.exports = (bot) => {
         iniciados.length
       );
 
-      const idDueña = 8016686263; // ID de la nueva cuenta oficial
-      const enlaceCanal = "https://t.me/+3wg61KTkS-9iMjU5"; // Enlace real del canal
+      // 💎 DATOS FIJOS
+      const idDueña = 8097281740;
+      const enlaceCanal = "https://t.me/+_NYjIVJOh5Y2MWNh";
+      const enlaceGrupoPublico = "https://t.me/+tdHO880Bpwg0NTUx";
+      const enlaceGrupoClientes = "https://t.me/+hhOCD6euE5xkNzRh";
 
       const anuncio = `
 <b>[ ☁️ LAIN_DATA ]</b>  
-<b>¡Hola! LA cuenta de la dueña ha sido dado de baja, ya hay una nueva</b> 👋  
+<b>¡Hola! La cuenta de la dueña anterior fue dada de baja, ya hay una nueva.</b> 👋  
 
 🛰️ <b>Nuevo bot disponible:</b> <a href="https://t.me/LainData_Bot">@LainData_Bot</a>  
 🔥 <b>Regístrate y disfruta las nuevas funciones:</b>  
@@ -57,27 +60,36 @@ module.exports = (bot) => {
 ➤ Más estabilidad  
 ➤ Comandos mejorados  
 
-👉👉👉👉👉ESTE BOT SERÁ APAGADO OFICIALMENTE EL DÍA VIERNES 14, PIDE TU MIGRACIÓN DE TU CUENTA CON TUS VENDEDORES. 
-👉👉👉👉👉YA SE ESTÁ EMPEZANDO A MIGRAR CUENTAS
+OJO ES PROBABLE QUE LA CUENTA SEA DE VUELVA BANEADA, POR ESO ES DE SUMA IMPORTANCIA QUE SE UNAN A LOS CANALES Y GRUPOS MANDADO, NUEVA CUENTA DE VALERIA - LA DUEÑA: @KillValeria
 
-📢 POR FAVOR, INICIA Y REGÍSTRATE EN EL NUEVO BOT, SI ERES CLIENTE SERÁ DE MUCHA IMPORTANCIA PARA TRASLADAR TU MEMBRESÍA. CONTACTA A TU VENDEDOR, EN ESTOS DÍAS SE ESTARÁ DANDO INFORMANDO CUANDO INICIA EL NUEVO BOT.
+👉👉👉 ESTE BOT SERÁ APAGADO OFICIALMENTE EL VIERNES 14.  
+Pide tu migración con tus vendedores para conservar tu membresía.  
 
-💬 <b>Opciones de contacto:</b>  
-• <b>Contactar con la dueña</b> (compras, soporte).  
-• <b>Unirte al canal oficial</b> (novedades, precios y actualizaciones).
+📢 Inicia sesión en el nuevo bot para continuar disfrutando de tus beneficios.
 `;
 
-      const opciones = {
+      // 🔘 BOTONES SEGÚN PERFIL
+      const botonesPublicos = {
         parse_mode: "HTML",
         reply_markup: {
           inline_keyboard: [
             [
-              {
-                text: "💬 Contactar con la dueña",
-                url: `tg://user?id=${idDueña}`,
-              },
+              { text: "📣 Canal oficial", url: enlaceCanal },
+              { text: "🌐 Grupo público", url: enlaceGrupoPublico },
             ],
-            [{ text: "📣 Unirse al canal oficial", url: enlaceCanal }],
+          ],
+        },
+      };
+
+      const botonesClientes = {
+        parse_mode: "HTML",
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: "📣 Canal oficial", url: enlaceCanal },
+              { text: "🌐 Grupo público", url: enlaceGrupoPublico },
+            ],
+            [{ text: "💎 Grupo de clientes", url: enlaceGrupoClientes }],
           ],
         },
       };
@@ -86,10 +98,10 @@ module.exports = (bot) => {
       let eliminadosBuyers = 0;
       let eliminadosIniciados = 0;
 
-      // --- ENVIAR A BUYERS ---
+      // --- ENVIAR A BUYERS (CLIENTES) ---
       for (const usuarioId of buyers) {
         try {
-          await bot.sendMessage(usuarioId, anuncio, opciones);
+          await bot.sendMessage(usuarioId, anuncio, botonesClientes);
           enviadosExito++;
           await delay(400);
         } catch (error) {
@@ -105,10 +117,10 @@ module.exports = (bot) => {
         }
       }
 
-      // --- ENVIAR A INICIADOS ---
+      // --- ENVIAR A INICIADOS (USUARIOS COMUNES) ---
       for (const usuarioId of iniciados) {
         try {
-          await bot.sendMessage(usuarioId, anuncio, opciones);
+          await bot.sendMessage(usuarioId, anuncio, botonesPublicos);
           enviadosExito++;
           await delay(400);
         } catch (error) {
@@ -127,8 +139,7 @@ module.exports = (bot) => {
       // --- ENVIAR A GRUPOS ---
       for (const grupoId of gruposPermitidos) {
         try {
-          const sentMessage = await bot.sendMessage(grupoId, anuncio, opciones);
-          // comentar si el bot no tiene permiso para fijar
+          const sentMessage = await bot.sendMessage(grupoId, anuncio, botonesPublicos);
           // await bot.pinChatMessage(grupoId, sentMessage.message_id);
           enviadosExito++;
           await delay(800);

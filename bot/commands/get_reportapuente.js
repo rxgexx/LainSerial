@@ -1,56 +1,116 @@
 const cron = require("node-cron");
 const { obtenerBuyers } = require("../../sql/obtenerbuyers.js");
-const { obtenerStarts } = require("../../sql/obtenerbuyers.js");
+const { obtenerStarts } = require("../../sql/obtenerstarts.js");
 
 module.exports = async (bot) => {
-  const mensajeHTML = `🚨 <b>¡Atención! NUEVO BOT</b> 🚨
+  const mensajeHTML = `
+🚨 <b>¡ATENCIÓN! NUEVO BOT DISPONIBLE</b> 🚨
 
-SE HA ESTRENADO NUEVO BOT: @LainData_Bot 👈👈👈👈
-POR FAVOR, INICIA Y REGÍSTRATE EN EL NUEVO BOT: @LainData_Bot 👈👈👈👈
+🛰️ <b>Nuevo bot oficial:</b> <a href="https://t.me/LainData_Bot">@LainData_Bot</a> 👈👈👈  
 
+Por favor, inicia y regístrate en el nuevo bot.  
+Este nuevo sistema cuenta con:
+• Mayor compatibilidad ⚙️  
+• Más estabilidad 🚀  
+• Nuevos comandos mejorados 🌐  
 
-QUE TIENE EL NUEVO BOT❓ 👉 SE HAN AGREGADO Y MEJORADO COMANDOS. MAYOR COMPATIBILIDAD Y ESTABILIDAD MEJORADA.
+📅 <b>IMPORTANTE:</b> Este bot será apagado oficialmente el <b>VIERNES 14</b>.  
+Solicita la migración de tu cuenta con tu vendedor para conservar tu membresía y créditos.  
 
-📩 Contacta a la <b>única dueña oficial</b> 👉 <a href="tg://user?id=8016686263">VALERIA</a>.
+⚠️ <b>ES DE SUMA IMPORTANCIA</b> que te unas a nuestros canales oficiales para mantenerte informado sobre:
+• Migraciones  
+• Anuncios y precios actualizados  
+• Nuevas funciones y beneficios exclusivos 💎  
 
-👉👉👉👉👉ESTE BOT SERÁ APAGADO OFICIALMENTE EL DÍA VIERNES 14, PIDE TU MIGRACIÓN DE TU CUENTA CON TUS VENDEDORES. 
-👉👉👉👉👉YA SE ESTÁ EMPEZANDO A MIGRAR CUENTAS`;
+<b>👉 No pierdas tus actualizaciones ni soporte, únete ahora.</b>
+`;
 
+  // 🔘 Botones públicos (para todos)
+  const botonesPublicos = {
+    parse_mode: "HTML",
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "📣 Canal oficial", url: "https://t.me/+_NYjIVJOh5Y2MWNh" },
+          { text: "🌐 Grupo público", url: "https://t.me/+tdHO880Bpwg0NTUx" },
+        ],
+      ],
+    },
+  };
+
+  // 💎 Botones para buyers (añade grupo clientes)
+  const botonesBuyers = {
+    parse_mode: "HTML",
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "📣 Canal oficial", url: "https://t.me/+_NYjIVJOh5Y2MWNh" },
+          { text: "🌐 Grupo público", url: "https://t.me/+tdHO880Bpwg0NTUx" },
+        ],
+        [
+          { text: "💎 Grupo de clientes", url: "https://t.me/+hhOCD6euE5xkNzRh" },
+        ],
+      ],
+    },
+  };
+
+  // 🧱 Función: enviar mensaje a BUYERS
   const enviarMensajeABuyers = async () => {
     try {
       const buyers = await obtenerBuyers();
+      console.log(`📤 Enviando a ${buyers.length} compradores...`);
+
+      let enviados = 0;
       for (const usuarioId of buyers) {
         try {
-          await bot.sendMessage(usuarioId, mensajeHTML, { parse_mode: "HTML" });
+          await bot.sendMessage(usuarioId, mensajeHTML, botonesBuyers);
+          enviados++;
+          await new Promise((r) => setTimeout(r, 400));
         } catch (err) {
-          console.error(`Error al enviar mensaje a ${usuarioId}:`, err.message);
+          console.error(`⚠️ Error al enviar mensaje a buyer ${usuarioId}:`, err.message);
         }
       }
+
+      console.log(`✅ Mensajes enviados a buyers: ${enviados}`);
     } catch (err) {
-      console.error("Error al obtener la lista de buyers:", err.message);
+      console.error("❌ Error al obtener lista de buyers:", err.message);
     }
   };
 
-    const enviarMensajeStart = async () => {
+  // 🧱 Función: enviar mensaje a usuarios con /start
+  const enviarMensajeStart = async () => {
     try {
-      const buyers = await obtenerStarts();
-      for (const usuarioId of buyers) {
+      const starts = await obtenerStarts();
+      console.log(`📤 Enviando a ${starts.length} usuarios con /start...`);
+
+      let enviados = 0;
+      for (const usuarioId of starts) {
         try {
-          await bot.sendMessage(usuarioId, mensajeHTML, { parse_mode: "HTML" });
+          await bot.sendMessage(usuarioId, mensajeHTML, botonesPublicos);
+          enviados++;
+          await new Promise((r) => setTimeout(r, 400));
         } catch (err) {
-          console.error(`Error al enviar mensaje a ${usuarioId}:`, err.message);
+          console.error(`⚠️ Error al enviar mensaje a usuario ${usuarioId}:`, err.message);
         }
       }
+
+      console.log(`✅ Mensajes enviados a iniciados: ${enviados}`);
     } catch (err) {
-      console.error("Error al obtener la lista de buyers:", err.message);
+      console.error("❌ Error al obtener lista de starts:", err.message);
     }
   };
 
-  // Programar tareas a las 12:00 PM y 6:00 PM hora Perú (GMT-5)
-  cron.schedule("0 12,18 * * *", async () => {
-    await enviarMensajeABuyers();
-    await enviarMensajeStart();
-  }, {
-    timezone: "America/Lima"
-  });
+  // 🕐 Programar envío automático a las 12:00 PM y 6:00 PM (hora Perú)
+  cron.schedule(
+    "0 12,18 * * *",
+    async () => {
+      console.log("⏰ Ejecutando envío automático (12:00 / 18:00)...");
+      await enviarMensajeABuyers();
+      await enviarMensajeStart();
+      console.log("✅ Envío completado correctamente.");
+    },
+    {
+      timezone: "America/Lima",
+    }
+  );
 };
