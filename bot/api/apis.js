@@ -20,7 +20,7 @@ async function getReniec(dni) {
   const payload = {
     valor: dni,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
@@ -44,7 +44,7 @@ async function getNombres(prinombre, apPaterno = " ", apMaterno = " ") {
     apeMaterno: apMaterno,
     edadMin: 0,
     edadMax: 0,
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
     user: "sinflowxr",
   };
 
@@ -130,7 +130,7 @@ async function getDNIVirtual(dni) {
 
   const data = {
     valor: dni,
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
     user: "sinflowxr",
   };
 
@@ -160,7 +160,7 @@ async function fichaAzul(dni) {
     const payload = {
       valor: dni,
       user: "sinflowxr",
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
     };
 
     const response = await axios.post(apiUrl, payload);
@@ -178,7 +178,7 @@ async function fichaInscripcion(dni) {
     const url = "https://api.sinflower.net.pe/api/ficha-inscripcion";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -195,7 +195,7 @@ async function fichaAntPol(dni) {
     const url = "https://api.sinflower.net.pe/api/ficha-antpol";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -212,7 +212,7 @@ async function fichaAntPen(dni) {
     const url = "https://api.sinflower.net.pe/api/ficha-antpen";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -229,7 +229,7 @@ async function fichaAntJud(dni) {
     const url = "https://api.sinflower.net.pe/api/ficha-antjud";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -314,7 +314,7 @@ async function titularClaro(tel) {
   const payload = {
     valor: tel,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
@@ -463,7 +463,7 @@ async function arbolGen(dni) {
     const url = "https://api.sinflower.net.pe/api/arbol_genealogico";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -480,7 +480,7 @@ async function arbolGen2(dni) {
     const url = "https://api.sinflower.net.pe/api/arbol_genealogico_2";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -517,7 +517,7 @@ async function c4blanco(dni) {
     const url = "https://api.sinflower.net.pe/api/c4blanco";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 

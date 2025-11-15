@@ -61,7 +61,7 @@ async function fiscalia(dni) {
 
   const data = {
     valor: dni,
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
     user: "sinflowxr",
   };
 
@@ -84,7 +84,7 @@ async function fiscalia_pdf(dni) {
 
   const data = {
     valor: dni,
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
     user: "sinflowxr",
   };
 

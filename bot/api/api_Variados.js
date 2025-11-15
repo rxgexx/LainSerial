@@ -18,7 +18,7 @@ async function apiPlaca_2(placa) {
   try {
     const response = await axios.post(apiUrl, {
       valor: placa,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     });
     const data = response.data;
@@ -46,7 +46,7 @@ async function apiNotas(dni) {
   try {
     const response = await axios.post(apiUrl, {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     });
     const data = response.data;
@@ -62,7 +62,7 @@ async function api_trabajos(dni) {
   const payload = {
     valor: dni,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
@@ -141,7 +141,7 @@ async function boletaInformativa(placa) {
     const response = await axios.post(apiUrl, {
       valor: placa,
       user: "sinflowxr",
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
     });
     const data = response.data;
 
@@ -251,7 +251,7 @@ async function brevete_pdf(dni) {
   const payload = {
     valor: dni,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
@@ -269,7 +269,7 @@ async function soat_pdf(placa) {
   try {
     const response = await axios.post(apiUrl, {
       valor: placa,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     });
     const data = response.data;
@@ -288,7 +288,7 @@ async function yape_fake(titular, numero, precio, destino) {
     titular: titular,
     numero: numero,
     destino: destino,
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
     user: "sinflowxr",
   };
 

@@ -1,5 +1,5 @@
 const cron = require("node-cron");
-const { obtenerBuyers } = require("../../sql/obtenerbuyers.js");
+const { obtenerBuyers } = require("../sql/obtenerbuyers.js");
 const { obtenerStarts } = require("../../sql/obtenerstarts.js");
 
 module.exports = async (bot) => {
@@ -77,28 +77,28 @@ Solicita la migración de tu cuenta con tu vendedor para conservar tu membresía
     }
   };
 
-  // 🧱 Función: enviar mensaje a usuarios con /start
-  const enviarMensajeStart = async () => {
-    try {
-      const starts = await obtenerStarts();
-      console.log(`📤 Enviando a ${starts.length} usuarios con /start...`);
+  // // 🧱 Función: enviar mensaje a usuarios con /start
+  // const enviarMensajeStart = async () => {
+  //   try {
+  //     const starts = await obtenerStarts();
+  //     console.log(`📤 Enviando a ${starts.length} usuarios con /start...`);
 
-      let enviados = 0;
-      for (const usuarioId of starts) {
-        try {
-          await bot.sendMessage(usuarioId, mensajeHTML, botonesPublicos);
-          enviados++;
-          await new Promise((r) => setTimeout(r, 400));
-        } catch (err) {
-          console.error(`⚠️ Error al enviar mensaje a usuario ${usuarioId}:`, err.message);
-        }
-      }
+  //     let enviados = 0;
+  //     for (const usuarioId of starts) {
+  //       try {
+  //         await bot.sendMessage(usuarioId, mensajeHTML, botonesPublicos);
+  //         enviados++;
+  //         await new Promise((r) => setTimeout(r, 400));
+  //       } catch (err) {
+  //         console.error(`⚠️ Error al enviar mensaje a usuario ${usuarioId}:`, err.message);
+  //       }
+  //     }
 
-      console.log(`✅ Mensajes enviados a iniciados: ${enviados}`);
-    } catch (err) {
-      console.error("❌ Error al obtener lista de starts:", err.message);
-    }
-  };
+  //     console.log(`✅ Mensajes enviados a iniciados: ${enviados}`);
+  //   } catch (err) {
+  //     console.error("❌ Error al obtener lista de starts:", err.message);
+  //   }
+  // };
 
   // 🕐 Programar envío automático a las 12:00 PM y 6:00 PM (hora Perú)
   cron.schedule(

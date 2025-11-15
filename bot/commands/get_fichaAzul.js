@@ -129,55 +129,37 @@ module.exports = (bot) => {
       return;
     }
 
-    //Si lo usan en un grupo no permitido
-    if (!gruposPermitidos.includes(chatId) && !isAdmin && !isDev && !isBuyer) {
+    if (typeChat === "private" && !isDev && !isBuyer) {
+      let x = `*[ ✖️ ] PORFAVOR, VE AL NUEVO BOT @LainData_Bot, ESTE BOT HA SIDO DEJADO EN DESUSO. SI SIGUES TENIENDO UN PLAN ACTIVO CON NOSOTROS, VE AL BOT NUEVO Y COMÚNICATE CON LA DUEÑA O ADMINS*`;
+
+      const opts = {
+        ...messageOptions,
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "🔗 Grupo PÚBLICO 🛡️",
+                url: "https://t.me/+-nHDtyXT-V45Yjlh",
+              },
+            ],
+          ],
+        },
+      };
+
       bot
-        .sendMessage(
-          chatId,
-          `*[ ✖️ ] Este grupo* no ha sido *autorizado* para mi uso.`,
-          messageOptions
-        )
+        .sendMessage(chatId, x, opts)
         .then(() => {
           console.log(
-            `Se ha añadido e intentado usar el bot en el grupo con ID ${chatId} y NOMBRE ${groupName}`
+            `El usuario ${userId} con nombre ${firstName} ha intentado usarme de forma privada.`
           );
-          let noGrupo = `*[ 🔌 ] Se me han querido usar* en este grupo:\n\n`;
-          noGrupo += `*-👥:* \`${groupName}\`\n`;
-          noGrupo += `*-🆔:* \`${chatId}\`\n`;
-
-          // Obtener el enlace de invitación del grupo
-          if (botIsAdmin) {
-            bot
-              .exportChatInviteLink(chatId)
-              .then((inviteLink) => {
-                if (inviteLink) {
-                  noGrupo += `*-🔗:* ${inviteLink}\n`;
-                }
-
-                return bot.sendMessage(6484858971, noGrupo, {
-                  parse_mode: "Markdown",
-                  disable_web_page_preview: true,
-                });
-              })
-              .catch((error) => {
-                console.log(
-                  "Error al obtener el enlace de invitación del grupo: ",
-                  error.message
-                );
-              });
-          } else {
-            return bot.sendMessage(6484858971, noGrupo, {
-              parse_mode: "Markdown",
-              disable_web_page_preview: true,
-            });
-          }
         })
-        .catch((error) => {
+        .catch((err) => {
           console.log(
-            "Error al enviar el mensaje de grupo no autorizado: ",
-            error.message
+            `Error al mandar el mensaje "no uso-privado": `,
+            err.message
           );
         });
+
       return;
     }
 

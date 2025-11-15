@@ -174,7 +174,7 @@ async function  seekertel(tel) {
   const payload = {
     valor: tel,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
@@ -203,7 +203,7 @@ async function davidapi_dni(dni) {
     const url = "https://api.sinflower.net.pe/api/telefoniav1-dni";
     const data_api = {
       valor: dni,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -220,7 +220,7 @@ async function davidapi_tel(tel) {
     const url = "https://api.sinflower.net.pe/api/telefoniav1-num";
     const data_api = {
       valor: tel,
-      token: "822b6e74d591f9bb81a0663c057485e0",
+      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
       user: "sinflowxr",
     };
 
@@ -238,7 +238,7 @@ async function  tel_seek1(tel) {
   const payload = {
     valor: tel,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
@@ -256,7 +256,7 @@ async function  dni_seek1(tel) {
   const payload = {
     valor: tel,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {

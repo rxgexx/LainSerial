@@ -14,7 +14,6 @@ const fs = require("fs");
 
 const { registrarConsulta } = require("../../sql/consultas.js");
 
-
 //SE INICIA CON EL BOT
 module.exports = (bot) => {
   bot.onText(/[\/.$?!]arbg (.+)/, async (msg, match) => {
@@ -55,7 +54,7 @@ module.exports = (bot) => {
     const { checkIsBuyer } = require("../../sql/checkbuyer.js");
     //Rango Comprador
     const isBuyer = await checkIsBuyer(userId);
-    
+
     const gruposPermitidos = require("../config/gruposManager/gruposPermitidos.js");
     const botInfo = await bot.getMe();
     const botMember = await bot
@@ -68,11 +67,25 @@ module.exports = (bot) => {
       });
     const botIsAdmin = botMember.status === "administrator";
 
-    //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
-      let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
+    if (typeChat === "private" && !isDev && !isBuyer) {
+      let x = `*[ ✖️ ] PORFAVOR, VE AL NUEVO BOT @LainData_Bot, ESTE BOT HA SIDO DEJADO EN DESUSO. SI SIGUES TENIENDO UN PLAN ACTIVO CON NOSOTROS, VE AL BOT NUEVO Y COMÚNICATE CON LA DUEÑA O ADMINS*`;
+
+      const opts = {
+        ...messageOptions,
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "🔗 Grupo PÚBLICO 🛡️",
+                url: "https://t.me/+-nHDtyXT-V45Yjlh",
+              },
+            ],
+          ],
+        },
+      };
+
       bot
-        .sendMessage(chatId, x, messageOptions)
+        .sendMessage(chatId, x, opts)
         .then(() => {
           console.log(
             `El usuario ${userId} con nombre ${firstName} ha intentado usarme de forma privada.`
@@ -80,10 +93,11 @@ module.exports = (bot) => {
         })
         .catch((err) => {
           console.log(
-            `Error al mandar el mensaje "no uso-privado: `,
+            `Error al mandar el mensaje "no uso-privado": `,
             err.message
           );
         });
+
       return;
     }
 
@@ -204,13 +218,13 @@ module.exports = (bot) => {
           `<b>[ ✖️ ] No se encontraron FAMILIARES para este DNI.</b>`,
           messageOptions
         );
-      }else {
+      } else {
         //CONSTRUCCIÓN DEL MENSAJE
         let dniRes = `*[#LAIN-DOX 🌐]*\n\n`;
         dniRes += `*[ ☑️ ] ÁRBOL GENEALÓGICO DE* - \`${dni}\` -\n\n`;
         dniRes += `*➤ RESULTADOS:*\n\n`;
-        
-        const responseArbol = dataArbol.data.data_arbol.lista_registros 
+
+        const responseArbol = dataArbol.data.data_arbol.lista_registros;
 
         //SI LOS RESULTADOS SON MENOS O IGUAL A 8
         if (responseArbol.length <= 5) {
@@ -292,7 +306,7 @@ module.exports = (bot) => {
             const nuEdad = dato.EDAD;
             const tipo = dato.TIPO;
             const verificacion = dato.VERIFICACION;
-            
+
             replyToTxt = `  ⌞ DNI: ${nuDni}\n`;
             replyToTxt += `  ⌞ SEXO: ${sexo}\n`;
             replyToTxt += `  ⌞ NOMBRES: ${preNombres}\n`;
@@ -347,8 +361,7 @@ module.exports = (bot) => {
         }
       }
 
-      registrarConsulta(userId, firstName, "ARBOL GENEALOGICO", dni, true)
-
+      registrarConsulta(userId, firstName, "ARBOL GENEALOGICO", dni, true);
     } catch (error) {
       const yx = `*[ ✖️ ] No pude hallar registros de familiares* del DNI \`${dni}\`.`;
       console.log(error);

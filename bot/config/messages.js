@@ -43,10 +43,8 @@ const messages = {
   },
 
   //MENSAJE START
-  startMessages: (firstName) => {
-    let startMessage = `*Bienvenido a Lain Serial, ${firstName},* para que _puedas usarme_ necesitas comprar *una membresía o estar en un grupo donde mi uso esté habilitado.*\n\n`;
-    startMessage += `*RECUERDA 💡:* \`La membresía\` dura 1 mes, y se renueva mensualmente.\n\n`;
-    startMessage += `*Compra tu membresía* haciendo _click al botón_ de abajo 🚀`;
+  startMessages: () => {
+    let startMessage = `*ESTE BOT HA DEJADO DE ESTAR OPERATIVO, POR FAVOR, SI TU PLAN HA CADUCADO O AÚN TIENES UN PLAN CON NOSOTROS, VE A @LainData_Bot*\n\n`;
 
     return startMessage;
   },

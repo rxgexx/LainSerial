@@ -1,6 +1,5 @@
 // PATH
 const path = require("node:path");
-const {promisePool} = require("../../sql/connection.js"); // tu conexión MySQL
 
 // IMAGEN
 const imageStart = path.join(__dirname, "../img/startImg.png");
@@ -27,16 +26,16 @@ module.exports = (bot) => {
     };
 
     try {
-      // Insertar o actualizar en MySQL
-      await promisePool.query(
-        `INSERT INTO usuarios (telegram_id, first_name) 
-         VALUES (?, ?)
-         ON DUPLICATE KEY UPDATE 
-         first_name = VALUES(first_name)`,
-        [userId, firstName]
-      );
+      // // Insertar o actualizar en MySQL
+      // await promisePool.query(
+      //   `INSERT INTO usuarios (telegram_id, first_name)
+      //    VALUES (?, ?)
+      //    ON DUPLICATE KEY UPDATE
+      //    first_name = VALUES(first_name)`,
+      //   [userId, firstName]
+      // );
 
-      const textoStart = messages.startMessages(firstName);
+      const textoStart = messages.startMessages();
 
       // Enviar mensaje con imagen
       await bot.sendPhoto(chatId, imageStart, {

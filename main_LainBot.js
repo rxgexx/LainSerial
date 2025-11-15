@@ -51,7 +51,7 @@ bot.onText(/\/contacto/, (msg) => {
 `;
 
   const opciones = {
-    parse_mode: "Markdown",
+    parse_mode: "HTML",
     reply_markup: {
       inline_keyboard: [
         [{ text: "💬 Contactar con la dueña", url: enlaceSoporte }],

@@ -63,11 +63,25 @@ module.exports = (bot) => {
       });
     const botIsAdmin = botMember.status === "administrator";
 
-    //Si el chat lo usan de forma privada
-    if (typeChat === "private" && !isDev && !isBuyer && !isAdmin) {
-      let x = `*[ ✖️ ] Uso privado* deshabilitado en mi *fase - beta.*`;
+    if (typeChat === "private" && !isDev && !isBuyer) {
+      let x = `*[ ✖️ ] PORFAVOR, VE AL NUEVO BOT @LainData_Bot, ESTE BOT HA SIDO DEJADO EN DESUSO. SI SIGUES TENIENDO UN PLAN ACTIVO CON NOSOTROS, VE AL BOT NUEVO Y COMÚNICATE CON LA DUEÑA O ADMINS*`;
+
+      const opts = {
+        ...messageOptions,
+        reply_markup: {
+          inline_keyboard: [
+            [
+              {
+                text: "🔗 Grupo PÚBLICO 🛡️",
+                url: "https://t.me/+-nHDtyXT-V45Yjlh",
+              },
+            ],
+          ],
+        },
+      };
+
       bot
-        .sendMessage(chatId, x, messageOptions)
+        .sendMessage(chatId, x, opts)
         .then(() => {
           console.log(
             `El usuario ${userId} con nombre ${firstName} ha intentado usarme de forma privada.`
@@ -75,10 +89,11 @@ module.exports = (bot) => {
         })
         .catch((err) => {
           console.log(
-            `Error al mandar el mensaje "no uso-privado: `,
+            `Error al mandar el mensaje "no uso-privado": `,
             err.message
           );
         });
+
       return;
     }
 
@@ -182,54 +197,58 @@ module.exports = (bot) => {
       const responseTitular = await seekertel(tel);
 
       if (responseTitular.data.status_data === false) {
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
 
-      await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      const yx = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\`.`;
-
-      bot.sendMessage(chatId, yx, messageOptions);
+        bot.sendMessage(chatId, yx, messageOptions);
       } else {
-      //RESPONSE TITULAR
-      const dataTitular = responseTitular.data.datos_tel;
+        //RESPONSE TITULAR
+        const dataTitular = responseTitular.data.datos_tel;
 
-      //DATOS TITULAR
-      const dni = dataTitular.dni + " " + dataTitular.cui;
-      const titular = dataTitular.prenombres + " " + dataTitular.apellido_paterno + " " + dataTitular.apellido_materno;
-      const fechaNacimiento = dataTitular.fecha_nacimiento;
+        //DATOS TITULAR
+        const dni = dataTitular.dni + " " + dataTitular.cui;
+        const titular =
+          dataTitular.prenombres +
+          " " +
+          dataTitular.apellido_paterno +
+          " " +
+          dataTitular.apellido_materno;
+        const fechaNacimiento = dataTitular.fecha_nacimiento;
 
-      //MENSAJE DEL BOT
-      let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
-      telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
-      telRes += `*➤ BASE DE DATOS 2*\n`;
-      telRes += `  \`⌞\` *DOCUMENTO:* \`${dni}\`\n`;
-      telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
-      telRes += `  \`⌞\` *FE. NACIMIENTO:* \`${fechaNacimiento}\`\n\n`;
-      // telRes += `  \`⌞\` *UBICACION:* \`${ubicacion}\`\n`;
-      // telRes += `  \`⌞\` *DIRECCIÒN:* \`${direccion}\`\n\n`;
-      telRes += `*➤ CONSULTADO POR:*\n`;
-      telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
-      telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
-      telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
+        //MENSAJE DEL BOT
+        let telRes = `*[#LAIN-DOX 🌐]*\n\n`;
+        telRes += `*[ ☑️ ] TITULAR DE* - \`${tel}\` -\n\n`;
+        telRes += `*➤ BASE DE DATOS 2*\n`;
+        telRes += `  \`⌞\` *DOCUMENTO:* \`${dni}\`\n`;
+        telRes += `  \`⌞\` *TITULAR:* \`${titular}\`\n`;
+        telRes += `  \`⌞\` *FE. NACIMIENTO:* \`${fechaNacimiento}\`\n\n`;
+        // telRes += `  \`⌞\` *UBICACION:* \`${ubicacion}\`\n`;
+        // telRes += `  \`⌞\` *DIRECCIÒN:* \`${direccion}\`\n\n`;
+        telRes += `*➤ CONSULTADO POR:*\n`;
+        telRes += `  \`⌞\` *USUARIO:* \`${userId}\`\n`;
+        telRes += `  \`⌞\` *NOMBRE:* \`${firstName}\`\n\n`;
+        telRes += `*MENSAJE:* _La consulta se hizo de manera exitosa ♻._\n\n`;
 
-      await bot.deleteMessage(chatId, consultandoMessage.message_id);
-      bot
-        .sendMessage(chatId, telRes, messageOptions)
-        .then(async () => {
-          await registrarConsulta(userId, firstName, `CELX 2`, tel, true);
+        await bot.deleteMessage(chatId, consultandoMessage.message_id);
+        bot
+          .sendMessage(chatId, telRes, messageOptions)
+          .then(async () => {
+            await registrarConsulta(userId, firstName, `CELX 2`, tel, true);
 
-          //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
-          if (!isDev && !isAdmin && !isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
-          }
-          //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
-          else if (isBuyer) {
-            antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
-          }
-        })
-        .catch((error) => {
-          console.log(
-            "Error al enviar el mensaje en la API TITULAR BASIC: " + error
-          );
-        });
+            //Se le agrega tiempos de spam si la consulta es exitosa, en este caso es de 60 segundos
+            if (!isDev && !isAdmin && !isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 60;
+            }
+            //Se le agrega al rango comprador un tiempo de spam más corto, en este caso 40 segundos.
+            else if (isBuyer) {
+              antiSpam[userId] = Math.floor(Date.now() / 1000) + 40;
+            }
+          })
+          .catch((error) => {
+            console.log(
+              "Error al enviar el mensaje en la API TITULAR BASIC: " + error
+            );
+          });
       }
     } catch (error) {
       let xerror = `*[ ✖️ ] No pude hallar el titular* del número \`${tel}\` en la segunda base.`;

@@ -37,7 +37,7 @@ async function dniElectronico(dni) {
   const payload = {
     valor: dni,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
@@ -80,7 +80,7 @@ async function seekerdni(dni) {
   const payload = {
     valor: dni,
     user: "sinflowxr",
-    token: "822b6e74d591f9bb81a0663c057485e0",
+    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
   };
 
   try {
