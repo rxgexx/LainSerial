@@ -18,7 +18,7 @@ async function apiPlaca_2(placa) {
   try {
     const response = await axios.post(apiUrl, {
       valor: placa,
-      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+      token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
       user: "sinflowxr",
     });
     const data = response.data;
@@ -46,7 +46,7 @@ async function apiNotas(dni) {
   try {
     const response = await axios.post(apiUrl, {
       valor: dni,
-      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+      token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
       user: "sinflowxr",
     });
     const data = response.data;
@@ -62,7 +62,7 @@ async function api_trabajos(dni) {
   const payload = {
     valor: dni,
     user: "sinflowxr",
-    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+    token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
   };
 
   try {
@@ -141,7 +141,7 @@ async function boletaInformativa(placa) {
     const response = await axios.post(apiUrl, {
       valor: placa,
       user: "sinflowxr",
-      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+      token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
     });
     const data = response.data;
 
@@ -251,7 +251,7 @@ async function brevete_pdf(dni) {
   const payload = {
     valor: dni,
     user: "sinflowxr",
-    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+    token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
   };
 
   try {
@@ -269,7 +269,7 @@ async function soat_pdf(placa) {
   try {
     const response = await axios.post(apiUrl, {
       valor: placa,
-      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+      token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
       user: "sinflowxr",
     });
     const data = response.data;
@@ -288,7 +288,7 @@ async function yape_fake(titular, numero, precio, destino) {
     titular: titular,
     numero: numero,
     destino: destino,
-    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+    token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
     user: "sinflowxr",
   };
 

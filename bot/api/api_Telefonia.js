@@ -174,7 +174,7 @@ async function  seekertel(tel) {
   const payload = {
     valor: tel,
     user: "sinflowxr",
-    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+    token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
   };
 
   try {
@@ -203,7 +203,7 @@ async function davidapi_dni(dni) {
     const url = "https://api.sinflower.net.pe/api/telefoniav1-dni";
     const data_api = {
       valor: dni,
-      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+      token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
       user: "sinflowxr",
     };
 
@@ -220,7 +220,7 @@ async function davidapi_tel(tel) {
     const url = "https://api.sinflower.net.pe/api/telefoniav1-num";
     const data_api = {
       valor: tel,
-      token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+      token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
       user: "sinflowxr",
     };
 
@@ -238,7 +238,7 @@ async function  tel_seek1(tel) {
   const payload = {
     valor: tel,
     user: "sinflowxr",
-    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+    token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
   };
 
   try {
@@ -256,7 +256,7 @@ async function  dni_seek1(tel) {
   const payload = {
     valor: tel,
     user: "sinflowxr",
-    token: "jIJZryrvVTTSkcmtaS0pDLLF2y6PMEJsB9uZ9usZgGT2ydfOVF",
+    token: "2Z0fAJkoUwsa0wBLTU8jWozDO7qoWH5WX31Q9Fd9vHCcUPZXS8M5jTXhGsbJ5tFI",
   };
 
   try {
